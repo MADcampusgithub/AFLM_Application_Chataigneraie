@@ -53,6 +53,11 @@ class Personne
      */
     private $Per_Fonction;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $Per_Annee;
+
     public function __construct()
     {
         $this->Per_Profils = new ArrayCollection();
@@ -159,6 +164,18 @@ class Personne
     public function setPerFonction(?Fonction $Per_Fonction): self
     {
         $this->Per_Fonction = $Per_Fonction;
+
+        return $this;
+    }
+
+    public function getPerAnnee(): ?int
+    {
+        return $this->Per_Annee;
+    }
+
+    public function setPerAnnee(?int $Per_Annee): self
+    {
+        $this->Per_Annee = $Per_Annee;
 
         return $this;
     }
