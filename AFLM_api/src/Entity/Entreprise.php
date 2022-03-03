@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EntrepriseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,6 +43,16 @@ class Entreprise
      * @ORM\Column(type="string", length=5, nullable=true)
      */
     private $Ent_CP;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Specialite::class, mappedBy="Spe_Entreprise")
+     */
+    private $Ent_Specialite;
+
+    public function __construct()
+    {
+        $this->Ent_Specialite = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +115,33 @@ class Entreprise
     public function setEntCP(?string $Ent_CP): self
     {
         $this->Ent_CP = $Ent_CP;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Specialite>
+     */
+    public function getEntSpecialite(): Collection
+    {
+        return $this->Ent_Specialite;
+    }
+
+    public function addEntSpecialite(Specialite $entSpecialite): self
+    {
+        if (!$this->Ent_Specialite->contains($entSpecialite)) {
+            $this->Ent_Specialite[] = $entSpecialite;
+            $entSpecialite->addSpeEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntSpecialite(Specialite $entSpecialite): self
+    {
+        if ($this->Ent_Specialite->removeElement($entSpecialite)) {
+            $entSpecialite->removeSpeEntreprise($this);
+        }
 
         return $this;
     }
