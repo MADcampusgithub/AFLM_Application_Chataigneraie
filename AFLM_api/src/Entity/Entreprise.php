@@ -49,6 +49,11 @@ class Entreprise
      */
     private $Ent_Specialite;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Pays::class, inversedBy="Pay_Entreprise")
+     */
+    private $Ent_Pays;
+
     public function __construct()
     {
         $this->Ent_Specialite = new ArrayCollection();
@@ -142,6 +147,18 @@ class Entreprise
         if ($this->Ent_Specialite->removeElement($entSpecialite)) {
             $entSpecialite->removeSpeEntreprise($this);
         }
+
+        return $this;
+    }
+
+    public function getEntPays(): ?Pays
+    {
+        return $this->Ent_Pays;
+    }
+
+    public function setEntPays(?Pays $Ent_Pays): self
+    {
+        $this->Ent_Pays = $Ent_Pays;
 
         return $this;
     }
