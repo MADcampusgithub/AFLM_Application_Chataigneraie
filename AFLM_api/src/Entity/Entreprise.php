@@ -54,9 +54,20 @@ class Entreprise
      */
     private $Ent_Pays;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="Vil_Entreprise")
+     */
+    private $Ent_Ville;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Personne::class, mappedBy="Per_Entreprise")
+     */
+    private $Ent_Personne;
+
     public function __construct()
     {
         $this->Ent_Specialite = new ArrayCollection();
+        $this->Ent_Personne = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,6 +170,48 @@ class Entreprise
     public function setEntPays(?Pays $Ent_Pays): self
     {
         $this->Ent_Pays = $Ent_Pays;
+
+        return $this;
+    }
+
+    public function getEntVille(): ?Ville
+    {
+        return $this->Ent_Ville;
+    }
+
+    public function setEntVille(?Ville $Ent_Ville): self
+    {
+        $this->Ent_Ville = $Ent_Ville;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Personne>
+     */
+    public function getEntPersonne(): Collection
+    {
+        return $this->Ent_Personne;
+    }
+
+    public function addEntPersonne(Personne $entPersonne): self
+    {
+        if (!$this->Ent_Personne->contains($entPersonne)) {
+            $this->Ent_Personne[] = $entPersonne;
+            $entPersonne->setPerEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntPersonne(Personne $entPersonne): self
+    {
+        if ($this->Ent_Personne->removeElement($entPersonne)) {
+            // set the owning side to null (unless already changed)
+            if ($entPersonne->getPerEntreprise() === $this) {
+                $entPersonne->setPerEntreprise(null);
+            }
+        }
 
         return $this;
     }
