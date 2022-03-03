@@ -49,9 +49,9 @@ class Personne
     private $Per_Profils;
 
     /**
-     * @ORM\OneToMany(targetEntity=Fonction::class, mappedBy="Fon_Personne")
+     * @ORM\ManyToOne(targetEntity=Fonction::class, inversedBy="Fon_Personne")
      */
-    private $Ent_Fonctions;
+    private $Per_Fonction;
 
     public function __construct()
     {
@@ -151,32 +151,14 @@ class Personne
         return $this;
     }
 
-    /**
-     * @return Collection<int, Fonction>
-     */
-    public function getEntFonctions(): Collection
+    public function getPerFonction(): ?Fonction
     {
-        return $this->Ent_Fonctions;
+        return $this->Per_Fonction;
     }
 
-    public function addEntFonction(Fonction $entFonction): self
+    public function setPerFonction(?Fonction $Per_Fonction): self
     {
-        if (!$this->Ent_Fonctions->contains($entFonction)) {
-            $this->Ent_Fonctions[] = $entFonction;
-            $entFonction->setFonPersonne($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEntFonction(Fonction $entFonction): self
-    {
-        if ($this->Ent_Fonctions->removeElement($entFonction)) {
-            // set the owning side to null (unless already changed)
-            if ($entFonction->getFonPersonne() === $this) {
-                $entFonction->setFonPersonne(null);
-            }
-        }
+        $this->Per_Fonction = $Per_Fonction;
 
         return $this;
     }
