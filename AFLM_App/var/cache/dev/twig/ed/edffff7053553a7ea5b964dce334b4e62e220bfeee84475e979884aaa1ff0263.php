@@ -24,10 +24,16 @@ class __TwigTemplate_fc6d4862e98312918ee6d07914790424b9db6e64a43a4acc81bf4780f33
 
         $this->source = $this->getSourceContext();
 
-        $this->parent = false;
-
         $this->blocks = [
+            'title' => [$this, 'block_title'],
+            'body' => [$this, 'block_body'],
         ];
+    }
+
+    protected function doGetParent(array $context)
+    {
+        // line 1
+        return "base.html.twig";
     }
 
     protected function doDisplay(array $context, array $blocks = [])
@@ -36,13 +42,35 @@ class __TwigTemplate_fc6d4862e98312918ee6d07914790424b9db6e64a43a4acc81bf4780f33
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "template", "test.html.twig"));
 
-        // line 1
-        echo "<!-- CSS only -->
-<link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3\" crossorigin=\"anonymous\">
-<!-- JavaScript Bundle with Popper -->
-<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p\" crossorigin=\"anonymous\"></script>
-<body>
-  <div class=\"form-floating mb-3\">
+        $this->parent = $this->loadTemplate("base.html.twig", "test.html.twig", 1);
+        $this->parent->display($context, array_merge($this->blocks, $blocks));
+        
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->leave($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof);
+
+    }
+
+    // line 3
+    public function block_title($context, array $blocks = [])
+    {
+        $macros = $this->macros;
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "title"));
+
+        echo "Test !";
+        
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->leave($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof);
+
+    }
+
+    // line 5
+    public function block_body($context, array $blocks = [])
+    {
+        $macros = $this->macros;
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
+
+        // line 6
+        echo "  <div class=\"form-floating mb-3\">
     <input type=\"email\" class=\"form-control\" id=\"floatingInput\" placeholder=\"name@example.com\">
     <label for=\"floatingInput\">Email address</label>
   </div>
@@ -50,7 +78,7 @@ class __TwigTemplate_fc6d4862e98312918ee6d07914790424b9db6e64a43a4acc81bf4780f33
     <input type=\"password\" class=\"form-control\" id=\"floatingPassword\" placeholder=\"Password\">
     <label for=\"floatingPassword\">Password</label>
   </div>
-</body>";
+";
         
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->leave($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof);
 
@@ -61,18 +89,23 @@ class __TwigTemplate_fc6d4862e98312918ee6d07914790424b9db6e64a43a4acc81bf4780f33
         return "test.html.twig";
     }
 
+    public function isTraitable()
+    {
+        return false;
+    }
+
     public function getDebugInfo()
     {
-        return array (  40 => 1,);
+        return array (  73 => 6,  66 => 5,  53 => 3,  36 => 1,);
     }
 
     public function getSourceContext()
     {
-        return new Source("<!-- CSS only -->
-<link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3\" crossorigin=\"anonymous\">
-<!-- JavaScript Bundle with Popper -->
-<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p\" crossorigin=\"anonymous\"></script>
-<body>
+        return new Source("{% extends 'base.html.twig' %}
+
+{% block title %}Test !{% endblock %}
+
+{% block body %}
   <div class=\"form-floating mb-3\">
     <input type=\"email\" class=\"form-control\" id=\"floatingInput\" placeholder=\"name@example.com\">
     <label for=\"floatingInput\">Email address</label>
@@ -81,6 +114,6 @@ class __TwigTemplate_fc6d4862e98312918ee6d07914790424b9db6e64a43a4acc81bf4780f33
     <input type=\"password\" class=\"form-control\" id=\"floatingPassword\" placeholder=\"Password\">
     <label for=\"floatingPassword\">Password</label>
   </div>
-</body>", "test.html.twig", "C:\\Users\\Laptop Adler\\Documents\\ProjetSymfony\\AFLM_Application_Chataigneraie\\AFLM_App\\templates\\test.html.twig");
+{% endblock %}", "test.html.twig", "C:\\Users\\Laptop Adler\\Documents\\ProjetSymfony\\AFLM_Application_Chataigneraie_App\\AFLM_App\\templates\\test.html.twig");
     }
 }
