@@ -29,7 +29,8 @@ class __TwigTemplate_3f1e5078f5c4aec9410219b5cca436ae22fa91b4c8b09ed4f2984d79900
         $this->blocks = [
             'title' => [$this, 'block_title'],
             'styles' => [$this, 'block_styles'],
-            'body' => [$this, 'block_body'],
+            'utilisateur' => [$this, 'block_utilisateur'],
+            'content' => [$this, 'block_content'],
             'scripts' => [$this, 'block_scripts'],
         ];
     }
@@ -50,25 +51,65 @@ class __TwigTemplate_3f1e5078f5c4aec9410219b5cca436ae22fa91b4c8b09ed4f2984d79900
         // line 6
         $this->displayBlock('title', $context, $blocks);
         echo "</title>
-    <link rel=\"icon\" href=\"data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>\"/>
+    <link rel=\"stylesheet\" href=\"assets/bootstrap.min.css\" />
     ";
         // line 8
         $this->displayBlock('styles', $context, $blocks);
-        // line 11
+        // line 9
         echo "</head>
 
 <body>
-    ";
-        // line 14
-        $this->displayBlock('body', $context, $blocks);
-        // line 15
-        echo "</body>
+<nav class=\"navbar navbar-expand-sm navbar-dark bg-dark\">
+  <div class=\"container-fluid\">
+    <a class=\"navbar-brand\" href=\"\">GSB</a>
+    <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">
+      <span class=\"navbar-toggler-icon\"></span>
+    </button>
+    <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">
+      <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\">
+        <li class=\"nav-item\">
+          <a class=\"nav-link active\" aria-current=\"page\" href=\"#\">Entreprises</a>
+        </li>
+        <li class=\"nav-item\">
+          <a class=\"nav-link\" href=\"#\">Professionnels</a>
+        </li>
+        <li class=\"nav-item\">
+          <a class=\"nav-link\" href=\"#\">Utilisateurs</a>
+        </li>
+      </ul>
+      <span class=\"navbar-text dropdown\">
+        <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdownMenuLink\" role=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
+          ";
+        // line 32
+        $this->displayBlock('utilisateur', $context, $blocks);
+        // line 33
+        echo "        </a>
+        <ul class=\"dropdown-menu dropdown-menu-dark dropdown-menu-lg-end\" aria-labelledby=\"navbarDropdownMenuLink\">
+          <li><a class=\"dropdown-item\" href=\"#\">Deconnexion</a></li>
+        </ul>
+      </span>
+      <img src=\"imgs/defaut_utilisateur.png\" alt=\"\" width=\"30\" height=\"30\">
+    </div>
+  </div>
+</nav>
 
+<div class=\"container\">
+  <div class=\"text-center py-5 px-3\">
+    ";
+        // line 45
+        $this->displayBlock('content', $context, $blocks);
+        // line 46
+        echo "  </div>
+</div>
+
+<script src=\"assets/bootstrap.bundle.min.js\"></script>
 ";
-        // line 17
+        // line 50
         $this->displayBlock('scripts', $context, $blocks);
-        // line 20
-        echo "</html>
+        // line 51
+        echo "
+</body>
+</html>
 ";
         
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->leave($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof);
@@ -94,36 +135,42 @@ class __TwigTemplate_3f1e5078f5c4aec9410219b5cca436ae22fa91b4c8b09ed4f2984d79900
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "styles"));
 
-        // line 9
-        echo "        <link rel=\"stylesheet\" href=\"bootstrap.min.css\" />
-    ";
         
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->leave($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof);
 
     }
 
-    // line 14
-    public function block_body($context, array $blocks = [])
+    // line 32
+    public function block_utilisateur($context, array $blocks = [])
     {
         $macros = $this->macros;
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "utilisateur"));
 
         
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->leave($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof);
 
     }
 
-    // line 17
+    // line 45
+    public function block_content($context, array $blocks = [])
+    {
+        $macros = $this->macros;
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "content"));
+
+        
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->leave($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof);
+
+    }
+
+    // line 50
     public function block_scripts($context, array $blocks = [])
     {
         $macros = $this->macros;
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "scripts"));
 
-        // line 18
-        echo "    <script src=\"bootstrap.min.js\" />
-";
         
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->leave($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof);
 
@@ -136,7 +183,7 @@ class __TwigTemplate_3f1e5078f5c4aec9410219b5cca436ae22fa91b4c8b09ed4f2984d79900
 
     public function getDebugInfo()
     {
-        return array (  125 => 18,  118 => 17,  106 => 14,  98 => 9,  91 => 8,  79 => 6,  71 => 20,  69 => 17,  65 => 15,  63 => 14,  58 => 11,  56 => 8,  51 => 6,  44 => 1,);
+        return array (  168 => 50,  156 => 45,  144 => 32,  132 => 8,  120 => 6,  110 => 51,  108 => 50,  102 => 46,  100 => 45,  86 => 33,  84 => 32,  59 => 9,  57 => 8,  52 => 6,  45 => 1,);
     }
 
     public function getSourceContext()
@@ -147,19 +194,52 @@ class __TwigTemplate_3f1e5078f5c4aec9410219b5cca436ae22fa91b4c8b09ed4f2984d79900
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>
     <meta charset=\"UTF-8\"/>
     <title>{% block title %}{% endblock %}</title>
-    <link rel=\"icon\" href=\"data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>\"/>
-    {% block styles %}
-        <link rel=\"stylesheet\" href=\"bootstrap.min.css\" />
-    {% endblock %}
+    <link rel=\"stylesheet\" href=\"assets/bootstrap.min.css\" />
+    {% block styles %}{% endblock %}
 </head>
 
 <body>
-    {% block body %}{% endblock %}
-</body>
+<nav class=\"navbar navbar-expand-sm navbar-dark bg-dark\">
+  <div class=\"container-fluid\">
+    <a class=\"navbar-brand\" href=\"\">GSB</a>
+    <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">
+      <span class=\"navbar-toggler-icon\"></span>
+    </button>
+    <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">
+      <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\">
+        <li class=\"nav-item\">
+          <a class=\"nav-link active\" aria-current=\"page\" href=\"#\">Entreprises</a>
+        </li>
+        <li class=\"nav-item\">
+          <a class=\"nav-link\" href=\"#\">Professionnels</a>
+        </li>
+        <li class=\"nav-item\">
+          <a class=\"nav-link\" href=\"#\">Utilisateurs</a>
+        </li>
+      </ul>
+      <span class=\"navbar-text dropdown\">
+        <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdownMenuLink\" role=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">
+          {% block utilisateur %}{% endblock %}
+        </a>
+        <ul class=\"dropdown-menu dropdown-menu-dark dropdown-menu-lg-end\" aria-labelledby=\"navbarDropdownMenuLink\">
+          <li><a class=\"dropdown-item\" href=\"#\">Deconnexion</a></li>
+        </ul>
+      </span>
+      <img src=\"imgs/defaut_utilisateur.png\" alt=\"\" width=\"30\" height=\"30\">
+    </div>
+  </div>
+</nav>
 
-{% block scripts %}
-    <script src=\"bootstrap.min.js\" />
-{% endblock %}
+<div class=\"container\">
+  <div class=\"text-center py-5 px-3\">
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+<script src=\"assets/bootstrap.bundle.min.js\"></script>
+{% block scripts %}{% endblock %}
+
+</body>
 </html>
 ", "base.html.twig", "C:\\Users\\Laptop Adler\\Documents\\ProjetSymfony\\AFLM_Application_Chataigneraie_App\\AFLM_App\\templates\\base.html.twig");
     }

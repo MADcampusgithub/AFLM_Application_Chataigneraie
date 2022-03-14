@@ -8,7 +8,7 @@
 return [
     false, // $matchHost
     [ // $staticRoutes
-        '/test' => [[['_route' => 'Test', '_controller' => 'App\\Controller\\TestController::renduTest'], null, null, null, false, false, null]],
+        '/connection' => [[['_route' => 'app_connection', '_controller' => 'App\\Controller\\ConnectionController::Connection'], null, null, null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'

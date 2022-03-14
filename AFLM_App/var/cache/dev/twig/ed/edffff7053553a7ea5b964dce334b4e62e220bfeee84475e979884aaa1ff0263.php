@@ -26,7 +26,8 @@ class __TwigTemplate_fc6d4862e98312918ee6d07914790424b9db6e64a43a4acc81bf4780f33
 
         $this->blocks = [
             'title' => [$this, 'block_title'],
-            'body' => [$this, 'block_body'],
+            'content' => [$this, 'block_content'],
+            'styles' => [$this, 'block_styles'],
         ];
     }
 
@@ -63,11 +64,11 @@ class __TwigTemplate_fc6d4862e98312918ee6d07914790424b9db6e64a43a4acc81bf4780f33
     }
 
     // line 5
-    public function block_body($context, array $blocks = [])
+    public function block_content($context, array $blocks = [])
     {
         $macros = $this->macros;
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
-        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "body"));
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "content"));
 
         // line 6
         echo "  <div class=\"form-floating mb-3\">
@@ -78,6 +79,21 @@ class __TwigTemplate_fc6d4862e98312918ee6d07914790424b9db6e64a43a4acc81bf4780f33
     <input type=\"password\" class=\"form-control\" id=\"floatingPassword\" placeholder=\"Password\">
     <label for=\"floatingPassword\">Password</label>
   </div>
+";
+        
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->leave($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof);
+
+    }
+
+    // line 16
+    public function block_styles($context, array $blocks = [])
+    {
+        $macros = $this->macros;
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02 = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->enter($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "styles"));
+
+        // line 17
+        echo "  <link href=\"\" rel=\"stylesheet\"/>
 ";
         
         $__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02->leave($__internal_319393461309892924ff6e74d6d6e64287df64b63545b994e100d4ab223aed02_prof);
@@ -96,7 +112,7 @@ class __TwigTemplate_fc6d4862e98312918ee6d07914790424b9db6e64a43a4acc81bf4780f33
 
     public function getDebugInfo()
     {
-        return array (  73 => 6,  66 => 5,  53 => 3,  36 => 1,);
+        return array (  96 => 17,  89 => 16,  74 => 6,  67 => 5,  54 => 3,  37 => 1,);
     }
 
     public function getSourceContext()
@@ -105,7 +121,7 @@ class __TwigTemplate_fc6d4862e98312918ee6d07914790424b9db6e64a43a4acc81bf4780f33
 
 {% block title %}Test !{% endblock %}
 
-{% block body %}
+{% block content %}
   <div class=\"form-floating mb-3\">
     <input type=\"email\" class=\"form-control\" id=\"floatingInput\" placeholder=\"name@example.com\">
     <label for=\"floatingInput\">Email address</label>
@@ -114,6 +130,10 @@ class __TwigTemplate_fc6d4862e98312918ee6d07914790424b9db6e64a43a4acc81bf4780f33
     <input type=\"password\" class=\"form-control\" id=\"floatingPassword\" placeholder=\"Password\">
     <label for=\"floatingPassword\">Password</label>
   </div>
+{% endblock %}
+
+{% block styles %}
+  <link href=\"\" rel=\"stylesheet\"/>
 {% endblock %}", "test.html.twig", "C:\\Users\\Laptop Adler\\Documents\\ProjetSymfony\\AFLM_Application_Chataigneraie_App\\AFLM_App\\templates\\test.html.twig");
     }
 }
