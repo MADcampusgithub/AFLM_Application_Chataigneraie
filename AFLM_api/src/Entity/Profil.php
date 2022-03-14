@@ -10,7 +10,12 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=ProfilRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *      collectionOperations = {
+ *          "get",
+ *      },
+ *      itemOperations = {}
+ * )
  */
 class Profil
 {

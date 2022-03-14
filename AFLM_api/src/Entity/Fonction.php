@@ -6,9 +6,16 @@ use App\Repository\FonctionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=FonctionRepository::class)
+ * @ApiResource(
+ *      collectionOperations = {
+ *          "get",
+ *      },
+ *      itemOperations = {}
+ * )
  */
 class Fonction
 {

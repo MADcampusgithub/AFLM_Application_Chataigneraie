@@ -6,9 +6,16 @@ use App\Repository\SpecialiteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=SpecialiteRepository::class)
+ * @ApiResource(
+ *      collectionOperations = {
+ *          "get",
+ *      },
+ *      itemOperations = {}
+ * )
  */
 class Specialite
 {

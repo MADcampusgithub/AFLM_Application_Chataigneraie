@@ -3,10 +3,22 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
+ * @ApiResource(
+ *      collectionOperations = {
+ *          "get",
+ *          "post",
+ *      },
+ *      itemOperations = {
+ *          "get",
+ *          "put",
+ *          "delete",
+ *      }
+ * )
  */
 class Utilisateur
 {
