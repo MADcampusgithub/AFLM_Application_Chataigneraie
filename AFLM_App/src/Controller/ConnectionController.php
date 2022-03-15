@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class ConnectionController extends AbstractController
 {
@@ -21,9 +22,13 @@ class ConnectionController extends AbstractController
      * @Route(name="post_connection", methods={"POST"})
      */
     public function PostConnection(Request $request) : Response {
-        $test = $request->request->all();
+        $data = $request->request->all();
 
-        return $this->render('entreprises.html.twig');
+        $session = new Session();
+        $session->start();
+        $session->set('login', $data['conn_login']);
+
+        return $this->redirect("/entreprises");
     }
     
 }
