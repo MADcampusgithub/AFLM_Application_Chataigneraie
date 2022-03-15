@@ -27,6 +27,7 @@ class ConnectionController extends AbstractController
         $session = new Session();
         $session->start();
         $session->set('login', $data['conn_login']);
+        $session->set('mdp', hash('sha256', $data['conn_mdp']));
 
         return $this->redirect("/entreprises");
     }
