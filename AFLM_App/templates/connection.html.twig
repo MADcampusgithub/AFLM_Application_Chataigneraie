@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <title>Connection à la chataigneraie</title>
     <link rel="stylesheet" href="assets/bootstrap.min.css" />
-    <link rel="stylesheet" href="connection.css"/>
+    <link rel="stylesheet" href="connection/connection.css"/>
 </head>
 
 <body>
@@ -13,9 +13,9 @@
 
   <div class="text-center py-5 px-3">
 
-    <img src="imgs/logo.png" class="img-fluid" alt="...">
+    <img src="connection/logo.png" class="img-fluid" alt="...">
 
-    <form id="connection-form" role="form" action="{{ path('app_connection') }}" method="post">
+    <form id="connection-form" role="form" action="{{ path('post_connection') }}" method="post">
       <div class="form-floating mb-3">
         <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
         <label for="floatingInput">Email address</label>

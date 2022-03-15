@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ConnectionController extends AbstractController
 {
     /**
-     * @Route("/connection")
+     * @Route("/connection", name="app_connection")
      */
     public function Connection() : Response
     {
@@ -18,11 +18,11 @@ class ConnectionController extends AbstractController
     }
 
     /**
-     * @Route("/connection", name="app_connection", methods={"POST"})
+     * @Route(name="post_connection", methods={"POST"})
      */
     public function PostConnection(Request $request) : Response {
         $test = $request->request->all();
-        
+
         return $this->render('entreprises.html.twig');
     }
     
