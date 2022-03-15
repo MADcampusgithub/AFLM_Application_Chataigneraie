@@ -13,6 +13,13 @@ class EntreprisesController extends AbstractController
      * @Route("/entreprises", name="app_entreprises")
      */
     public function Entreprises(Request $request) : Response {
-        return $this->render('entreprises.html.twig', ['login' => $request->getSession()->get('login')]);
+        $login = $request->getSession()->get('login');
+        $mdp = $request->getSession()->get('mdp');
+        
+        if ($login == "" && $mdp == "") {
+            return $this->createAccessDeniedException("vous devez vous enregister avant d'accéder au données");
+        }
+
+        return $this->render('entreprises.html.twig', ['login' => $login]);
     }
 }
