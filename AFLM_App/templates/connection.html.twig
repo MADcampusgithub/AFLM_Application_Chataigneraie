@@ -1,19 +1,39 @@
-{% extends 'base.html.twig' %}
+<html lang="fr">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta charset="UTF-8"/>
+    <title>Connection à la chataigneraie</title>
+    <link rel="stylesheet" href="assets/bootstrap.min.css" />
+    <link rel="stylesheet" href="connection.css"/>
+</head>
 
-{% block title %}Test !{% endblock %}
-{% block utilisateur %}Utilisateur{% endblock %}
+<body>
 
-{% block content %}
-  <div class="form-floating mb-3">
-    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-    <label for="floatingInput">Email address</label>
+<div class="container">
+
+  <div class="text-center py-5 px-3">
+
+    <img src="imgs/logo.png" class="img-fluid" alt="...">
+
+    <form id="connection-form" role="form" action="{{ path('app_connection') }}" method="post">
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
+      </div>
+
+      <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+      </div>
+
+      <input class="btn btn-primary mt-3" type="submit" value="Connecter">
+    </form>
+
   </div>
-  <div class="form-floating">
-    <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-    <label for="floatingPassword">Password</label>
-  </div>
-{% endblock %}
 
-{% block styles %}
-  <link href="connection.css" rel="stylesheet"/>
-{% endblock %}
+</div>
+
+<script src="assets/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
