@@ -10,14 +10,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class EntreprisesController extends AbstractController
 {
     /**
-     * @Route("/entreprises", name="app_entreprises")
+     * @Route("/entreprises", name="app_entreprises", methods={"GET"})
      */
     public function Entreprises(Request $request) : Response {
         $login = $request->getSession()->get('login');
         $mdp = $request->getSession()->get('mdp');
         
         if ($login == "" && $mdp == "") {
-            return $this->createAccessDeniedException("vous devez vous enregister avant d'accéder au données");
+            return new Response("vous devez vous enregister avant d'accéder au données");
         }
 
         return $this->render('entreprises.html.twig', ['login' => $login]);

@@ -1,0 +1,39 @@
+<html lang="fr">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta charset="UTF-8"/>
+    <title>Connexion à la chataigneraie</title>
+    <link rel="stylesheet" href="assets/bootstrap.min.css" />
+    <link rel="stylesheet" href="connection/connection.css"/>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="text-center py-5 px-3">
+
+    <img src="connexion/logo.png" class="img-fluid" alt="...">
+
+    <form id="connexion-form" role="form" action="{{ path('post_connexion') }}" method="post">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control {% if (errormsg is defined) %}is-invalid{% endif %}" id="floatingInput" name="conn_login" placeholder="Login">
+        <label for="floatingInput{% if (errormsg is defined) %}Invalid{% endif %}">{% if (errormsg is defined) %}{{ errormsg }}{% else %}Nom{% endif %}</label>
+      </div>
+
+      <div class="form-floating">
+        <input type="password" class="form-control {% if (errormsg is defined) %}is-invalid{% endif %}" id="floatingPassword" name="conn_mdp" placeholder="Mot de passe">
+        <label for="floatingPassword{% if (errormsg is defined) %}Invalid{% endif %}">{% if (errormsg is defined) %}{{ errormsg }}{% else %}Mot de passe{% endif %}</label>
+      </div>
+
+      <input class="btn btn-primary mt-3" type="submit" value="Connecter">
+    </form>
+
+  </div>
+
+</div>
+
+<script src="assets/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -27,14 +27,14 @@
           <a {% if app.request.pathinfo == "/utilisateurs" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{ path('app_utilisateurs') }}">Utilisateurs</a>
         </li>
       </ul>
-      <span class="navbar-text dropdown">
+      <div class="navbar-text dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           {% block utilisateur %}{% endblock %}
         </a>
         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink">
-          <li><a class="dropdown-item" href="{{ path('app_connection') }}">Deconnexion</a></li>
+          <li><a class="dropdown-item" href="{{ path('app_connexion') }}">Deconnexion</a></li>
         </ul>
-      </span>
+      </div>
       <img src="app/defaut_utilisateur.png" alt="" width="30" height="30">
     </div>
   </div>
