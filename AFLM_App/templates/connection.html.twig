@@ -17,13 +17,13 @@
 
     <form id="connection-form" role="form" action="{{ path('post_connection') }}" method="post">
       <div class="form-floating mb-3">
-        <input type="email" class="form-control" id="floatingInput" name="conn_login" placeholder="name@example.com">
-        <label for="floatingInput">Email address</label>
+        <input type="text" class="form-control" id="floatingInput" name="conn_login" placeholder="Login">
+        <label for="floatingInput">Login</label>
       </div>
 
       <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" name="conn_mdp" placeholder="Password">
-        <label for="floatingPassword">Password</label>
+        <input type="password" class="form-control" id="floatingPassword" name="conn_mdp" placeholder="Mot de passe">
+        <label for="floatingPassword">Mot de passe</label>
       </div>
 
       <input class="btn btn-primary mt-3" type="submit" value="Connecter">
