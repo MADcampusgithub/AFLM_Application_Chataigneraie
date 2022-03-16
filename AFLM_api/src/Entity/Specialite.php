@@ -14,7 +14,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *      collectionOperations = {
  *          "get",
  *      },
- *      itemOperations = {}
+ *      itemOperations = {
+ *          "get",    
+ *      }
  * )
  */
 class Specialite
