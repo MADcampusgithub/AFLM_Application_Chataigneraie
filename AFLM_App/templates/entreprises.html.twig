@@ -5,4 +5,7 @@
 {% block utilisateur %}{{ login }}{% endblock %}
 
 {% block content %}
+{% for util in utilisateurs %}
+    {{ util.entRs }}
+{% endfor %}
 {% endblock %}
