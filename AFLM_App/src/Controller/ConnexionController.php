@@ -29,7 +29,7 @@ class ConnexionController extends AbstractController
         $client = HttpClient::create();
 
         $data = $request->request->all();
-        $response = $client->request('GET', "http://localhost:8001/api/utilisateurs", [
+        $response = $client->request('GET', "http://10.3.249.223:8001/api/utilisateurs", [
             'headers' => [
                 'Accept' => 'application/json',
             ],
