@@ -5,7 +5,28 @@
 {% block utilisateur %}maxime.adler{% endblock %}
 
 {% block content %}
-    <span>{{ login }}</span>
-    <p> La page utilisateurs fonctionne bien ! </p>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Droit</th>
+                <th scope="col">Login</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>0</td>
+                <td>nlevacher</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>1</td>
+                <td>kdubois</td>
+            </tr>symfony
+        </tbody>
+    </table>
+
+
 {% endblock %}
 
