@@ -5,46 +5,14 @@
 {% block utilisateur %}{{ login }}{% endblock %}
 
 {% block content %}
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button>
- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body"> 
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Raison Sociale</th>
-          </tr>
-            <th scope="col">Ville</th>
-          </tr>
-            <th scope="col">Pays</th>
-          </tr>
-            <th scope="col">Adresse</th>
-          </tr>
-            <th scope="col">Code Postal</th>
-          </tr>
-            <th scope="col">Spécialité</th>
-          </tr>
-        </thead>
-      </table>
-      </div>
-    </div>
-  </div>
-</div>   
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
-{% for util in utilisateurs %}
+{% for ent in entreprises %}
   <div class="col">
     <div class="card h-100">
       <!--<img src="..." class="card-img-top" alt="...">!-->
       <div class="card-body">
-        <h5 class="card-title">{{ util.entRs }}</h5>
+        <h5 class="card-title">{{ ent.entRs }}</h5>
         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
       </div>
         <ul class="list-group list-group-flush">  
@@ -53,11 +21,60 @@
             <li class="list-group-item">Spécialité</li>
         </ul>
       <div class="card-footer">
-        <a href="#" class="btn btn-primary">Plus d'informations</a>
+        <a href="{{ path('app_entreprises_modal', {'id': ent.id}) }}" class="btn btn-primary">Plus d'informations</a>
       </div>
     </div>
   </div>
 {% endfor %}
- </div>
+</div>
 
+{% if entreprise is defined %}
+  <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body"> 
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Raison Sociale</th>
+              <th scope="col">{{ entreprise.entRs }}</th>
+            </tr>
+              <th scope="col">Ville</th>
+              <th scope="col">{{ entreprise.entVille }}</th>
+            </tr>
+              <th scope="col">Pays</th>
+              <th scope="col">{{ entreprise.entPays }}</th>
+            </tr>
+              <th scope="col">Adresse</th>
+              <th scope="col">{{ entreprise.entAdresse1 }}</th>
+            </tr>
+              <th scope="col">Code Postal</th>
+              <th scope="col">{{ entreprise.entCP }}</th>
+            </tr>
+              <th scope="col">Spécialité</th>
+              <th scope="col">
+                {% for spe in entreprise.entSpecialite %}
+                  {{ spe }}
+                {% endfor %}
+              </th>
+            </tr>
+          </thead>
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    var myModal = new bootstrap.Modal(document.getElementById("myModal"));
+    myModal.toggle();
+</script>
 {% endblock %}

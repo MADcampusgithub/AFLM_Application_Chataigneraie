@@ -31,7 +31,7 @@ class EntreprisesController extends AbstractController
     }
 
     /**
-     * @Route("/entreprises/{id}", requirements = {"parametre"="\d+"}, name="app_entreprises_modal", methods={"GET"})
+     * @Route("/entreprises{id}", requirements = {"parametre"="\d+"}, name="app_entreprises_modal", methods={"GET"})
      */
     public function EntreprisesModal(Request $request, $id) : Response {
         $login = $request->getSession()->get('login');
