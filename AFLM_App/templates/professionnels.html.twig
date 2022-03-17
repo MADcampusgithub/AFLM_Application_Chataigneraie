@@ -5,7 +5,23 @@
 {% block utilisateur %}maxime.adler{% endblock %}
 
 {% block content %}
-    <span>{{ login }}</span>
-    <p> La page professionnel fonctionne bien ! </p>
+   
+    <table class="table table-hover ">
+  <thead>
+    <tr>
+      <th scope="col">Nom</th>
+      <th scope="col">Prénom</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for pers in personnes %}
+    <tr>
+      <td> {{ pers.perNom }} </td>
+      <td>{{ pers.perPrenom}}</td>
+    </tr>
+     {% endfor %}
+  </tbody>
+</table>
+
 {% endblock %}
 
