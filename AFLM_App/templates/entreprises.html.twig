@@ -11,12 +11,12 @@
     <div class="card h-100 bg-light">
       <!--<img src="..." class="card-img-top" alt="...">!-->
       <div class="card-body">
-        <h5 class="card-title">{{ util.entRs }}</h5>
+        <h5 class="card-title">{{ ent.entRs }}</h5>
       </div>
         <ul class="list-group list-group-flush text-left">
-            <li class="list-group-item">{{ util.entVille }}, {{ util.entCP }} </li>
-            <li class="list-group-item">{{ util.entPays }}</li>
-            <li class="list-group-item">{{ util.entSpecialite[0] }}</li>
+            <li class="list-group-item">{{ ent.entVille }}, {{ ent.entCP }} </li>
+            <li class="list-group-item">{{ ent.entPays }}</li>
+            <li class="list-group-item">{{ ent.entSpecialite[0] }}</li>
         </ul>
       <div class="card-footer">
         <a href="{{ path('app_entreprises_modal', {'id': ent.id}) }}" class="btn btn-primary">Plus d'informations</a>
