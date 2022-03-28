@@ -5,49 +5,49 @@
 {% block utilisateur %}maxime.adler{% endblock %}
 
 {% block content %}
-   <h1> Affichage des professionnels </h1>
-    <table class="table table-hover table-striped ">
+  <h1> Affichage des professionnels </h1>
+  <div class="accordion" id="accordionTable">
+  <table class="table table-striped">
   <thead>
     <tr>
       <th scope="col">Nom</th>
       <th scope="col">Prénom</th>
       <th scope="col">Mail</th>
       <th scope="col">Numéro de téléphone</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
    {% for pers in personnes %}
-    <tr class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapse{{ pers.id }}">
+    <tr data-bs-toggle="collapse" data-bs-target="#collapse{{ pers.id }}">
       <td {% if pers.perNom == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perNom}} {% endif %} </td>
       <td {% if pers.perPrenom == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perPrenom}} {% endif %}</td>
       <td {% if pers.perMail == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perMail}} {% endif %} </td>
       <td {% if pers.perNum == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perNum}} {% endif %}</td>
+      <td><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapse{{ pers.id }}"></button></td>
     </tr>
     <tr>
       <td colspan="4">
-        <div id="collapse{{ pers.id }}" class="accordion-collapse collapse">
+        <div id="collapse{{ pers.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionTable">
           <div class="accordion-body text-start">
-            <p> <strong>Nom : </strong> {{pers.perNom}} </p>
-            <p> <strong>Prénom : </strong> {{pers.perPrenom}} </p>
-            <p> <strong>Mail : </strong> {{pers.perMail}} </p>
-            <p> <strong>Numéro de téléphone : </strong> {{pers.perNum}} </p>
+            <p> <strong>Nom : </strong> {% if pers.perNom == null  %} <span class="text-muted"> Non renseigné </span>{% else %} {{pers.perNom}} {% endif %} </p>
+            <p> <strong>Prénom : </strong> {% if pers.perPrenom == null  %} <span class="text-muted">Non renseigné</span>{% else %} {{pers.perPrenom}} {% endif %} </p>
+            <p> <strong>Mail : </strong> {% if pers.perMail == null  %} <span class="text-muted">Non renseigné</span> {% else %} {{pers.perMail}} {% endif %} </p>
+            <p> <strong>Numéro de téléphone : </strong> {% if pers.perNum == null  %} <span class="text-muted">Non renseigné </span>{% else %} {{pers.perNum}} {% endif %} </p>
+            <p> <strong>Fonction : </strong> {% if pers.perFonction == null  %} <span class="text-muted">Non renseigné </span>{% else %} {{pers.perFonction}} {% endif %} </p>
+            <p> <strong>Entreprise : </strong> {% if pers.perEntreprise == null  %} <span class="text-muted">Non renseigné </span>{% else %} {{pers.perEntreprise}} {% endif %} </p>
+            <button type="button" class="btn btn-primary">Modifier</button>
+            <button type="button" class="btn btn-danger">Supprimer</button>
           </div>
         </div>
       </td>
     </tr>
      {% endfor %}
   </tbody>
+
 </table>
+</div>
 
-
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-        Accordion Item #2
-      </button>
-    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-      </div>
-    </div>
 
 
 {% endblock %}
