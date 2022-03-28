@@ -19,8 +19,7 @@ class EntreprisesController extends AbstractController
 
         $client = HttpClient::create();
         $response = $client->request('GET', "http://10.3.249.223:8001/api/entreprises", ['headers' => 
-                 ['Accept' => 'application/json']]);
-
+            ['Accept' => 'application/json']]);
         $entreprises = $response->toArray();
 
         if ($login == "" && $mdp == "") {
@@ -43,6 +42,16 @@ class EntreprisesController extends AbstractController
 
         $response = $client->request('GET', "http://10.3.249.223:8001/api/entreprises/".$id, ['headers' => ['Accept' => 'application/json']]);
         $entreprise = $response->toArray();
+
+        
+
+        $response = $client->request('GET', "http://10.3.249.223:8001".$entreprise['entPays'], ['headers' => 
+            ['Accept' => 'application/json']]);
+        $entreprise['entPays'] = $response->toArray();
+
+        $response = $client->request('GET', "http://10.3.249.223:8001".$entreprise['entVille'], ['headers' => 
+            ['Accept' => 'application/json']]);
+        $entreprise['entVille'] = $response->toArray();
 
         if ($login == "" && $mdp == "") {
             return new Response("vous devez vous enregister avant d'accéder au données");
