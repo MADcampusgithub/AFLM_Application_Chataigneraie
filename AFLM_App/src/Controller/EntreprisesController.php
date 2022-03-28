@@ -10,53 +10,69 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class EntreprisesController extends AbstractController
 {
+    public $villes;
+    public $pays;
+    public $specialites;
+
+    private function GetData($array, string $arrayName, $data) : string {
+        $id = 0;
+        if (isset($data)) {
+            $test = explode("/", $data);
+            $id = intval($test[3]);
+        }
+        else {
+            return "";
+        }
+        foreach ($array as $val) {
+            if ($val['id'] == $id) {
+                return $val[$arrayName];
+            }
+        }
+        return "";
+    }
+
     /**
-     * @Route("/entreprises", name="app_entreprises", methods={"GET"})
+     * @Route("/entreprises", requirements = {"parametre"="\d+"}, name="app_entreprises", methods={"GET"})
      */
     public function Entreprises(Request $request) : Response {
         $login = $request->getSession()->get('login');
         $mdp = $request->getSession()->get('mdp');
-
+        $id = $request->query->get('id');
         $client = HttpClient::create();
-        $response = $client->request('GET', "http://10.3.249.223:8001/api/entreprises", ['headers' => 
-            ['Accept' => 'application/json']]);
-        $entreprises = $response->toArray();
 
         if ($login == "" && $mdp == "") {
             return new Response("vous devez vous enregister avant d'accéder au données");
         }
 
-        return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises]);
-    }
-
-    /**
-     * @Route("/entreprises{id}", requirements = {"parametre"="\d+"}, name="app_entreprises_modal", methods={"GET"})
-     */
-    public function EntreprisesModal(Request $request, $id) : Response {
-        $login = $request->getSession()->get('login');
-        $mdp = $request->getSession()->get('mdp');
-
-        $client = HttpClient::create();
         $response = $client->request('GET', "http://10.3.249.223:8001/api/entreprises", ['headers' => ['Accept' => 'application/json']]);
         $entreprises = $response->toArray();
 
-        $response = $client->request('GET', "http://10.3.249.223:8001/api/entreprises/".$id, ['headers' => ['Accept' => 'application/json']]);
-        $entreprise = $response->toArray();
-
-        
-
-        $response = $client->request('GET', "http://10.3.249.223:8001".$entreprise['entPays'], ['headers' => 
+        $response = $client->request('GET', "http://10.3.249.223:8001/api/villes", ['headers' => 
             ['Accept' => 'application/json']]);
-        $entreprise['entPays'] = $response->toArray();
+        $this->villes = $response->toArray();
 
-        $response = $client->request('GET', "http://10.3.249.223:8001".$entreprise['entVille'], ['headers' => 
+        $response = $client->request('GET', "http://10.3.249.223:8001/api/pays", ['headers' => 
             ['Accept' => 'application/json']]);
-        $entreprise['entVille'] = $response->toArray();
+        $this->pays = $response->toArray();
 
-        if ($login == "" && $mdp == "") {
-            return new Response("vous devez vous enregister avant d'accéder au données");
+        $response = $client->request('GET', "http://10.3.249.223:8001/api/specialites", ['headers' => 
+            ['Accept' => 'application/json']]);
+        $this->specialites = $response->toArray();
+
+        foreach ($entreprises as $ent) {
+            $ent['entPays'] = $this->GetData($this->pays, "payLibelle", $ent['entPays']);
+            $ent['entVille'] = $this->GetData($this->villes, "vilNom", $ent['entVille']);
         }
 
-        return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'entreprise' => $entreprise]);
-    } 
+        if (isset($id)) {
+            $response = $client->request('GET', "http://10.3.249.223:8001/api/entreprises/".$id, ['headers' => ['Accept' => 'application/json']]);
+            $entreprise = $response->toArray();
+
+            $entreprise['entPays'] = $this->GetData($this->pays, "payLibelle", $entreprise['entPays']);
+            $entreprise['entVille'] = $this->GetData($this->villes, "vilNom", $entreprise['entVille']);
+            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'entreprise' => $entreprise]);
+        } else {
+            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises]);
+        }
+    }
 }
