@@ -19,7 +19,7 @@
             <li class="list-group-item">{{ ent.entSpecialite[0] }}</li>
         </ul>
       <div class="card-footer">
-        <a href="{{ path('app_entreprises_modal', {'id': ent.id}) }}" class="btn btn-primary">Plus d'informations</a>
+        <a href="{{ path('app_entreprises') }}?id={{ ent.id }}" class="btn btn-primary">Plus d'informations</a>
       </div>
     </div>
   </div>
@@ -36,25 +36,25 @@
         </div>
         <div class="modal-body"> 
         <table class="table">
-          <thead>
+          <tbody>
             <tr>
               <th scope="col">Raison Sociale</th>
-              <th scope="col">{{ entreprise.entRs }}</th>
+              <td scope="col">{{ entreprise.entRs }}</th>
             </tr>
               <th scope="col">Ville</th>
-              <th scope="col">{{ entreprise.entVille.vilNom }}</th>
+              <td scope="col">{{ entreprise.entVille }}</th>
             </tr>
               <th scope="col">Pays</th>
-              <th scope="col">{{ entreprise.entPays.payLibelle }}</th>
+              <td scope="col">{{ entreprise.entPays }}</th>
             </tr>
               <th scope="col">Adresse</th>
-              <th scope="col">{{ entreprise.entAdresse1 }}</th>
+              <td scope="col">{{ entreprise.entAdresse1 }}</th>
             </tr>
               <th scope="col">Code Postal</th>
-              <th scope="col">{{ entreprise.entCP }}</th>
+              <td scope="col">{{ entreprise.entCP }}</th>
             </tr>
               <th scope="col">Spécialité</th>
-              <th scope="col">
+              <td scope="col">
                 {% for spe in entreprise.entSpecialite %}
                   {{ spe }}
                 {% endfor %}
