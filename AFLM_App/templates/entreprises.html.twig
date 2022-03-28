@@ -16,7 +16,11 @@
         <ul class="list-group list-group-flush text-left">
             <li class="list-group-item">{{ ent.entVille }}, {{ ent.entCP }} </li>
             <li class="list-group-item">{{ ent.entPays }}</li>
-            <li class="list-group-item">{{ ent.entSpecialite[0] }}</li>
+            <li class="list-group-item">
+            {% for spe in ent.entSpecialite %}
+              {{ spe }},
+            {% endfor %}
+            </li>
         </ul>
       <div class="card-footer">
         <a href="{{ path('app_entreprises') }}?id={{ ent.id }}" class="btn btn-primary">Plus d'informations</a>
@@ -31,37 +35,46 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Detail d'une entreprise</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body"> 
-        <table class="table">
-          <tbody>
-            <tr>
-              <th scope="col">Raison Sociale</th>
-              <td scope="col">{{ entreprise.entRs }}</th>
-            </tr>
-              <th scope="col">Ville</th>
-              <td scope="col">{{ entreprise.entVille }}</th>
-            </tr>
-              <th scope="col">Pays</th>
-              <td scope="col">{{ entreprise.entPays }}</th>
-            </tr>
-              <th scope="col">Adresse</th>
-              <td scope="col">{{ entreprise.entAdresse1 }}</th>
-            </tr>
-              <th scope="col">Code Postal</th>
-              <td scope="col">{{ entreprise.entCP }}</th>
-            </tr>
-              <th scope="col">Spécialité</th>
-              <td scope="col">
-                {% for spe in entreprise.entSpecialite %}
-                  {{ spe }}
-                {% endfor %}
-              </th>
-            </tr>
-          </thead>
-        </table>
+          <table class="table">
+            <tbody>
+              <tr>
+                <th>Raison Sociale</th>
+                <td>{{ entreprise.entRs }}</td>
+              </tr>
+              <tr>
+                <th>Ville</th>
+                <td>{{ entreprise.entVille }}</td>
+              </tr>
+              <tr>
+                <th>Pays</th>
+                <td>{{ entreprise.entPays }}</td>
+              </tr>
+              <tr>
+                <th>Adresse</th>
+                <td>{{ entreprise.entAdresse1 }}</td>
+              </tr>
+              <tr>
+                <th>Code Postal</th>
+                <td>{{ entreprise.entCP }}</td>
+              </tr>
+              <tr>
+                <th>Spécialité</th>
+                <td>
+                  {% for spe in entreprise.entSpecialite %}
+                    {{ spe }},
+                  {% endfor %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <form action="{{path("suppr_entreprises", {"id" : entreprise.id})}}" method="DELETE">
+            <button type="submit" class="btn btn-primary">Modifier</button>
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+          </form>
         </div>
       </div>
     </div>

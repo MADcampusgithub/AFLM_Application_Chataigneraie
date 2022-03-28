@@ -59,9 +59,14 @@ class EntreprisesController extends AbstractController
             ['Accept' => 'application/json']]);
         $this->specialites = $response->toArray();
 
-        foreach ($entreprises as $ent) {
-            $ent['entPays'] = $this->GetData($this->pays, "payLibelle", $ent['entPays']);
-            $ent['entVille'] = $this->GetData($this->villes, "vilNom", $ent['entVille']);
+        for ($i = 0; $i < count($entreprises); $i++) {
+            $entreprises[$i]['entPays'] = $this->GetData($this->pays, "payLibelle", $entreprises[$i]['entPays']);
+            $entreprises[$i]['entVille'] = $this->GetData($this->villes, "vilNom", $entreprises[$i]['entVille']);
+
+            for($j = 0; $j < count($entreprises[$i]['entSpecialite']); $j++) {
+                $entreprises[$i]['entSpecialite'][$j] = $this->GetData($this->specialites, "speLabel", $entreprises[$i]['entSpecialite'][$j]);
+            }
+
         }
 
         if (isset($id)) {
@@ -70,9 +75,25 @@ class EntreprisesController extends AbstractController
 
             $entreprise['entPays'] = $this->GetData($this->pays, "payLibelle", $entreprise['entPays']);
             $entreprise['entVille'] = $this->GetData($this->villes, "vilNom", $entreprise['entVille']);
+            for($j = 0; $j < count($entreprise['entSpecialite']); $j++) {
+                $entreprise['entSpecialite'][$j] = $this->GetData($this->specialites, "speLabel", $entreprise['entSpecialite'][$j]);
+            }
             return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'entreprise' => $entreprise]);
         } else {
             return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises]);
         }
+    }
+    /**
+     * @Route("/entreprises/{id}", requirements = {"parametre"="\d+"}, name="suppr_entreprises", methods={"DELETE"})
+     */
+    public function SupprEntreprises() : Response {
+        return $this->redirect("/entreprises");
+    }
+
+    /**
+     * @Route("/entreprises/{id}", requirements = {"parametre"="\d+"}, name="edit_entreprises", methods={"PUT"})
+     */
+    public function EditEntreprises() : Response {
+        return $this->redirect("/entreprises");
     }
 }
