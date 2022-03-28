@@ -16,4 +16,12 @@ class UtilisateursController extends AbstractController
     {
         return $this->render('utilisateurs.html.twig', ['login' => $request->getSession()->get('login')]);
     }
+
+    /**
+     * @Route("/utilisateurspost", name="post_utilisateurs", methods={"POST"})
+     */
+    public function UtilisateursPost(Request $request): Response
+    {
+        return new Response("data send");
+    }
 }
