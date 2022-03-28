@@ -5,7 +5,25 @@
 {% block utilisateur %}maxime.adler{% endblock %}
 
 {% block content %}
-    <table class="table table-hover">
+<form action="{{path("post_utilisateurs")}}" method="POST" class="row g-3">
+  <div class="col-auto">
+    <label class="">Enregistrer un nouvel utilisateur</label>
+    <input type="text" readonly class="form-control-plaintext" id="Name" >
+  </div>
+  <div class="col-auto">
+    <label  class="visually-hidden"></label>
+    <input type="login" class="form-control" id="NewLogin" placeholder="Login">
+  </div>
+  <div class="col-auto">
+    <label  class="visually-hidden"></label>
+    <input type="label" class="form-control" id="NewName2" placeholder="Droit">
+  </div>    
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3">Valider</button>
+  </div>
+</form>
+
+    <table class="table table-hover table-striped">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -23,7 +41,7 @@
                 <th scope="row">2</th>
                 <td>1</td>
                 <td>kdubois</td>
-            </tr>symfony
+            </tr>
         </tbody>
     </table>
 
