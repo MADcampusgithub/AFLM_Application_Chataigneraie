@@ -24,20 +24,109 @@
       <td {% if pers.perPrenom == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perPrenom}} {% endif %}</td>
       <td {% if pers.perMail == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perMail}} {% endif %} </td>
       <td {% if pers.perNum == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perNum}} {% endif %}</td>
-      <td><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapse{{ pers.id }}"></button></td>
+      <td class="col-md-1"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapse{{ pers.id }}"></button></td>
     </tr>
+
+
     <tr>
       <td colspan="4">
         <div id="collapse{{ pers.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionTable">
           <div class="accordion-body text-start">
-            <p> <strong>Nom : </strong> {% if pers.perNom == null  %} <span class="text-muted"> Non renseigné </span>{% else %} {{pers.perNom}} {% endif %} </p>
-            <p> <strong>Prénom : </strong> {% if pers.perPrenom == null  %} <span class="text-muted">Non renseigné</span>{% else %} {{pers.perPrenom}} {% endif %} </p>
-            <p> <strong>Mail : </strong> {% if pers.perMail == null  %} <span class="text-muted">Non renseigné</span> {% else %} {{pers.perMail}} {% endif %} </p>
-            <p> <strong>Numéro de téléphone : </strong> {% if pers.perNum == null  %} <span class="text-muted">Non renseigné </span>{% else %} {{pers.perNum}} {% endif %} </p>
-            <p> <strong>Fonction : </strong> {% if pers.perFonction == null  %} <span class="text-muted">Non renseigné </span>{% else %} {{pers.perFonction}} {% endif %} </p>
-            <p> <strong>Entreprise : </strong> {% if pers.perEntreprise == null  %} <span class="text-muted">Non renseigné </span>{% else %} {{pers.perEntreprise}} {% endif %} </p>
-            <button type="button" class="btn btn-primary">Modifier</button>
-            <button type="button" class="btn btn-danger">Supprimer</button>
+          <div class="container">
+          <div class="row align-items-center">
+            <div class="col">
+              <form >
+                <div class="row mb-3">
+                  <label for="PersNom" class="col-sm-3 col-form-label"> <strong> Nom : </strong> </label>
+                  <div class="col-sm-7">
+                  <input type="text" value="{{ pers.perNom }}" class="form-control" id="PersNom" {% if pers.perNom == null  %} placeholder="Non renseigné"{% endif %}>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="PersPrenom" class="col-sm-3 col-form-label"> <strong> Prénom :</strong> </label>
+                  <div class="col-sm-7">
+                  <input type="text" value="{{ pers.perPrenom }}"class="form-control" id="PersPrenom" {% if pers.perPrenom == null  %} placeholder="Non renseigné"{% endif %}>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="PersMail" class="col-sm-3 col-form-label"> <strong> Adresse mail : </strong></label>
+                  <div class="col-sm-7">
+                  <input type="email" value="{{ pers.perMail }}" class="form-control" id="PersMail" {% if pers.perMail == null  %} placeholder="Non renseigné"{% endif %}> 
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="PersNum" class="col-sm-5 col-form-label"> <strong> Numéro de téléphone : </strong></label>
+                  <div class="col-sm-5">
+                  <input type="text" value="{{ pers.perNum }}" class="form-control" id="PersNum" {% if pers.perNum == null  %} placeholder="Non renseigné"{% endif %}>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="PersFonction" class="col-sm-3 col-form-label"><strong> Fonction : </strong></label>
+                  <div class="col-sm-7">
+                  <input type="text" value="{{ pers.perFonction }}"class="form-control" id="PersFonction" {% if pers.perFonction == null  %} placeholder="Non renseigné"{% endif %}>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="PersEntreprise" class="col-sm-3 col-form-label"><strong> Entreprise : </strong></label>
+                  <div class="col-sm-7">
+                  <input type="text" value="{{ pers.perEntreprise }}"class="form-control" id="PersEntreprise" {% if pers.perEntreprise == null  %} placeholder="Non renseigné"{% endif %}>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary">Modifier</button>
+                </div>
+              </form>
+            </div>
+
+            
+
+            <div class="col">
+              <table class="table table-borderless text-center align-middle ">
+                <tr> 
+                  <th class = "col-md-3"> Profil </th>
+                  <th class = "col-md-3"> Année </th>
+                  <th class = "col-md-1"></th>
+                  <th class = "col-md-1"></th>
+                </tr>
+                <tr>
+                  <td> bibibibibibiib</td>
+                  <td> 20--</td>
+                  <td> <img src="professionnel/Modif.png" class="rounded" width="50%" alt="..."></td>
+                  <td><img src="professionnel/Supp.png" class="rounded float-start" width="50%" alt="..."> </td>
+                </tr>
+                <tr>
+                  <td> sisisisisiisisi</td>
+                  <td> 20--</td>
+                  <td> <img src="connexion/Modif.png" class="rounded" width="50%" alt="..."></td>
+                  <td><img src="connexion/Supp.png" class="rounded float-start" width="50%" alt="..."> </td>
+
+                </tr>
+                <tr>
+                  <td> bahahahhahahaha</td>
+                  <td> 20--</td>
+                  <td> <img src="professionnel/Modif.png" class="rounded" width="83%" alt="..."></td>
+                  <td><img src="professionnel/Supp.png" class="rounded float-start" width="10%" alt="..."> </td>
+
+                </tr>
+              </table>
+              
+              <form action="" method="POST" class="row g-3">
+                <div class="col-auto">
+                  <label  class="visually-hidden"></label>
+                  <input type="label" class="form-control" id="NewProfil" placeholder="Profil">
+                </div>
+                <div class="col-auto">
+                  <label  class="visually-hidden"></label>
+                  <input type="label" class="form-control" id="NewProfil2" placeholder="Année">
+                </div>    
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-success mb-3">Ajouter</button>
+                </div>
+              </form>
+              
+            </div>
+            </div>
+            </div>
           </div>
         </div>
       </td>
@@ -47,8 +136,5 @@
 
 </table>
 </div>
-
-
-
 {% endblock %}
 
