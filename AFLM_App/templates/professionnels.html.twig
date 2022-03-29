@@ -63,17 +63,33 @@
                 <div class="row mb-3">
                   <label for="PersFonction" class="col-sm-3 col-form-label"><strong> Fonction : </strong></label>
                   <div class="col-sm-7">
-                  <input type="text" value="{{ pers.perFonction }}"class="form-control" id="PersFonction" {% if pers.perFonction == null  %} placeholder="Non renseigné"{% endif %}>
+                  <input type="text" class="form-control" list="listFonction" {% set continue = false %} {% for fonction in fonctions %} {% if fonction.id == pers.perFonction and not continue %} {% set continue = true %} value="fonction.id"  {% endif %} {% endfor %}>
+                    <datalist id="listFonction">
+                      {% for fonction in fonctions %}
+                        <option value="{{fonction.id}}">
+                          {{ fonction.fonLabel }}
+                        </option>
+                      {% endfor %}
+                    </datalist>
                   </div>
+                 
                 </div>
                 <div class="row mb-3">
                   <label for="PersEntreprise" class="col-sm-3 col-form-label"><strong> Entreprise : </strong></label>
                   <div class="col-sm-7">
-                  <input type="text" value="{{ pers.perEntreprise }}"class="form-control" id="PersEntreprise" {% if pers.perEntreprise == null  %} placeholder="Non renseigné"{% endif %}>
+                 <input type="text" class="form-control" list="listEntreprise">
+                    <datalist id="listEntreprise">
+                      {% for entreprises in entreprises %}
+                        <option value="{{entreprises.id}}" {% if entreprises.id == pers.perEntreprise %}selected{% endif %}>
+                          {{ entreprises.entRs }}
+                        </option>
+                      {% endfor %}
+                    </datalist>
                   </div>
                 </div>
                 <div class="col-12">
                   <button type="submit" class="btn btn-primary">Modifier</button>
+                  <a href="{{ path("suppr_personnes", {"id" : pers.id}) }}" class="btn btn-danger">Supprimer</a>
                 </div>
               </form>
             </div>
@@ -86,31 +102,27 @@
                   <th class = "col-md-3"> Profil </th>
                   <th class = "col-md-3"> Année </th>
                   <th class = "col-md-1"></th>
-                  <th class = "col-md-1"></th>
                 </tr>
                 <tr>
                   <td> bibibibibibiib</td>
                   <td> 20--</td>
-                  <td> <img src="professionnel/Modif.png" class="rounded" width="50%" alt="..."></td>
-                  <td><img src="professionnel/Supp.png" class="rounded float-start" width="50%" alt="..."> </td>
+                  <td><img src="professionnel/Supp.png" class="rounded float-start" width="40%" alt="..."> </td>
                 </tr>
                 <tr>
                   <td> sisisisisiisisi</td>
                   <td> 20--</td>
-                  <td> <img src="connexion/Modif.png" class="rounded" width="50%" alt="..."></td>
-                  <td><img src="connexion/Supp.png" class="rounded float-start" width="50%" alt="..."> </td>
+                  <td><img src="professionnel/Supp.png" class="rounded float-start" width="40%" alt="..."> </td>
 
                 </tr>
                 <tr>
                   <td> bahahahhahahaha</td>
                   <td> 20--</td>
-                  <td> <img src="professionnel/Modif.png" class="rounded" width="83%" alt="..."></td>
-                  <td><img src="professionnel/Supp.png" class="rounded float-start" width="10%" alt="..."> </td>
+                  <td><img src="professionnel/Supp.png" class="rounded float-start" width="40%" alt="..."> </td>
 
                 </tr>
               </table>
               
-              <form action="" method="POST" class="row g-3">
+              <form action="" action="{{ path("edit_personnes", {"id" : pers.id}) }}" method="POST" class="row g-3">
                 <div class="col-auto">
                   <label  class="visually-hidden"></label>
                   <input type="label" class="form-control" id="NewProfil" placeholder="Profil">
