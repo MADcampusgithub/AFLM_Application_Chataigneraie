@@ -5,7 +5,10 @@
 {% block utilisateur %}{{ login }}{% endblock %}
 
 {% block content %}
+<buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
+
 <div class="row row-cols-1 row-cols-md-3 g-4">
+
 {% for ent in entreprises %}
   <div class="col">
     <div class="card h-100 bg-light">
@@ -30,103 +33,116 @@
 {% endfor %}
 </div>
 
-{% if entreprise is defined %}
-  <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Detail d'une entreprise</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="entreprise_form" action="{{ path("edit_entreprises", {"id" : entreprise.id}) }}" method="POST">
-            <table class="table">
-              <tbody>
-                <tr>
-                  <th>Raison Sociale</th>
-                  <td><input type="text" name="entRS" class="form-control" placeholder="" value="{{ entreprise.entRs }}"></td>
-                </tr>
-                <tr>
-                  <th>Ville</th>
-                  <td>
-                    <select name="entVille" class="form-select" aria-label="Selection d'une ville">
-                      {% for ville in villes %}
-                        <option value="{{ville.id}}" {% if entreprise.entVille == ville.vilNom %}selected{% endif %}>
-                        {{ ville.vilNom }}
-                        </option>
-                      {% endfor %}
-                    </select>
-                  </td>
-                </tr>
-                <tr>
-                  <th>Pays</th>
-                  <td>
-                    <select name="entPays" class="form-select" aria-label="Selection d'un pays">
-                      {% for unPays in pays %}
-                        <option value="{{unPays.id}}" {% if entreprise.entPays == unPays.payLibelle %}selected{% endif %}>
-                        {{ unPays.payLibelle }}
-                        </option>
-                      {% endfor %}
-                    </select>
-                  </td>
-                </tr>
-                <tr>
-                  <th>Adresse 1</th>
-                  <td><input type="text" name="entAdr1" class="form-control" placeholder="" value="{{ entreprise.entAdresse1 }}"></td>
-                </tr>
-                <tr>
-                  <th>Adresse 2</th>
-                  <td><input type="text" name="entAdr2" class="form-control" placeholder="" value="{{ entreprise.entAdresse2 }}"></td>
-                </tr>
-                <tr>
-                  <th>Adresse 3</th>
-                  <td><input type="text" name="entAdr3" class="form-control" placeholder="" value="{{ entreprise.entAdresse3 }}"></td>
-                </tr>
-                <tr>
-                  <th>Code Postal</th>
-                  <td><input type="text" name="entCP" class="form-control" placeholder="" value="{{ entreprise.entCP }}"></td>
-                </tr>
-                <tr>
-                  <th>Spécialité</th>
-                  <td>
-                  <select name="entSpes[]" class="form-select" multiple="multiple" aria-label="Selection de plusieurs spécialités">
-                    {% for spe in specialites %}
-                      <option value="{{ spe.id }}"
-                      {% set continue = false %}
-                      {% for entspe in entreprise.entSpecialite %}
-                          {% if entspe == spe.speLabel %}
-                              {% set continue = true %}
-                          {% endif %}
-                          {% if not continue %}
-                              selected
-                          {% endif %}
-                          {% if continue %}
-                              {% set continue = false %}
-                          {% endif %}
-                      {% endfor %}>
-                      {{ spe.speLabel }}
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Detail d'une entreprise</h5>
+        <button type="button" id="closeModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="entreprise_form" action="{{ path("edit_entreprises", {"id" : entreprise.id}) }}" method="POST">
+          <table class="table">
+            <tbody>
+              <tr>
+                <th>Raison Sociale</th>
+                <td><input type="text" name="entRS" class="form-control" placeholder="" value="{{ entreprise.entRs }}"></td>
+              </tr>
+              <tr>
+                <th>Adresse 1</th>
+                <td><input type="text" name="entAdr1" class="form-control" placeholder="" value="{{ entreprise.entAdresse1 }}"></td>
+              </tr>
+              <tr>
+                <th>Adresse 2</th>
+                <td><input type="text" name="entAdr2" class="form-control" placeholder="" value="{{ entreprise.entAdresse2 }}"></td>
+              </tr>
+              <tr>
+                <th>Adresse 3</th>
+                <td><input type="text" name="entAdr3" class="form-control" placeholder="" value="{{ entreprise.entAdresse3 }}"></td>
+              </tr>
+              <tr>
+                <th>Code Postal</th>
+                <td><input type="text" name="entCP" class="form-control" placeholder="" value="{{ entreprise.entCP }}"></td>
+              </tr>
+              <tr>
+                <th>Ville</th>
+                <td>
+                  <select name="entVille" class="form-select" aria-label="Selection d'une ville">
+                    <option value="0">Non renseigné</option>
+                    {% for ville in villes %}
+                      <option value="{{ville.id}}" {% if entreprise.entVille == ville.vilNom %}selected{% endif %}>
+                      {{ ville.vilNom }}
                       </option>
                     {% endfor %}
-                    </select>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th>Pays</th>
+                <td>
+                  <select name="entPays" class="form-select" aria-label="Selection d'un pays">
+                    <option value="0">Non renseigné</option>
+                    {% for unPays in pays %}
+                      <option value="{{unPays.id}}" {% if entreprise.entPays == unPays.payLibelle %}selected{% endif %}>
+                      {{ unPays.payLibelle }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th>Spécialité</th>
+                <td>
+                <select name="entSpes[]" class="form-select" multiple="multiple" aria-label="Selection de plusieurs spécialités">
+                  <option value="0">Non renseigné</option>
+                  {% for spe in specialites %}
+                    <option value="{{ spe.id }}"
+                    {% set continue = false %}
+                    {% for entspe in entreprise.entSpecialite %}
+                        {% if entspe == spe.speLabel and not continue %}
+                            {% set continue = true %}
+                            selected
+                        {% endif %}
+                    {% endfor %}>
+                    {{ spe.speLabel }}
+                    </option>
+                  {% endfor %}
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          {% if entreprise.id != 0 %}
             <input class="btn btn-primary" value="Modifier" type="submit" />
             <a href="{{ path("suppr_entreprises", {"id" : entreprise.id}) }}" role="buttom" class="btn btn-danger">Supprimer</a>
-          </form>
-        </div>
+          {% else %}
+            <input class="btn btn-primary" value="Ajouter" type="submit" />
+          {% endif %}
+        </form>
       </div>
     </div>
   </div>
-{% endif %}
-
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript">
-  var myModal = new bootstrap.Modal(document.getElementById("myModal"));
-  myModal.toggle();
-</script>
+
+{% if entreprise.id != 0 %}
+  <script type="text/javascript">
+    var myModal = new bootstrap.Modal(document.getElementById("myModal"));
+    myModal.toggle();
+
+    $("#closeModal").on('click', function () {
+      $.redirect("/entreprises");
+    })
+  </script>
+{% else %}
+  <script type="text/javascript">
+    $("#ajoutBtn").on('click', function () {
+      var myModal = new bootstrap.Modal(document.getElementById("myModal"));
+      myModal.toggle();
+    })
+  </script>
+{% endif %}
 {% endblock %}

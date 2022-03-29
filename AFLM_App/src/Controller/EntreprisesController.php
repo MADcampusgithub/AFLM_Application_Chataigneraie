@@ -14,23 +14,6 @@ class EntreprisesController extends AbstractController
     public $pays;
     public $specialites;
 
-    private function GetData($array, string $arrayName, $data) : string {
-        $id = 0;
-        if (isset($data)) {
-            $test = explode("/", $data);
-            $id = intval($test[3]);
-        }
-        else {
-            return "";
-        }
-        foreach ($array as $val) {
-            if ($val['id'] == $id) {
-                return $val[$arrayName];
-            }
-        }
-        return "";
-    }
-
     /**
      * @Route("/entreprises", requirements = {"parametre"="\d+"}, name="app_entreprises", methods={"GET"})
      */
@@ -80,9 +63,56 @@ class EntreprisesController extends AbstractController
             }
             return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'entreprise' => $entreprise, 'specialites' => $this->specialites, 'pays' => $this->pays, 'villes' => $this->villes]);
         } else {
-            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises]);
+            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'specialites' => $this->specialites, 'pays' => $this->pays, 'villes' => $this->villes, 'entreprise' => [
+                'id' => 0,
+                'entRs' => '',
+                'entAdresse1' => '',
+                'entAdresse2' => '',
+                'entAdresse3' => '',
+                'entCP' => '',
+                'entSpecialite' => [0,],
+                'entVille' => 0,
+                'entPays' => 0,
+            ]]);
         }
     }
+
+    /**
+     * @Route("/entreprisesappend", name="add_entreprises")
+     */
+    public function AddEntreprises(Request $request) : Response {
+        $login = $request->getSession()->get('login');
+        $mdp = $request->getSession()->get('mdp');
+        $client = HttpClient::create();
+
+        if ($login == "" && $mdp == "") {
+            return new Response("vous devez vous enregister avant d'accéder au données");
+        }
+
+        $spes = array();
+        foreach($request->get("entSpes") as $spe) {
+            $spes[] = ("/api/specialites/" . $spe);
+        }
+
+        $client->request(
+            'POST', 
+            "http://10.3.249.223:8001/api/entreprises", [
+                'headers' => ['Accept' => 'application/json'],
+                'json' => [
+                    'entRS' => $request->get("entRS"),
+                    'entAdresse1' => $request->get("entAdr1"),
+                    'entAdresse2' => $request->get("entAdr2"),
+                    'entAdresse3' => $request->get("entAdr3"),
+                    'entCP' => $request->get("entCP"),
+                    'entSpecialite' => $spes,
+                    'entVille' => '/api/villes/' . $request->get("entVille"),
+                    'entPays' => '/api/pays/' . $request->get("entPays")
+                ]
+            ]);
+
+        return $this->redirect("/entreprises");
+    }
+
     /**
      * @Route("/entreprisesdelete/{id}", requirements = {"parametre"="\d+"}, name="suppr_entreprises")
      */
@@ -98,7 +128,7 @@ class EntreprisesController extends AbstractController
         $client->request(
             'DELETE', 
             "http://10.3.249.223:8001/api/entreprises/" . $id, [
-                'headers' => ['Accept' => 'application/json']
+                'headers' => ['Accept' => 'application/json'],
             ]);
 
         return $this->redirect("/entreprises");
@@ -138,5 +168,22 @@ class EntreprisesController extends AbstractController
             ]);
 
         return $this->redirect("/entreprises");
+    }
+
+    private function GetData($array, string $arrayName, $data) : string {
+        $id = 0;
+        if (isset($data)) {
+            $test = explode("/", $data);
+            $id = intval($test[3]);
+        }
+        else {
+            return "";
+        }
+        foreach ($array as $val) {
+            if ($val['id'] == $id) {
+                return $val[$arrayName];
+            }
+        }
+        return "";
     }
 }
