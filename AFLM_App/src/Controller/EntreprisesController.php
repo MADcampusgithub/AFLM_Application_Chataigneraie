@@ -89,24 +89,28 @@ class EntreprisesController extends AbstractController
             return new Response("vous devez vous enregister avant d'accéder au données");
         }
 
+        // Récupération de données du select multiple
         $spes = array();
-        foreach($request->get("entSpes") as $spe) {
-            $spes[] = ("/api/specialites/" . $spe);
+        if ($request->get("entSpes") !== null and $request->get("entSpes")[0] !== "0") {   
+            foreach($request->get("entSpes") as $spe) {
+                $spes[] = ("/api/specialites/" . $spe);
+            }
         }
 
+        // Création et envoie de la requete http à l'API
         $client->request(
             'POST', 
             "http://10.3.249.223:8001/api/entreprises", [
                 'headers' => ['Accept' => 'application/json'],
                 'json' => [
-                    'entRS' => $request->get("entRS"),
+                    'entRs' => $request->get("entRS"),
                     'entAdresse1' => $request->get("entAdr1"),
                     'entAdresse2' => $request->get("entAdr2"),
                     'entAdresse3' => $request->get("entAdr3"),
                     'entCP' => $request->get("entCP"),
                     'entSpecialite' => $spes,
-                    'entVille' => '/api/villes/' . $request->get("entVille"),
-                    'entPays' => '/api/pays/' . $request->get("entPays")
+                    'entVille' => $request->get("entVille") !== "0" ? '/api/villes/' . $request->get("entVille") : null,
+                    'entPays' => $request->get("entPays") !== "0" ? '/api/pays/' . $request->get("entPays") : null,
                 ]
             ]);
 
@@ -125,6 +129,7 @@ class EntreprisesController extends AbstractController
             return new Response("vous devez vous enregister avant d'accéder au données");
         }
 
+        // Création et envoie de la requete de suppression d'une entreprise
         $client->request(
             'DELETE', 
             "http://10.3.249.223:8001/api/entreprises/" . $id, [
@@ -146,30 +151,35 @@ class EntreprisesController extends AbstractController
             return $this->redirect("/connexion");
         }
 
+        // Récupération de données du select multiple
         $spes = array();
-        foreach($request->get("entSpes") as $spe) {
-            $spes[] = ("/api/specialites/" . $spe);
+        if ($request->get("entSpes") !== null and $request->get("entSpes")[0] !== "0") {   
+            foreach($request->get("entSpes") as $spe) {
+                $spes[] = ("/api/specialites/" . $spe);
+            }
         }
 
+        // Création et envoie de la requete http de modification à l'API
         $client->request(
             'PUT', 
             "http://10.3.249.223:8001/api/entreprises/" . $id, [
                 'headers' => ['Accept' => 'application/json'],
                 'json' => [
-                    'entRS' => $request->get("entRS"),
+                    'entRs' => $request->get("entRS"),
                     'entAdresse1' => $request->get("entAdr1"),
                     'entAdresse2' => $request->get("entAdr2"),
                     'entAdresse3' => $request->get("entAdr3"),
                     'entCP' => $request->get("entCP"),
                     'entSpecialite' => $spes,
-                    'entVille' => '/api/villes/' . $request->get("entVille"),
-                    'entPays' => '/api/pays/' . $request->get("entPays")
+                    'entVille' => $request->get("entVille") !== "0" ? '/api/villes/' . $request->get("entVille") : null,
+                    'entPays' => $request->get("entPays") !== "0" ? '/api/pays/' . $request->get("entPays") : null,
                 ]
             ]);
 
         return $this->redirect("/entreprises");
     }
 
+    // Conversion des données de l'api en un entier (ex : '/api/villes/3' => 3)
     private function GetData($array, string $arrayName, $data) : string {
         $id = 0;
         if (isset($data)) {

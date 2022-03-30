@@ -38,15 +38,15 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Detail d'une entreprise</h5>
-        <button type="button" id="closeModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="entreprise_form" action="{{ path("edit_entreprises", {"id" : entreprise.id}) }}" method="POST">
+        <form id="entreprise_form" action="{% if entreprise.id == 0 %}{{ path("add_entreprises") }}{% else %}{{ path("edit_entreprises", {"id" : entreprise.id}) }}{% endif %}" method="POST">
           <table class="table">
             <tbody>
               <tr>
                 <th>Raison Sociale</th>
-                <td><input type="text" name="entRS" class="form-control" placeholder="" value="{{ entreprise.entRs }}"></td>
+                <td><input type="text" name="entRS" class="form-control" placeholder="" value="{{ entreprise.entRs }}" required></td>
               </tr>
               <tr>
                 <th>Adresse 1</th>
@@ -133,9 +133,9 @@
     var myModal = new bootstrap.Modal(document.getElementById("myModal"));
     myModal.toggle();
 
-    $("#closeModal").on('click', function () {
-      $.redirect("/entreprises");
-    })
+    $('#myModal').on('hidden.bs.modal', function (e) {
+      window.location.search = "";
+    });
   </script>
 {% else %}
   <script type="text/javascript">
