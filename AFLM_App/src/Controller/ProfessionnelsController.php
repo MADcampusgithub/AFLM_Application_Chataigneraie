@@ -48,14 +48,17 @@ class ProfessionnelsController extends AbstractController
         ['Accept' => 'application/json']]);
         $this->fonctions = $response->toArray();
 
+        $response = $client->request('GET', "http://10.3.249.223:8001/api/entreprises", ['headers' => 
+        ['Accept' => 'application/json']]);
+        $this->entreprises = $response->toArray();
+
         for ($i = 0; $i < count($personnes); $i++) {
         $personnes[$i]["perFonction"] = $this->GetData($this -> fonctions, "fonLabel",  $personnes[$i]["perFonction"]);
         }
 
-
-        $response = $client->request('GET', "http://10.3.249.223:8001/api/entreprises", ['headers' => 
-            ['Accept' => 'application/json']]);
-        $this->entreprises = $response->toArray();
+        for ($j = 0; $j < count($personnes); $j++) {
+        $personnes[$j]["perEntreprise"] = $this->GetData($this -> entreprises, "entRs",  $personnes[$j]["perEntreprise"]);
+        }
 
         return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'fonctions' => $this->fonctions, 'entreprises' => $this-> entreprises]);
     }
