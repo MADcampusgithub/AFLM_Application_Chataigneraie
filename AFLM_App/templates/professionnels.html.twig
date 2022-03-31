@@ -63,12 +63,10 @@
                 <div class="row mb-3">
                   <label for="perFonction" class="col-sm-3 col-form-label"><strong> Fonction : </strong></label>
                   <div class="col-sm-7">
-                  <input type="text" name="perFonction" class="form-control" list="listFonction" {% set continue = false %} {% for fonction in fonctions %} {% if fonction.fonLabel == pers.perFonction and not continue %} {% set continue = true %} value="{{ fonction.id }}" {% else %} placeholder="Non renseigné" {% endif %} {% endfor %}>
+                  <input type="text" name="perFonction" class="form-control" list="listFonction" {% set continue = false %} {% for fonction in fonctions %} {% if fonction.fonLabel == pers.perFonction and not continue %} {% set continue = true %} value="{{ fonction.id }} ({{ fonction.fonLabel }})" {% else %} placeholder="Non renseigné" {% endif %} {% endfor %}>
                     <datalist id="listFonction">
                       {% for fonction in fonctions %}
-                        <option value="{{fonction.id}}">
-                          {{ fonction.fonLabel }}
-                        </option>
+                        <option value="{{fonction.id}} ({{ fonction.fonLabel }})"></option>
                       {% endfor %}
                     </datalist>
                   </div>
@@ -77,12 +75,10 @@
                 <div class="row mb-3">
                   <label for="perEntreprise" class="col-sm-3 col-form-label"><strong> Entreprise : </strong></label>
                   <div class="col-sm-7">
-                 <input type="text" name="perEntreprise" class="form-control" list="listEntreprise" {% set continue = false %} {% for entreprise in entreprises %} {% if entreprise.entRs == pers.perEntreprise and not continue %} {% set continue = true %} value="{{ entreprise.id }}" {% else %} placeholder="Non renseigné" {% endif %} {% endfor %}>
+                 <input type="text" name="perEntreprise" class="form-control" list="listEntreprise" {% set continue = false %} {% for entreprise in entreprises %} {% if entreprise.entRs == pers.perEntreprise and not continue %} {% set continue = true %} value="{{ entreprise.id }} ({{ pers.perEntreprise}})" {% else %} placeholder="Non renseigné" {% endif %} {% endfor %}>
                     <datalist id="listEntreprise">
                       {% for entreprises in entreprises %}
-                        <option value="{{entreprises.id}}">
-                          {{ entreprises.entRs }}
-                        </option>
+                        <option value="{{entreprises.id}} ({{ entreprises.entRs}})"></option>
                       {% endfor %}
                     </datalist>
                   </div>
