@@ -5,6 +5,61 @@
 {% block utilisateur %}{{ login }}{% endblock %}
 
 {% block content %}
+<form action="" method="POST">
+
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <label class="input-group-text" for="inputGroupSelect01">Raison Sociale</label>
+  </div>
+  <input type="text" name="filtreEntreprise" class="form-control" list="listeEntreprise">
+  <datalist id="listeEntreprise">
+    {% for entreprises in entreprises %}
+      <option>
+        {{ entreprises.entRs }}
+      </option>
+    {% endfor %}
+  </datalist>
+  <div class="input-group-prepend">
+    <label class="input-group-text" for="inputGroupSelect02">Ville</label>
+  </div>
+  <select name="filtreVille" class="custom-select" aria-label="Selection d'une ville">
+    <option value="0">Non renseigné</option>
+    {% for ville in villes %}
+      <option value="{{ville.id}}">
+      {{ ville.vilNom }}
+      </option>
+    {% endfor %}
+  </select>
+</div>
+
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <label class="input-group-text" for="inputGroupSelect03">Pays</label>
+  </div>
+  <select name="filtrePays" class="form-select" aria-label="Selection d'un pays">
+    <option value="0">Non renseigné</option>
+    {% for unPays in pays %}
+      <option value="{{unPays.id}}">
+      {{ unPays.payLibelle }}
+      </option>
+    {% endfor %}
+  </select>
+  <div class="input-group-prepend">
+    <label class="input-group-text" for="inputGroupSelect03">spécialités</label>
+  </div>
+  <select name="filtreSpes[]" class="form-select" multiple="multiple" aria-label="Selection de plusieurs spécialités">
+    <option value="0">Non renseigné</option>
+    {% for spe in specialites %}
+      <option value="{{ spe.id }}">
+      {{ spe.speLabel }}
+      </option>
+    {% endfor %}
+  </select>
+  <input type="submit" class="btn btn-primary" value="Rechercher">
+</div>
+
+</form>
+
 <buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
