@@ -101,17 +101,57 @@ class ProfessionnelsController extends AbstractController
             'PUT', 
             "http://10.3.249.223:8001/api/personnes/" . $id, [
                 'headers' => ['Accept' => 'application/json'],
-                'json' => [
-                    'perNom' => $request->get("perNom"),
-                    'perPrenom' => $request->get("perPrenom"),
-                    'perMail' => $request->get("perMail"),
-                    'perNum' => $request->get("perNum"),
-                    'perAnnee' => $request->get("perAnnee"),
-                    'perFonction' => '/api/fonctions/' . $request->get("perFonction"),
-                    'perEntreprise' => '/api/entreprises/' . $request->get("perEntreprise")
-                ]
-            ]);
+                'json' => $this->CreatePersonne(
+                    $request->get("perNom"), 
+                    $request->get("perPrenom"),
+                    $request->get("perMail"),
+                    $request->get("perNum"),
+                    $request->get("perFonction"),
+                    $request->get("perEntreprise"),
+                )
+            ]
+        );
 
         return $this->redirect("/professionnels");
+    }
+    /**
+     * @Route("/personnesappend", name="add_personnes")
+     */
+    public function AddPersonnes(Request $request) : Response {
+        $login = $request->getSession()->get('login');
+        $mdp = $request->getSession()->get('mdp');
+        $client = HttpClient::create();
+
+        if ($login == "" && $mdp == "") {
+            return new Response("vous devez vous enregister avant d'accéder au données");
+        }
+
+        $client->request(
+            'POST', 
+            "http://10.3.249.223:8001/api/personnes", [
+                'headers' => ['Accept' => 'application/json'],
+                'json' => $this->CreatePersonne(
+                    $request->get("perNom"), 
+                    $request->get("perPrenom"),
+                    $request->get("perMail"),
+                    $request->get("perNum"),
+                    $request->get("perFonction"),
+                    $request->get("perEntreprise"),
+                )
+            ]
+        );
+        return $this->redirect("/professionnels");
+    }
+
+
+    private function CreatePersonne($nom, $prenom, $mail, $num, $fonction, $entreprise) {
+        return array(
+            'perNom' => $nom,
+            'perPrenom' => $prenom,
+            'perMail' => $mail,
+            'perNum' => $num,
+            'perFonction' => $fonction !== "0 (Non renseigné)" ? '/api/fonctions/' . $fonction : null,
+            'perEntreprise' => $entreprise !== "0 (Non renseigné)" ? '/api/entreprises/' . $entreprise : null,
+        );
     }
 }
