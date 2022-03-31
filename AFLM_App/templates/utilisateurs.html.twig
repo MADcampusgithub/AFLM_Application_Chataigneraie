@@ -7,7 +7,7 @@
 {% block content %}
 <form action="{{path("post_utilisateurs")}}" method="POST" class="row g-3">
   <div class="col-auto">
-    <label class="form-control-plaintext">Enregistrer un nouvel utilisateur</label>
+    <label class="form-control-plaintext">Enregistrer un nouvel utilisateur : </label>
     <input type="text" readonly class="form-control-plaintext" id="Name" >
   </div>
   <div class="col-auto">
@@ -22,29 +22,34 @@
     <button type="submit" class="btn btn-primary mb-3">Valider</button>
   </div>
 </form>
-
-    <table class="table table-hover table-striped">
+<div class="container">
+    <table class="table table-hover table-striped text-center align-middle">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Droit</th>
-                <th scope="col">Login</th>
+              <th class = "col-md-4">Login</th>
+              <th class = "col-md-4">Droit</th>
+              <th class = "col-md-3"></th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>0</td>
-                <td>nlevacher</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>1</td>
-                <td>kdubois</td>
+              {% for util in utilisateurs %}
+              <tr>
+                <td> {{util.utiLogin}}</td>
+                <td> {% if util.utiDroit == true %} Administrateur {% else %} Professeur {% endif %} </td>
+                <td>
+                  <div class="col-12">
+                    
+                    <a href="{{ path("suppr_utilisateurs", {"id" : util.id}) }}">
+                    <img src="professionnel/Supp.png" class="rounded" width="10%" alt="...">
+                    </a> 
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
             </tr>
         </tbody>
     </table>
-
+</div>
 
 {% endblock %}
 

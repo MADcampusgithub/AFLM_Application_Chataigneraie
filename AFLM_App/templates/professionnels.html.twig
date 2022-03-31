@@ -6,6 +6,69 @@
 
 {% block content %}
   <h1> Affichage des professionnels </h1>
+  <buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
+
+  <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajout d'un professionnel</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="personne_ajt_form" action="{{ path("add_personnes") }}" method="POST">
+          <table class="table">
+            <tbody>
+              <tr>
+                <th>Nom</th>
+                <td><input type="text" name="perNom" class="form-control"</td>
+              </tr>
+              <tr>
+                <th>Prenom</th>
+                <td><input type="text" name="perPrenom" class="form-control"></td>
+              </tr>
+              <tr>
+                <th>Adresse mail</th>
+                <td><input type="text" name="perMail" class="form-control"</td>
+              </tr>
+              <tr>
+                <th>Numéro de téléphone</th>
+                <td><input type="text" name="perNum" class="form-control"></td>
+              </tr>
+              <tr>
+                <th>Fonction</th>
+                <td>
+                  <select name="perFonction" class="form-select" aria-label="Selection d'une fonction">
+                    <option value="0 (Non renseigné)">Non renseigné</option>
+                    {% for fonction in fonctions %}
+                      <option value="{{fonction.id}}">
+                      {{ fonction.fonLabel }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th>Entreprise</th>
+                <td>
+                  <select name="perEntreprise" class="form-select" aria-label="Selection d'une entreprise">
+                    <option value="0 (Non renseigné)">Non renseigné</option>
+                    {% for entreprises in entreprises %}
+                      <option value="{{entreprises.id}}">
+                      {{ entreprises.entRs }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+            <input class="btn btn-primary" value="Ajouter" type="submit" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
   <div class="accordion" id="accordionTable">
   <table class="table table-striped">
   <thead>
@@ -63,12 +126,11 @@
                 <div class="row mb-3">
                   <label for="perFonction" class="col-sm-3 col-form-label"><strong> Fonction : </strong></label>
                   <div class="col-sm-7">
-                  <input type="text" name="perFonction" class="form-control" list="listFonction" {% set continue = false %} {% for fonction in fonctions %} {% if fonction.fonLabel == pers.perFonction and not continue %} {% set continue = true %} value="{{ fonction.id }}" {% else %} placeholder="Non renseigné" {% endif %} {% endfor %}>
+                  <input type="text" name="perFonction" class="form-control" list="listFonction" {% set continue = false %} {% for fonction in fonctions %} {% if fonction.fonLabel == pers.perFonction and not continue %} {% set continue = true %} value="{{ fonction.id }} ({{ fonction.fonLabel }})" {% else %} value="0 (Non renseigné)" {% endif %} {% endfor %}>
                     <datalist id="listFonction">
+                      <option value="0 (Non renseigné)"></option>
                       {% for fonction in fonctions %}
-                        <option value="{{fonction.id}}">
-                          {{ fonction.fonLabel }}
-                        </option>
+                        <option value="{{fonction.id}} ({{ fonction.fonLabel }})"></option>
                       {% endfor %}
                     </datalist>
                   </div>
@@ -77,12 +139,11 @@
                 <div class="row mb-3">
                   <label for="perEntreprise" class="col-sm-3 col-form-label"><strong> Entreprise : </strong></label>
                   <div class="col-sm-7">
-                 <input type="text" name="perEntreprise" class="form-control" list="listEntreprise" {% set continue = false %} {% for entreprise in entreprises %} {% if entreprise.entRs == pers.perEntreprise and not continue %} {% set continue = true %} value="{{ entreprise.id }}" {% else %} placeholder="Non renseigné" {% endif %} {% endfor %}>
+                 <input type="text" name="perEntreprise" class="form-control" list="listEntreprise" {% set continue = false %} {% for entreprise in entreprises %} {% if entreprise.entRs == pers.perEntreprise and not continue %} {% set continue = true %} value="{{ entreprise.id }} ({{ pers.perEntreprise}})" {% endif %} {% if pers.perEntreprise == null %} value="0 (Non renseigné)" {% endif %}{% endfor %}>
                     <datalist id="listEntreprise">
+                    <option value="0 (Non renseigné)"></option>
                       {% for entreprises in entreprises %}
-                        <option value="{{entreprises.id}}">
-                          {{ entreprises.entRs }}
-                        </option>
+                        <option value="{{entreprises.id}} ({{ entreprises.entRs}})"></option>
                       {% endfor %}
                     </datalist>
                   </div>
@@ -148,5 +209,16 @@
 
 </table>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script type="text/javascript">
+    $("#ajoutBtn").on('click', function () {
+      var myModal = new bootstrap.Modal(document.getElementById("myModal"));
+      myModal.toggle();
+    })
+  </script>
 {% endblock %}
 
