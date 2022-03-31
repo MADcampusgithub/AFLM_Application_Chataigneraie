@@ -10,10 +10,6 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class EntreprisesController extends AbstractController
 {
-    public $villes;
-    public $pays;
-    public $specialites;
-
     /**
      * @Route("/entreprises", requirements = {"parametre"="\d+"}, name="app_entreprises", methods={"GET"})
      */
@@ -32,22 +28,22 @@ class EntreprisesController extends AbstractController
 
         $response = $client->request('GET', "http://10.3.249.223:8001/api/villes", ['headers' => 
             ['Accept' => 'application/json']]);
-        $this->villes = $response->toArray();
+        $villes = $response->toArray();
 
         $response = $client->request('GET', "http://10.3.249.223:8001/api/pays", ['headers' => 
             ['Accept' => 'application/json']]);
-        $this->pays = $response->toArray();
+        $pays = $response->toArray();
 
         $response = $client->request('GET', "http://10.3.249.223:8001/api/specialites", ['headers' => 
             ['Accept' => 'application/json']]);
-        $this->specialites = $response->toArray();
+        $specialites = $response->toArray();
 
         for ($i = 0; $i < count($entreprises); $i++) {
-            $entreprises[$i]['entPays'] = $this->GetData($this->pays, "payLibelle", $entreprises[$i]['entPays']);
-            $entreprises[$i]['entVille'] = $this->GetData($this->villes, "vilNom", $entreprises[$i]['entVille']);
+            $entreprises[$i]['entPays'] = $this->GetData($pays, "payLibelle", $entreprises[$i]['entPays']);
+            $entreprises[$i]['entVille'] = $this->GetData($villes, "vilNom", $entreprises[$i]['entVille']);
 
             for($j = 0; $j < count($entreprises[$i]['entSpecialite']); $j++) {
-                $entreprises[$i]['entSpecialite'][$j] = $this->GetData($this->specialites, "speLabel", $entreprises[$i]['entSpecialite'][$j]);
+                $entreprises[$i]['entSpecialite'][$j] = $this->GetData($specialites, "speLabel", $entreprises[$i]['entSpecialite'][$j]);
             }
 
         }
@@ -56,14 +52,17 @@ class EntreprisesController extends AbstractController
             $response = $client->request('GET', "http://10.3.249.223:8001/api/entreprises/".$id, ['headers' => ['Accept' => 'application/json']]);
             $entreprise = $response->toArray();
 
-            $entreprise['entPays'] = $this->GetData($this->pays, "payLibelle", $entreprise['entPays']);
-            $entreprise['entVille'] = $this->GetData($this->villes, "vilNom", $entreprise['entVille']);
+            $entreprise['entPays'] = $this->GetData($pays, "payLibelle", $entreprise['entPays']);
+            $entreprise['entVille'] = $this->GetData($villes, "vilNom", $entreprise['entVille']);
+
             for($j = 0; $j < count($entreprise['entSpecialite']); $j++) {
-                $entreprise['entSpecialite'][$j] = $this->GetData($this->specialites, "speLabel", $entreprise['entSpecialite'][$j]);
+                $entreprise['entSpecialite'][$j] = $this->GetData($specialites, "speLabel", $entreprise['entSpecialite'][$j]);
             }
-            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'entreprise' => $entreprise, 'specialites' => $this->specialites, 'pays' => $this->pays, 'villes' => $this->villes]);
-        } else {
-            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'specialites' => $this->specialites, 'pays' => $this->pays, 'villes' => $this->villes, 'entreprise' => [
+
+            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'entreprise' => $entreprise, 'specialites' => $specialites, 'pays' => $pays, 'villes' => $villes]);
+        } 
+        else {
+            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'specialites' => $specialites, 'pays' => $pays, 'villes' => $villes, 'entreprise' => [
                 'id' => 0,
                 'entRs' => '',
                 'entAdresse1' => '',
@@ -89,31 +88,22 @@ class EntreprisesController extends AbstractController
             return new Response("vous devez vous enregister avant d'accéder au données");
         }
 
-        // Récupération de données du select multiple
-        $spes = array();
-        if ($request->get("entSpes") !== null and $request->get("entSpes")[0] !== "0") {   
-            foreach($request->get("entSpes") as $spe) {
-                $spes[] = ("/api/specialites/" . $spe);
-            }
-        }
-
-        // Création et envoie de la requete http à l'API
         $client->request(
             'POST', 
             "http://10.3.249.223:8001/api/entreprises", [
                 'headers' => ['Accept' => 'application/json'],
-                'json' => [
-                    'entRs' => $request->get("entRS"),
-                    'entAdresse1' => $request->get("entAdr1"),
-                    'entAdresse2' => $request->get("entAdr2"),
-                    'entAdresse3' => $request->get("entAdr3"),
-                    'entCP' => $request->get("entCP"),
-                    'entSpecialite' => $spes,
-                    'entVille' => $request->get("entVille") !== "0" ? '/api/villes/' . $request->get("entVille") : null,
-                    'entPays' => $request->get("entPays") !== "0" ? '/api/pays/' . $request->get("entPays") : null,
-                ]
-            ]);
-
+                'json' => $this->CreateEntreprise(
+                    $request->get("entRS"), 
+                    $request->get("entAdr1"),
+                    $request->get("entAdr2"),
+                    $request->get("entAdr3"),
+                    $request->get("entCP"),
+                    $request->get("entSpes"),
+                    $request->get("entVille"),
+                    $request->get("entPays")
+                )
+            ]
+        );
         return $this->redirect("/entreprises");
     }
 
@@ -151,31 +141,24 @@ class EntreprisesController extends AbstractController
             return $this->redirect("/connexion");
         }
 
-        // Récupération de données du select multiple
-        $spes = array();
-        if ($request->get("entSpes") !== null and $request->get("entSpes")[0] !== "0") {   
-            foreach($request->get("entSpes") as $spe) {
-                $spes[] = ("/api/specialites/" . $spe);
-            }
-        }
-
         // Création et envoie de la requete http de modification à l'API
         $client->request(
             'PUT', 
             "http://10.3.249.223:8001/api/entreprises/" . $id, [
                 'headers' => ['Accept' => 'application/json'],
-                'json' => [
-                    'entRs' => $request->get("entRS"),
-                    'entAdresse1' => $request->get("entAdr1"),
-                    'entAdresse2' => $request->get("entAdr2"),
-                    'entAdresse3' => $request->get("entAdr3"),
-                    'entCP' => $request->get("entCP"),
-                    'entSpecialite' => $spes,
-                    'entVille' => $request->get("entVille") !== "0" ? '/api/villes/' . $request->get("entVille") : null,
-                    'entPays' => $request->get("entPays") !== "0" ? '/api/pays/' . $request->get("entPays") : null,
-                ]
-            ]);
-
+                'json' => $this->CreateEntreprise(
+                    $request->get("entRS"), 
+                    $request->get("entAdr1"),
+                    $request->get("entAdr2"),
+                    $request->get("entAdr3"),
+                    $request->get("entCP"),
+                    $request->get("entSpes"),
+                    $request->get("entVille"),
+                    $request->get("entPays")
+                )
+            ]
+        );
+        
         return $this->redirect("/entreprises");
     }
 
@@ -195,5 +178,25 @@ class EntreprisesController extends AbstractController
             }
         }
         return "";
+    }
+
+    private function CreateEntreprise($rs, $adr1, $adr2, $adr3, $cp, $specialites, $ville, $pays) {
+        $spes = array();
+        if ($specialites !== null and $specialites[0] !== "0") {   
+            foreach($specialites as $spe) {
+                $spes[] = ("/api/specialites/" . $spe);
+            }
+        }
+        
+        return array(
+            'entRs' => $rs,
+            'entAdresse1' => $adr1,
+            'entAdresse2' => $adr2,
+            'entAdresse3' => $adr3,
+            'entCP' => $cp,
+            'entSpecialite' => $spes,
+            'entVille' => $ville !== "0" ? '/api/villes/' . $ville : null,
+            'entPays' => $pays !== "0" ? '/api/pays/' . $pays : null,
+        );
     }
 }
