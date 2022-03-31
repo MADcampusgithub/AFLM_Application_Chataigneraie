@@ -9,8 +9,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+//$this->getParameter('app.urlAPI');
+
 class ConnexionController extends AbstractController
 {
+    
     /**
      * @Route("/connexion", name="app_connexion", methods={"GET"})
      */
