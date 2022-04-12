@@ -5,10 +5,10 @@
 {% block utilisateur %}maxime.adler{% endblock %}
 
 {% block content %}
-  <h1> Affichage des professionnels </h1>
-  <buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
+<h1> Affichage des professionnels </h1>
+<buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
 
-  <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -63,162 +63,186 @@
               </tr>
             </tbody>
           </table>
-            <input class="btn btn-primary" value="Ajouter" type="submit" />
+          <input class="btn btn-primary" value="Ajouter" type="submit" />
         </form>
       </div>
     </div>
   </div>
 </div>
-  <div class="accordion" id="accordionTable">
+
+<form action="" method="POST">
+  <div class="input-group mb-3">
+    <span class="input-group-text">Nom</span>
+    <input type="text" name="filtreNom" class="form-control" list="listeNom">
+    <datalist id="listeNom">
+      {% for pers in personnes %}
+        <option>
+          {{ pers.perNom }}
+        </option>
+      {% endfor %}
+    </datalist>
+    <span class="input-group-text">Entreprise</span>
+    <input type="text" name="filtreEnt" class="form-control" list="listeEntreprise">
+    <datalist id="listeEntreprise">
+      {% for entreprise in entreprises %}
+        <option>
+          {{ entreprise.entRs }}
+        </option>
+      {% endfor %}
+    </datalist>
+    <input type="submit" class="btn btn-outline-primary" value="Rechercher">
+  </div>
+</form>
+
+<div class="accordion" id="accordionTable">
   <table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Nom</th>
-      <th scope="col">Prénom</th>
-      <th scope="col">Mail</th>
-      <th scope="col">Numéro de téléphone</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-   {% for pers in personnes %}
-    <tr data-bs-toggle="collapse" data-bs-target="#collapse{{ pers.id }}">
-      <td {% if pers.perNom == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perNom}} {% endif %} </td>
-      <td {% if pers.perPrenom == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perPrenom}} {% endif %}</td>
-      <td {% if pers.perMail == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perMail}} {% endif %} </td>
-      <td {% if pers.perNum == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perNum}} {% endif %}</td>
-      <td class="col-md-1"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapse{{ pers.id }}"></button></td>
-    </tr>
+    <thead>
+      <tr>
+        <th scope="col">Nom</th>
+        <th scope="col">Prénom</th>
+        <th scope="col">Mail</th>
+        <th scope="col">Numéro de téléphone</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for pers in personnes %}
+        <tr data-bs-toggle="collapse" data-bs-target="#collapse{{ pers.id }}">
+          <td {% if pers.perNom == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perNom}} {% endif %} </td>
+          <td {% if pers.perPrenom == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perPrenom}} {% endif %}</td>
+          <td {% if pers.perMail == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perMail}} {% endif %} </td>
+          <td {% if pers.perNum == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perNum}} {% endif %}</td>
+          <td class="col-md-1"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapse{{ pers.id }}"></button></td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <div id="collapse{{ pers.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionTable">
+              <div class="accordion-body text-start">
+                <div class="container">
+                  <div class="row align-items-center">
+                    <div class="col">
+                      <form id="personne_form" action="{{ path("edit_personnes", {"id" : pers.id}) }}" method="POST">
+                        <div class="row mb-3">
+                          <label class="col-sm-3 col-form-label"> <strong> Nom : </strong> </label>
+                          <div class="col-sm-7">
+                            <input type="text" name="perNom" value="{{ pers.perNom }}" class="form-control" id="PersNom" {% if pers.perNom == null  %} placeholder="Non renseigné"{% endif %}>
+                          </div>
+                        </div>
 
+                        <div class="row mb-3">
+                          <label for="perPrenom" class="col-sm-3 col-form-label"> <strong> Prénom :</strong> </label>
+                          <div class="col-sm-7">
+                            <input type="text" name="perPrenom" value="{{ pers.perPrenom }}"class="form-control" id="PersPrenom" {% if pers.perPrenom == null  %} placeholder="Non renseigné"{% endif %}>
+                          </div>
+                        </div>
 
-    <tr>
-      <td colspan="4">
-        <div id="collapse{{ pers.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionTable">
-          <div class="accordion-body text-start">
-          <div class="container">
-          <div class="row align-items-center">
-            <div class="col">
-              <form id="personne_form" action="{{ path("edit_personnes", {"id" : pers.id}) }}" method="POST">
-                <div class="row mb-3">
-                  <label class="col-sm-3 col-form-label"> <strong> Nom : </strong> </label>
-                  <div class="col-sm-7">
-                  <input type="text" name="perNom" value="{{ pers.perNom }}" class="form-control" id="PersNom" {% if pers.perNom == null  %} placeholder="Non renseigné"{% endif %}>
+                        <div class="row mb-3">
+                          <label for="perMail" class="col-sm-3 col-form-label"> <strong> Adresse mail : </strong></label>
+                          <div class="col-sm-7">
+                            <input type="email" name="perMail" value="{{ pers.perMail }}" class="form-control" id="PersMail" {% if pers.perMail == null  %} placeholder="Non renseigné"{% endif %}> 
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label for="perNum" class="col-sm-5 col-form-label"> <strong> Numéro de téléphone : </strong></label>
+                          <div class="col-sm-5">
+                            <input type="text" name="perNum" value="{{ pers.perNum }}" class="form-control" id="PersNum" {% if pers.perNum == null  %} placeholder="Non renseigné"{% endif %}>
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label for="perFonction" class="col-sm-3 col-form-label"><strong> Fonction : </strong></label>
+                          <div class="col-sm-7">
+                            <input type="text" name="perFonction" class="form-control" list="listFonction" {% set continue = false %} {% for fonction in fonctions %} {% if fonction.fonLabel == pers.perFonction and not continue %} {% set continue = true %} value="{{ fonction.id }} ({{ fonction.fonLabel }})" {% else %} value="0 (Non renseigné)" {% endif %} {% endfor %}>
+                            <datalist id="listFonction">
+                              <option value="0 (Non renseigné)"></option>
+                                {% for fonction in fonctions %}
+                                  <option value="{{fonction.id}} ({{ fonction.fonLabel }})"></option>
+                                {% endfor %}
+                            </datalist>
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label for="perEntreprise" class="col-sm-3 col-form-label"><strong> Entreprise : </strong></label>
+                          <div class="col-sm-7">
+                            <input type="text" name="perEntreprise" class="form-control" list="listEntreprise" {% set continue = false %} {% for entreprise in entreprises %} {% if entreprise.entRs == pers.perEntreprise and not continue %} {% set continue = true %} value="{{ entreprise.id }} ({{ pers.perEntreprise}})" {% endif %} {% if pers.perEntreprise == null %} value="0 (Non renseigné)" {% endif %}{% endfor %}>
+                            <datalist id="listEntreprise">
+                              <option value="0 (Non renseigné)"></option>
+                              {% for entreprises in entreprises %}
+                                <option value="{{entreprises.id}} ({{ entreprises.entRs}})"></option>
+                              {% endfor %}
+                            </datalist>
+                          </div>
+                        </div>
+
+                        <div class="col-12">
+                          <button type="submit" class="btn btn-primary">Modifier</button>
+                          <a href="{{ path("suppr_personnes", {"id" : pers.id}) }}" class="btn btn-danger">Supprimer</a>
+                        </div>
+                      </form>
+                    </div>
+
+                    <div class="col">
+                      <table class="table table-borderless text-center align-middle ">
+                        <tr> 
+                          <th class = "col-md-3"> Profil </th>
+                          <th class = "col-md-3"> Année </th>
+                          <th class = "col-md-1"></th>
+                        </tr>
+                        <tr>
+                          <td> bibibibibibiib</td>
+                          <td> 20--</td>
+                          <td><img src="professionnel/Supp.png" class="rounded float-start" width="40%" alt="..."> </td>
+                        </tr>
+                        <tr>
+                          <td> sisisisisiisisi</td>
+                          <td> 20--</td>
+                          <td><img src="professionnel/Supp.png" class="rounded float-start" width="40%" alt="..."> </td>
+                        </tr>
+                        <tr>
+                          <td> bahahahhahahaha</td>
+                          <td> 20--</td>
+                          <td><img src="professionnel/Supp.png" class="rounded float-start" width="40%" alt="..."> </td>
+                        </tr>
+                      </table>
+                      
+                      <form action="" class="row g-3">
+                        <div class="col-auto">
+                          <label  class="visually-hidden"></label>
+                          <input type="label" class="form-control" id="NewProfil" placeholder="Profil">
+                        </div>
+
+                        <div class="col-auto">
+                          <label  class="visually-hidden"></label>
+                          <input type="label" class="form-control" id="NewProfil2" placeholder="Année">
+                        </div>  
+
+                        <div class="col-auto">
+                          <button type="submit" class="btn btn-success mb-3">Ajouter</button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
-                <div class="row mb-3">
-                  <label for="perPrenom" class="col-sm-3 col-form-label"> <strong> Prénom :</strong> </label>
-                  <div class="col-sm-7">
-                  <input type="text" name="perPrenom" value="{{ pers.perPrenom }}"class="form-control" id="PersPrenom" {% if pers.perPrenom == null  %} placeholder="Non renseigné"{% endif %}>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="perMail" class="col-sm-3 col-form-label"> <strong> Adresse mail : </strong></label>
-                  <div class="col-sm-7">
-                  <input type="email" name="perMail" value="{{ pers.perMail }}" class="form-control" id="PersMail" {% if pers.perMail == null  %} placeholder="Non renseigné"{% endif %}> 
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="perNum" class="col-sm-5 col-form-label"> <strong> Numéro de téléphone : </strong></label>
-                  <div class="col-sm-5">
-                  <input type="text" name="perNum" value="{{ pers.perNum }}" class="form-control" id="PersNum" {% if pers.perNum == null  %} placeholder="Non renseigné"{% endif %}>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="perFonction" class="col-sm-3 col-form-label"><strong> Fonction : </strong></label>
-                  <div class="col-sm-7">
-                  <input type="text" name="perFonction" class="form-control" list="listFonction" {% set continue = false %} {% for fonction in fonctions %} {% if fonction.fonLabel == pers.perFonction and not continue %} {% set continue = true %} value="{{ fonction.id }} ({{ fonction.fonLabel }})" {% else %} value="0 (Non renseigné)" {% endif %} {% endfor %}>
-                    <datalist id="listFonction">
-                      <option value="0 (Non renseigné)"></option>
-                      {% for fonction in fonctions %}
-                        <option value="{{fonction.id}} ({{ fonction.fonLabel }})"></option>
-                      {% endfor %}
-                    </datalist>
-                  </div>
-                 
-                </div>
-                <div class="row mb-3">
-                  <label for="perEntreprise" class="col-sm-3 col-form-label"><strong> Entreprise : </strong></label>
-                  <div class="col-sm-7">
-                 <input type="text" name="perEntreprise" class="form-control" list="listEntreprise" {% set continue = false %} {% for entreprise in entreprises %} {% if entreprise.entRs == pers.perEntreprise and not continue %} {% set continue = true %} value="{{ entreprise.id }} ({{ pers.perEntreprise}})" {% endif %} {% if pers.perEntreprise == null %} value="0 (Non renseigné)" {% endif %}{% endfor %}>
-                    <datalist id="listEntreprise">
-                    <option value="0 (Non renseigné)"></option>
-                      {% for entreprises in entreprises %}
-                        <option value="{{entreprises.id}} ({{ entreprises.entRs}})"></option>
-                      {% endfor %}
-                    </datalist>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <button type="submit" class="btn btn-primary">Modifier</button>
-                  <a href="{{ path("suppr_personnes", {"id" : pers.id}) }}" class="btn btn-danger">Supprimer</a>
-                </div>
-              </form>
+              </div>
             </div>
-
-            
-
-            <div class="col">
-              <table class="table table-borderless text-center align-middle ">
-                <tr> 
-                  <th class = "col-md-3"> Profil </th>
-                  <th class = "col-md-3"> Année </th>
-                  <th class = "col-md-1"></th>
-                </tr>
-                <tr>
-                  <td> bibibibibibiib</td>
-                  <td> 20--</td>
-                  <td><img src="professionnel/Supp.png" class="rounded float-start" width="40%" alt="..."> </td>
-                </tr>
-                <tr>
-                  <td> sisisisisiisisi</td>
-                  <td> 20--</td>
-                  <td><img src="professionnel/Supp.png" class="rounded float-start" width="40%" alt="..."> </td>
-
-                </tr>
-                <tr>
-                  <td> bahahahhahahaha</td>
-                  <td> 20--</td>
-                  <td><img src="professionnel/Supp.png" class="rounded float-start" width="40%" alt="..."> </td>
-
-                </tr>
-              </table>
-              
-              <form action="" class="row g-3">
-                <div class="col-auto">
-                  <label  class="visually-hidden"></label>
-                  <input type="label" class="form-control" id="NewProfil" placeholder="Profil">
-                </div>
-                <div class="col-auto">
-                  <label  class="visually-hidden"></label>
-                  <input type="label" class="form-control" id="NewProfil2" placeholder="Année">
-                </div>    
-                <div class="col-auto">
-                  <button type="submit" class="btn btn-success mb-3">Ajouter</button>
-                </div>
-              </form>
-              
-            </div>
-            </div>
-            </div>
-          </div>
-        </div>
-      </td>
-    </tr>
-     {% endfor %}
-  </tbody>
-
-</table>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <script type="text/javascript">
-    $("#ajoutBtn").on('click', function () {
-      var myModal = new bootstrap.Modal(document.getElementById("myModal"));
-      myModal.toggle();
-    })
-  </script>
+<script type="text/javascript">
+  $("#ajoutBtn").on('click', function () {
+    var myModal = new bootstrap.Modal(document.getElementById("myModal"));
+    myModal.toggle();
+  })
+</script>
 {% endblock %}
 

@@ -7,25 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpClient\HttpClient;
+use App\Services\Linq;
 
 class ProfessionnelsController extends AbstractController
 {
-    private function GetData($array, string $arrayName, $data) : string {
-        $id = 0;
-        if (isset($data)) {
-            $test = explode("/", $data);
-            $id = intval($test[3]);
-        }
-        else {
-            return "";
-        }
-        foreach ($array as $val) {
-            if ($val['id'] == $id) {
-                return $val[$arrayName];
-            }
-        }
-        return "";
-    }
+    private $api = "http://localhost:8001";
 
     /**
      * @Route("/professionnels", name="app_professionnels")
@@ -40,27 +26,35 @@ class ProfessionnelsController extends AbstractController
             return new Response("vous devez vous enregister avant d'accéder au données");
         }
 
-        $response = $client->request('GET', "http://10.3.249.223:8001/api/personnes", ['headers' => 
+        $response = $client->request('GET', $this->api . "/api/personnes", ['headers' => 
         ['Accept' => 'application/json']]);
         $personnes = $response->toArray(); 
 
-        $response = $client->request('GET', "http://10.3.249.223:8001/api/fonctions", ['headers' => 
+        $response = $client->request('GET', $this->api . "/api/fonctions", ['headers' => 
         ['Accept' => 'application/json']]);
-        $this->fonctions = $response->toArray();
+        $fonctions = $response->toArray();
 
-        $response = $client->request('GET', "http://10.3.249.223:8001/api/entreprises", ['headers' => 
+        $response = $client->request('GET', $this->api . "/api/entreprises", ['headers' => 
         ['Accept' => 'application/json']]);
-        $this->entreprises = $response->toArray();
+        $entreprises = $response->toArray();
 
         for ($i = 0; $i < count($personnes); $i++) {
-        $personnes[$i]["perFonction"] = $this->GetData($this -> fonctions, "fonLabel",  $personnes[$i]["perFonction"]);
+            $personnes[$i]["perFonction"] = $this->GetData($fonctions, "fonLabel", $personnes[$i]["perFonction"]);
         }
 
         for ($j = 0; $j < count($personnes); $j++) {
-        $personnes[$j]["perEntreprise"] = $this->GetData($this -> entreprises, "entRs",  $personnes[$j]["perEntreprise"]);
+            $personnes[$j]["perEntreprise"] = $this->GetData($entreprises, "entRs", $personnes[$j]["perEntreprise"]);
         }
 
-        return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'fonctions' => $this->fonctions, 'entreprises' => $this-> entreprises]);
+        $allPersonnes = $personnes;
+        $personnes = $this->FiltrePersonnes(
+            $personnes,
+            $request->get("filtreNom") !== null ? $request->get("filtreNom") : "",
+            $request->get("filtrePrenom") !== null ? $request->get("filtrePrenom") : "",    
+            $request->get("filtreEnt") !== null ? $request->get("filtreEnt") : "",
+        );
+
+        return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'allPersonnes' => $allPersonnes , 'fonctions' => $fonctions, 'entreprises' => $entreprises]);
     }
 
     /**
@@ -77,7 +71,7 @@ class ProfessionnelsController extends AbstractController
 
         $client->request(
             'DELETE', 
-            "http://10.3.249.223:8001/api/personnes/" . $id, [
+            $this->api . "/api/personnes/" . $id, [
                 'headers' => ['Accept' => 'application/json']
             ]);
 
@@ -99,7 +93,7 @@ class ProfessionnelsController extends AbstractController
 
         $client->request(
             'PUT', 
-            "http://10.3.249.223:8001/api/personnes/" . $id, [
+            $this->api . "/api/personnes/" . $id, [
                 'headers' => ['Accept' => 'application/json'],
                 'json' => $this->CreatePersonne(
                     $request->get("perNom"), 
@@ -128,7 +122,7 @@ class ProfessionnelsController extends AbstractController
 
         $client->request(
             'POST', 
-            "http://10.3.249.223:8001/api/personnes", [
+            $this->api . "/api/personnes", [
                 'headers' => ['Accept' => 'application/json'],
                 'json' => $this->CreatePersonne(
                     $request->get("perNom"), 
@@ -143,6 +137,39 @@ class ProfessionnelsController extends AbstractController
         return $this->redirect("/professionnels");
     }
 
+    // Retourne un ensemble d'entreprises filtré
+    private function FiltrePersonnes(array $personnes, string $nom, string $prenom, string $entreprise) {
+        $pers = Linq::Where($personnes, function($x) use (&$nom) {
+            return str_contains($x['perNom'], $nom);
+        });
+
+        $pers = Linq::Where($pers, function($x) use (&$prenom) {
+            return str_contains($x['perPrenom'], $prenom);
+        });
+
+        $pers = Linq::Where($pers, function($x) use (&$entreprise) {
+            return str_contains($x['perEntreprise'], $entreprise);
+        });
+
+        return $pers;
+    }
+
+    private function GetData($array, string $arrayName, $data) : string {
+        $id = 0;
+        if (isset($data)) {
+            $test = explode("/", $data);
+            $id = intval($test[3]);
+        }
+        else {
+            return "";
+        }
+        foreach ($array as $val) {
+            if ($val['id'] == $id) {
+                return $val[$arrayName];
+            }
+        }
+        return "";
+    }
 
     private function CreatePersonne($nom, $prenom, $mail, $num, $fonction, $entreprise) {
         return array(

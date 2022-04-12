@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class ConnexionController extends AbstractController
 {
-    
+    private $api = "http://localhost:8001";
     /**
      * @Route("/connexion", name="app_connexion", methods={"GET"})
      */
@@ -32,7 +32,7 @@ class ConnexionController extends AbstractController
         $client = HttpClient::create();
 
         $data = $request->request->all();
-        $response = $client->request('GET', "http://10.3.249.223:8001/api/utilisateurs", [
+        $response = $client->request('GET', $this->api . "/api/utilisateurs", [
             'headers' => [
                 'Accept' => 'application/json',
             ],

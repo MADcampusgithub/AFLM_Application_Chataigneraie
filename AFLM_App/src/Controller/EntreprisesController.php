@@ -11,8 +11,10 @@ use App\Services\Linq;
 
 class EntreprisesController extends AbstractController
 {
+    private $api = "http://localhost:8001";
+
     /**
-     * @Route("/entreprises", requirements = {"parametre"="\d+"}, name="app_entreprises", methods={"GET"})
+     * @Route("/entreprises", requirements = {"parametre"="\d+"}, name="app_entreprises", methods={"GET", "POST"})
      */
     public function Entreprises(Request $request) : Response {
         $login = $request->getSession()->get('login');
@@ -25,23 +27,23 @@ class EntreprisesController extends AbstractController
         }
 
         // Récupération des entreprises
-        $response = $client->request('GET', "http://10.3.249.223:8001/api/entreprises", ['headers' => ['Accept' => 'application/json']]);
+        $response = $client->request('GET', $this->api . "/api/entreprises", ['headers' => ['Accept' => 'application/json']]);
         $entreprises = $response->toArray();
 
         // Récupération et tri des villes
-        $response = $client->request('GET', "http://10.3.249.223:8001/api/villes", ['headers' => 
+        $response = $client->request('GET', $this->api . "/api/villes", ['headers' => 
             ['Accept' => 'application/json']]);
         $villes = $response->toArray();
         array_multisort(array_column($villes, 'vilNom'), SORT_ASC, $villes);
 
         // Récupération et tri des pays
-        $response = $client->request('GET', "http://10.3.249.223:8001/api/pays", ['headers' => 
+        $response = $client->request('GET', $this->api . "/api/pays", ['headers' => 
             ['Accept' => 'application/json']]);
         $pays = $response->toArray();
         array_multisort(array_column($pays, 'payLibelle'), SORT_ASC, $pays);
 
         // Récupération et tri des spécialites
-        $response = $client->request('GET', "http://10.3.249.223:8001/api/specialites", ['headers' => 
+        $response = $client->request('GET', $this->api . "/api/specialites", ['headers' => 
             ['Accept' => 'application/json']]);
         $specialites = $response->toArray();
         array_multisort(array_column($specialites, 'speLabel'), SORT_ASC, $specialites);
@@ -56,17 +58,22 @@ class EntreprisesController extends AbstractController
             }
         }
 
+        // Filtrage des entreprises
+        $allEntreprises = $entreprises;
         $entreprises = $this->FiltreEntreprises(
             $entreprises, 
-            "", 
-            Linq::Where($villes, function($x) { return $x['id'] == 0; }), 
-            Linq::Where($pays, function($x) { return $x['id'] == 0; }), 
-            Linq::Where($specialites, function($x) { return $x['id'] == 0; })
+            $request->get("filtreRs") != null ? $request->get("filtreRs") : "", 
+            Linq::First($villes, function($x) use (&$request) { return $x['id'] == $request->get("filtreVille"); }), 
+            Linq::First($pays, function($x) use (&$request) { return $x['id'] == $request->get("filtrePays"); }), 
+            Linq::First($specialites, function($x) use (&$request) { return $x['id'] == $request->get("filtreSpes"); }),
         );
 
         // Rendu des informations
         if (isset($id)) {
-            $response = $client->request('GET', "http://10.3.249.223:8001/api/entreprises/".$id, ['headers' => ['Accept' => 'application/json']]);
+            $response = $client->request(
+                'GET', 
+                $this->api . "/api/entreprises/".$id, ['headers' => ['Accept' => 'application/json']]
+            );
             $entreprise = $response->toArray();
 
             $entreprise['entPays'] = $this->GetData($pays, "payLibelle", $entreprise['entPays']);
@@ -76,10 +83,10 @@ class EntreprisesController extends AbstractController
                 $entreprise['entSpecialite'][$j] = $this->GetData($specialites, "speLabel", $entreprise['entSpecialite'][$j]);
             }
 
-            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'entreprise' => $entreprise, 'specialites' => $specialites, 'pays' => $pays, 'villes' => $villes]);
+            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'allEntreprises' => $allEntreprises, 'entreprise' => $entreprise, 'specialites' => $specialites, 'pays' => $pays, 'villes' => $villes]);
         } 
         else {
-            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'specialites' => $specialites, 'pays' => $pays, 'villes' => $villes, 'entreprise' => [
+            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'allEntreprises' => $allEntreprises, 'specialites' => $specialites, 'pays' => $pays, 'villes' => $villes, 'entreprise' => [
                 'id' => 0,
                 'entRs' => '',
                 'entAdresse1' => '',
@@ -107,7 +114,7 @@ class EntreprisesController extends AbstractController
 
         $client->request(
             'POST', 
-            "http://10.3.249.223:8001/api/entreprises", [
+            $this->api . "/api/entreprises", [
                 'headers' => ['Accept' => 'application/json'],
                 'json' => $this->CreateEntreprise(
                     $request->get("entRS"), 
@@ -139,7 +146,7 @@ class EntreprisesController extends AbstractController
         // Création et envoie de la requete http de modification à l'API
         $client->request(
             'PUT', 
-            "http://10.3.249.223:8001/api/entreprises/" . $id, [
+            $this->api . "/api/entreprises/" . $id, [
                 'headers' => ['Accept' => 'application/json'],
                 'json' => $this->CreateEntreprise(
                     $request->get("entRS"), 
@@ -172,7 +179,7 @@ class EntreprisesController extends AbstractController
         // Création et envoie de la requete de suppression d'une entreprise
         $client->request(
             'DELETE', 
-            "http://10.3.249.223:8001/api/entreprises/" . $id, [
+            $this->api . "/api/entreprises/" . $id, [
                 'headers' => ['Accept' => 'application/json'],
             ]);
 
@@ -198,33 +205,34 @@ class EntreprisesController extends AbstractController
     }
 
     // Retourne un ensemble d'entreprises filtré
-    private function FiltreEntreprises(array $entreprises, string $rs, array $villes, array $pays, array $spes) {
-        $ents = Linq::Where($entreprises, function($x) use (&$rs) {
-            return str_contains($x['entRs'], $rs);
-        });
-        if (count($villes) !== 0) {
-            $ents = Linq::Where($entreprises, function($x) use (&$villes) {
-                return Linq::Contains($villes, function($vil) use (&$x) { 
-                    return $vil["vilNom"] == $x['entVille'];
+    private function FiltreEntreprises(array $entreprises, string $rs, array $ville, array $pays, array $spe) {
+        $ents = $entreprises;
+        if ($rs != "") {
+            $ents = Linq::Where($ents, function($x) use (&$rs) {
+                return str_contains($x['entRs'], $rs);
+            });
+        }
+
+        if ($ville != "") {
+            $ents = Linq::Where($ents, function($x) use (&$ville) {
+                return str_contains($x["entVille"], isset($ville['vilNom']) ? $ville['vilNom'] : "");
+            });
+        }
+        
+        if ($pays != "") {
+            $ents = Linq::Where($ents, function($x) use (&$pays) {
+                return str_contains($x["entPays"], isset($pays['payLibelle']) ? $pays['payLibelle'] : "");
+            });
+        }
+        
+        if ($spe != "") {
+            $ents = Linq::Where($ents, function($x) use (&$spe) {
+                return Linq::Contains($x['entSpecialite'], function(&$y) use (&$spe) {
+                    return str_contains($y, isset($spe['speLabel']) ? $spe['speLabel'] : "");
                 });
             });
         }
-        if (count($pays) !== 0) {
-            $ents = Linq::Where($entreprises, function($x) use (&$pays) {
-                return Linq::Contains($pays, function($pay) use (&$x) { 
-                    return $pay["PayLibelle"] == $x['entPays'];
-                });
-            });
-        }
-        if (count($spes) !== 0) {
-            $ents = Linq::Where($entreprises, function($x) use (&$spes) {
-                return Linq::Contains($spes, function($spe) use (&$x) {
-                    return Linq::Contains($x["entSpecialite"], function($speX) use (&$spe) {
-                        return $spe["speLabel"] == $speX;
-                    });
-                });
-            });
-        }
+        
         return $ents;
     }
 

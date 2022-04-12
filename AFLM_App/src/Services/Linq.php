@@ -14,6 +14,15 @@ class Linq {
         return $arr;
     }
 
+    public static function First(array $array, $condition) : array {
+        foreach($array as $item) {
+            if ($condition($item)) {
+                return $item;
+            }
+        }
+        return array();
+    }
+
     public static function Contains(array $array, $condition) : bool {
         $exist = false;
         foreach($array as $item) {
