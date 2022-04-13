@@ -11,8 +11,6 @@ use App\Services\Linq;
 
 class EntreprisesController extends AbstractController
 {
-    private $api = "http://localhost:8001";
-
     /**
      * @Route("/entreprises", requirements = {"parametre"="\d+"}, name="app_entreprises", methods={"GET", "POST"})
      */
@@ -22,28 +20,28 @@ class EntreprisesController extends AbstractController
         $id = $request->query->get('id');
         $client = HttpClient::create();
 
-        if ($login == "" && $mdp == "") {
-            return new Response("vous devez vous enregister avant d'accéder au données");
+        if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
+            return $this->redirect("/connexion");
         }
 
         // Récupération des entreprises
-        $response = $client->request('GET', $this->api . "/api/entreprises", ['headers' => ['Accept' => 'application/json']]);
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/entreprises", ['headers' => ['Accept' => 'application/json']]);
         $entreprises = $response->toArray();
 
         // Récupération et tri des villes
-        $response = $client->request('GET', $this->api . "/api/villes", ['headers' => 
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/villes", ['headers' => 
             ['Accept' => 'application/json']]);
         $villes = $response->toArray();
         array_multisort(array_column($villes, 'vilNom'), SORT_ASC, $villes);
 
         // Récupération et tri des pays
-        $response = $client->request('GET', $this->api . "/api/pays", ['headers' => 
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/pays", ['headers' => 
             ['Accept' => 'application/json']]);
         $pays = $response->toArray();
         array_multisort(array_column($pays, 'payLibelle'), SORT_ASC, $pays);
 
         // Récupération et tri des spécialites
-        $response = $client->request('GET', $this->api . "/api/specialites", ['headers' => 
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/specialites", ['headers' => 
             ['Accept' => 'application/json']]);
         $specialites = $response->toArray();
         array_multisort(array_column($specialites, 'speLabel'), SORT_ASC, $specialites);
@@ -72,7 +70,7 @@ class EntreprisesController extends AbstractController
         if (isset($id)) {
             $response = $client->request(
                 'GET', 
-                $this->api . "/api/entreprises/".$id, ['headers' => ['Accept' => 'application/json']]
+                $request->getSession()->get('api') . "/api/entreprises/".$id, ['headers' => ['Accept' => 'application/json']]
             );
             $entreprise = $response->toArray();
 
@@ -108,13 +106,13 @@ class EntreprisesController extends AbstractController
         $mdp = $request->getSession()->get('mdp');
         $client = HttpClient::create();
 
-        if ($login == "" && $mdp == "") {
-            return new Response("vous devez vous enregister avant d'accéder au données");
+        if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
+            return $this->redirect("/connexion");
         }
 
         $client->request(
             'POST', 
-            $this->api . "/api/entreprises", [
+            $request->getSession()->get('api') . "/api/entreprises", [
                 'headers' => ['Accept' => 'application/json'],
                 'json' => $this->CreateEntreprise(
                     $request->get("entRS"), 
@@ -139,14 +137,14 @@ class EntreprisesController extends AbstractController
         $mdp = $request->getSession()->get('mdp');
         $client = HttpClient::create();
 
-        if ($login == "" && $mdp == "") {
+        if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
             return $this->redirect("/connexion");
         }
 
         // Création et envoie de la requete http de modification à l'API
         $client->request(
             'PUT', 
-            $this->api . "/api/entreprises/" . $id, [
+            $request->getSession()->get('api') . "/api/entreprises/" . $id, [
                 'headers' => ['Accept' => 'application/json'],
                 'json' => $this->CreateEntreprise(
                     $request->get("entRS"), 
@@ -172,14 +170,14 @@ class EntreprisesController extends AbstractController
         $mdp = $request->getSession()->get('mdp');
         $client = HttpClient::create();
 
-        if ($login == "" && $mdp == "") {
-            return new Response("vous devez vous enregister avant d'accéder au données");
+        if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
+            return $this->redirect("/connexion");
         }
 
         // Création et envoie de la requete de suppression d'une entreprise
         $client->request(
             'DELETE', 
-            $this->api . "/api/entreprises/" . $id, [
+            $request->getSession()->get('api') . "/api/entreprises/" . $id, [
                 'headers' => ['Accept' => 'application/json'],
             ]);
 

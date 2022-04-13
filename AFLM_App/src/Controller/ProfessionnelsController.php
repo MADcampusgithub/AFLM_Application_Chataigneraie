@@ -11,8 +11,6 @@ use App\Services\Linq;
 
 class ProfessionnelsController extends AbstractController
 {
-    private $api = "http://localhost:8001";
-
     /**
      * @Route("/professionnels", name="app_professionnels")
      */
@@ -22,19 +20,19 @@ class ProfessionnelsController extends AbstractController
         $mdp = $request->getSession()->get('mdp');
         $client = HttpClient::create();
         
-        if ($login == "" && $mdp == "") {
-            return new Response("vous devez vous enregister avant d'accéder au données");
+        if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
+            return $this->redirect("/connexion");
         }
 
-        $response = $client->request('GET', $this->api . "/api/personnes", ['headers' => 
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/personnes", ['headers' => 
         ['Accept' => 'application/json']]);
         $personnes = $response->toArray(); 
 
-        $response = $client->request('GET', $this->api . "/api/fonctions", ['headers' => 
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/fonctions", ['headers' => 
         ['Accept' => 'application/json']]);
         $fonctions = $response->toArray();
 
-        $response = $client->request('GET', $this->api . "/api/entreprises", ['headers' => 
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/entreprises", ['headers' => 
         ['Accept' => 'application/json']]);
         $entreprises = $response->toArray();
 
@@ -58,26 +56,37 @@ class ProfessionnelsController extends AbstractController
     }
 
     /**
-     * @Route("/personnesdelete/{id}", requirements = {"parametre"="\d+"}, name="suppr_personnes")
+     * @Route("/personnesappend", name="add_personnes")
      */
-    public function SupprPersonnes(Request $request, int $id) : Response {
+    public function AddPersonnes(Request $request) : Response {
         $login = $request->getSession()->get('login');
         $mdp = $request->getSession()->get('mdp');
         $client = HttpClient::create();
 
-        if ($login == "" && $mdp == "") {
-            return new Response("vous devez vous enregister avant d'accéder au données");
+        if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
+            return $this->redirect("/connexion");
         }
 
-        $client->request(
-            'DELETE', 
-            $this->api . "/api/personnes/" . $id, [
-                'headers' => ['Accept' => 'application/json']
-            ]);
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/entreprises", ['headers' => 
+        ['Accept' => 'application/json']]);
+        $entreprises = $response->toArray();
 
+        $client->request(
+            'POST', 
+            $request->getSession()->get('api') . "/api/personnes", [
+                'headers' => ['Accept' => 'application/json'],
+                'json' => $this->CreatePersonne(
+                    $request->get("perNom"), 
+                    $request->get("perPrenom"),
+                    $request->get("perMail"),
+                    $request->get("perNum"),
+                    $request->get("perFonction"),
+                    Linq::First($entreprises, function($x) use (&$request) { return $request->get("perEntreprise") == $x["entRs"]; }),
+                )
+            ]
+        );
         return $this->redirect("/professionnels");
     }
-
 
     /**
      * @Route("/personnesupdate/{id}", requirements = {"parametre"="\d+"}, name="edit_personnes")
@@ -87,13 +96,17 @@ class ProfessionnelsController extends AbstractController
         $mdp = $request->getSession()->get('mdp');
         $client = HttpClient::create();
 
-        if ($login == "" && $mdp == "") {
+        if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
             return $this->redirect("/connexion");
         }
 
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/entreprises", ['headers' => 
+        ['Accept' => 'application/json']]);
+        $entreprises = $response->toArray();
+
         $client->request(
             'PUT', 
-            $this->api . "/api/personnes/" . $id, [
+            $request->getSession()->get('api') . "/api/personnes/" . $id, [
                 'headers' => ['Accept' => 'application/json'],
                 'json' => $this->CreatePersonne(
                     $request->get("perNom"), 
@@ -101,39 +114,32 @@ class ProfessionnelsController extends AbstractController
                     $request->get("perMail"),
                     $request->get("perNum"),
                     $request->get("perFonction"),
-                    $request->get("perEntreprise"),
+                    Linq::First($entreprises, function($x) use (&$request) { return $request->get("perEntreprise") == $x["entRs"]; }),
                 )
             ]
         );
 
         return $this->redirect("/professionnels");
     }
+
     /**
-     * @Route("/personnesappend", name="add_personnes")
+     * @Route("/personnesdelete/{id}", requirements = {"parametre"="\d+"}, name="suppr_personnes")
      */
-    public function AddPersonnes(Request $request) : Response {
+    public function SupprPersonnes(Request $request, int $id) : Response {
         $login = $request->getSession()->get('login');
         $mdp = $request->getSession()->get('mdp');
         $client = HttpClient::create();
 
-        if ($login == "" && $mdp == "") {
-            return new Response("vous devez vous enregister avant d'accéder au données");
+        if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
+            return $this->redirect("/connexion");
         }
 
         $client->request(
-            'POST', 
-            $this->api . "/api/personnes", [
-                'headers' => ['Accept' => 'application/json'],
-                'json' => $this->CreatePersonne(
-                    $request->get("perNom"), 
-                    $request->get("perPrenom"),
-                    $request->get("perMail"),
-                    $request->get("perNum"),
-                    $request->get("perFonction"),
-                    $request->get("perEntreprise"),
-                )
-            ]
-        );
+            'DELETE', 
+            $request->getSession()->get('api') . "/api/personnes/" . $id, [
+                'headers' => ['Accept' => 'application/json']
+            ]);
+
         return $this->redirect("/professionnels");
     }
 
@@ -177,8 +183,8 @@ class ProfessionnelsController extends AbstractController
             'perPrenom' => $prenom,
             'perMail' => $mail,
             'perNum' => $num,
-            'perFonction' => $fonction !== "0 (Non renseigné)" ? '/api/fonctions/' . $fonction : null,
-            'perEntreprise' => $entreprise !== "0 (Non renseigné)" ? '/api/entreprises/' . $entreprise : null,
+            'perFonction' => $fonction != 0 ? '/api/fonctions/' . $fonction : null,
+            'perEntreprise' => isset($entreprise["id"]) ? '/api/entreprises/' . $entreprise["id"] : null,
         );
     }
 }

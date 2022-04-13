@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class ConnexionController extends AbstractController
 {
-    private $api = "http://localhost:8001";
     /**
      * @Route("/connexion", name="app_connexion", methods={"GET"})
      */
@@ -22,6 +21,7 @@ class ConnexionController extends AbstractController
         $request->getSession()->set('login', "");
         $request->getSession()->set('mdp', "");
         $request->getSession()->set('admin', false);
+        $request->getSession()->set('api', "http://localhost:8001");
         return $this->render('connexion.html.twig');
     }
 
@@ -32,7 +32,7 @@ class ConnexionController extends AbstractController
         $client = HttpClient::create();
 
         $data = $request->request->all();
-        $response = $client->request('GET', $this->api . "/api/utilisateurs", [
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/utilisateurs", [
             'headers' => [
                 'Accept' => 'application/json',
             ],
