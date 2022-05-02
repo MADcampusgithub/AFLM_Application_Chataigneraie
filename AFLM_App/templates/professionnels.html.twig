@@ -38,7 +38,9 @@
   </div>
 </form>
 
-<buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
+{% if droit %}
+  <buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
+{% endif %}
 
 <div class="accordion" id="accordionTable">
   <table class="table table-striped">
@@ -115,10 +117,12 @@
                           </div>
                         </div>
 
-                        <div class="col-12">
-                          <button type="submit" class="btn btn-primary">Modifier</button>
-                          <a href="{{ path("suppr_personnes", {"id" : pers.id}) }}" class="btn btn-danger">Supprimer</a>
-                        </div>
+                        {% if droit %}
+                          <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Modifier</button>
+                            <a href="{{ path("suppr_personnes", {"id" : pers.id}) }}" class="btn btn-danger">Supprimer</a>
+                          </div>
+                        {% endif %}
                       </form>
                     </div>
 
@@ -146,6 +150,7 @@
                         </tr>
                       </table>
                       
+                      {% if droit %}
                       <form action="" class="row g-3">
                         <div class="col-auto">
                           <label  class="visually-hidden"></label>
@@ -161,6 +166,8 @@
                           <button type="submit" class="btn btn-success mb-3">Ajouter</button>
                         </div>
                       </form>
+                      {% endif %}
+                      
                     </div>
                   </div>
                 </div>
@@ -227,7 +234,9 @@
               </tr>
             </tbody>
           </table>
-          <input class="btn btn-primary" value="Ajouter" type="submit" />
+          {% if droit %}
+            <input class="btn btn-primary" value="Ajouter" type="submit" />
+          {% endif %}
         </form>
       </div>
     </div>

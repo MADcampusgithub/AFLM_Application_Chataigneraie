@@ -18,6 +18,7 @@ class ProfessionnelsController extends AbstractController
     {
         $login = $request->getSession()->get('login');
         $mdp = $request->getSession()->get('mdp');
+        $droit = $request->getSession()->get('admin');
         $client = HttpClient::create();
         
         if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
@@ -52,7 +53,14 @@ class ProfessionnelsController extends AbstractController
             $request->get("filtreEnt") !== null ? $request->get("filtreEnt") : "",
         );
 
-        return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'allPersonnes' => $allPersonnes , 'fonctions' => $fonctions, 'entreprises' => $entreprises]);
+        return $this->render('professionnels.html.twig', [
+            'login' => $login, 
+            'droit' => $droit,
+            'personnes' => $personnes, 
+            'allPersonnes' => $allPersonnes , 
+            'fonctions' => $fonctions, 
+            'entreprises' => $entreprises
+        ]);
     }
 
     /**
