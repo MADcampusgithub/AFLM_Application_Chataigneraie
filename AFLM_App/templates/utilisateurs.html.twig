@@ -5,19 +5,25 @@
 {% block utilisateur %}maxime.adler{% endblock %}
 
 {% block content %}
-<form action="{{path("post_utilisateurs")}}" method="POST" class="row g-3">
+<form id="utilisateur_ajt_form" action="{{ path("add_utilisateurs") }}" method="POST" class="row g-3">
   <div class="col-auto">
     <label class="form-control-plaintext">Enregistrer un nouvel utilisateur : </label>
-    <input type="text" readonly class="form-control-plaintext" id="Name" >
   </div>
   <div class="col-auto">
-    <label  class="visually-hidden"></label>
-    <input type="login" class="form-control" id="NewLogin" placeholder="Login">
+    <input type="text" class="form-control" name="utiLogin" placeholder="Login">
   </div>
   <div class="col-auto">
-    <label  class="visually-hidden"></label>
-    <input type="label" class="form-control" id="NewName2" placeholder="Droit">
-  </div>    
+    <input type="text" class="form-control" name="utiMdp" placeholder="Mot de passe">
+  </div> 
+  <div class="col-auto">  
+  <select name="utiDroit" class="form-select">
+                    <option value="0">Professeur</option>
+                    <option value="1">Administrateur</option>
+  </select>
+  </div> 
+  <!--<div class="col-auto">
+    <input type="text" class="form-control" name="utiDroit" placeholder="Droit">
+  </div>    !-->
   <div class="col-auto">
     <button type="submit" class="btn btn-primary mb-3">Valider</button>
   </div>

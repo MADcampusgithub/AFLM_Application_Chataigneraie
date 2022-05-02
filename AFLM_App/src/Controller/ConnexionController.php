@@ -7,7 +7,6 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 //$this->getParameter('app.urlAPI');
 
@@ -22,6 +21,7 @@ class ConnexionController extends AbstractController
         $request->getSession()->set('mdp', "");
         $request->getSession()->set('admin', false);
         $request->getSession()->set('api', "http://localhost:8001");
+        //$request->getSession()->set('api', "http://10.3.249.223:8001");
         return $this->render('connexion.html.twig');
     }
 
