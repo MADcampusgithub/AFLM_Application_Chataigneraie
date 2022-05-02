@@ -2,7 +2,7 @@
 
 {% block title %}La chataigneraie - Utilisateurs{% endblock %}
 
-{% block utilisateur %}maxime.adler{% endblock %}
+{% block utilisateur %}{{ login }}{% endblock %}
 
 {% block content %}
 <form action="{{path("post_utilisateurs")}}" method="POST" class="row g-3">
