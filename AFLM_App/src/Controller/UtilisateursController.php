@@ -30,8 +30,8 @@ class UtilisateursController extends AbstractController
         array_multisort(array_column($utilisateurs, 'utiLogin'), SORT_ASC, $utilisateurs);
         
         return $this->render('utilisateurs.html.twig', [
-            'login' => $request->getSession()->get('login'), 
-            'droit' => $request->getSession()->get('droit'),
+            'login' => $login, 
+            'droit' => $droit,
             'utilisateurs' => $utilisateurs
         ]);
 
