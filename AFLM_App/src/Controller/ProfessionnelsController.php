@@ -27,11 +27,15 @@ class ProfessionnelsController extends AbstractController
 
         $response = $client->request('GET', $request->getSession()->get('api') . "/api/personnes", ['headers' => 
         ['Accept' => 'application/json']]);
-        $personnes = $response->toArray(); 
+        $personnes = $response->toArray();
+        array_multisort(array_column($personnes, 'perPrenom'), SORT_ASC, $personnes);
+
 
         $response = $client->request('GET', $request->getSession()->get('api') . "/api/fonctions", ['headers' => 
         ['Accept' => 'application/json']]);
         $fonctions = $response->toArray();
+        array_multisort(array_column($fonctions, 'fonLabel'), SORT_ASC, $fonctions);
+
 
         $response = $client->request('GET', $request->getSession()->get('api') . "/api/entreprises", ['headers' => 
         ['Accept' => 'application/json']]);
