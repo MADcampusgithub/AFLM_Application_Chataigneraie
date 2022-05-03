@@ -117,11 +117,12 @@
 
                         <div class="col-12">
                           <button type="submit" class="btn btn-primary">Modifier</button>
-                          <a href="{{ path("suppr_personnes", {"id" : pers.id}) }}" class="btn btn-danger">Supprimer</a>
+                          <a  href="{{ path("app_professionnels", {"id" : pers.id})}}" class="btn btn-danger">Supprimer</a>
+                            </div>
                         </div>
                       </form>
                     </div>
-
+                    <!--
                     <div class="col">
                       <table class="table table-borderless text-center align-middle ">
                         <tr> 
@@ -161,6 +162,7 @@
                           <button type="submit" class="btn btn-success mb-3">Ajouter</button>
                         </div>
                       </form>
+                      !-->
                     </div>
                   </div>
                 </div>
@@ -233,10 +235,39 @@
     </div>
   </div>
 </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="suppPro" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Suppression d'un professionnel</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    Êtes-vous sûr de vouloir supprimer la personne {{ personne.perNom }} {{personne.perPrenom}} ?
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                    <a href="{{ path("suppr_personnes", {"id" : personne.id}) }}" class="btn btn-danger">Confirmer</a>
+                                  </div>
+                                </div>
+                              </div>
 {% endblock %}
 
 {% block scripts %}
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+{% if personne.id != 0 %}
+  <script type="text/javascript">
+    var SuppPro = new bootstrap.Modal(document.getElementById("suppPro"));
+    SuppPro.toggle();
+
+    $('#suppPro').on('hidden.bs.modal', function (e) {
+      window.location.search = "";
+    });
+  </script>
+{% endif %}
 
 <script type="text/javascript">
   $("#ajoutBtn").on('click', function () {
@@ -244,5 +275,6 @@
     myModal.toggle();
   })
 </script>
+
 {% endblock %}
 

@@ -18,6 +18,7 @@ class ProfessionnelsController extends AbstractController
     {
         $login = $request->getSession()->get('login');
         $mdp = $request->getSession()->get('mdp');
+        $id = $request->query->get('id');
         $client = HttpClient::create();
         
         if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
@@ -52,7 +53,22 @@ class ProfessionnelsController extends AbstractController
             $request->get("filtreEnt") !== null ? $request->get("filtreEnt") : "",
         );
 
-        return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'allPersonnes' => $allPersonnes , 'fonctions' => $fonctions, 'entreprises' => $entreprises]);
+        if (isset($id)) {
+            $response = $client->request(
+                'GET', 
+                $request->getSession()->get('api') . "/api/personnes/".$id, ['headers' => ['Accept' => 'application/json']]
+            );
+            $personne = $response->toArray();
+
+            return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'allPersonnes' => $allPersonnes , 'fonctions' => $fonctions, 'entreprises' => $entreprises, 'personne' => $personne]);
+        }
+        else{
+            return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'allPersonnes' => $allPersonnes , 'fonctions' => $fonctions, 'entreprises' => $entreprises, 'personne' => [
+                'id' => 0,
+                'perNom' => '',
+                'perPrenom' => '',
+            ]]);
+        }
     }
 
     /**

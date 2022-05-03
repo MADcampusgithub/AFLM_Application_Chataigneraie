@@ -17,6 +17,7 @@ class UtilisateursController extends AbstractController
     {
         $login = $request->getSession()->get('login');
         $mdp = $request->getSession()->get('mdp');
+        $id = $request->query->get('id');
         $client = HttpClient::create();
         
         if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
@@ -29,7 +30,22 @@ class UtilisateursController extends AbstractController
             ['headers' => ['Accept' => 'application/json']]
         );
         $utilisateurs = $response->toArray(); 
-        return $this->render('utilisateurs.html.twig', ['login' => $request->getSession()->get('login'), 'utilisateurs' => $utilisateurs]);
+
+        if (isset($id)) {
+            $response = $client->request(
+                'GET', 
+                $request->getSession()->get('api') . "/api/utilisateurs/".$id, ['headers' => ['Accept' => 'application/json']]
+            );
+            $utilisateur = $response->toArray();
+
+            return $this->render('utilisateurs.html.twig', ['login' => $request->getSession()->get('login'), 'utilisateurs' => $utilisateurs, 'utilisateur' => $utilisateur]);
+        }
+        else{
+            return $this->render('utilisateurs.html.twig', ['login' => $request->getSession()->get('login'), 'utilisateurs' => $utilisateurs, 'utilisateur' => [
+                'id' => 0,
+                'utiLogin' => '',
+            ]]);
+        }
     }
 
     /**
@@ -52,7 +68,7 @@ class UtilisateursController extends AbstractController
             return $this->redirect("/connexion");
         }
 
-        // Création et envoie de la requete de suppression d'une entreprise
+        // Création et envoie de la requete de suppression d'un utilisateur
         $client->request(
             'DELETE', 
             $request->getSession()->get('api') . "/api/utilisateurs/" . $id, [
@@ -60,5 +76,41 @@ class UtilisateursController extends AbstractController
             ]);
 
         return $this->redirect("/utilisateurs");
+    }
+
+    /**
+     * @Route("/utilisateursappend", name="add_utilisateurs")
+     */
+    public function AddUtilisateurs(Request $request) : Response {
+        $login = $request->getSession()->get('login');
+        $mdp = $request->getSession()->get('mdp');
+        $client = HttpClient::create();
+
+        if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
+            return $this->redirect("/connexion");
+        }
+
+        $client->request(
+            'POST', 
+            $request->getSession()->get('api') . "/api/utilisateurs", [
+                'headers' => ['Accept' => 'application/json'],
+                'json' => $this->CreateUtilisateur(
+                    $request->get("utiLogin"), 
+                    $request->get("utiMdp"),
+                    $request->get("utiDroit"),
+                )
+            ]
+        );
+        return $this->redirect("/utilisateurs");
+    }
+
+     // Retourne un tableau associatif a envoyer a l'API
+     private function CreateUtilisateur($utiLogin, $utiMdp, $utiDroit) {
+        $utiMdp = hash('sha256', $utiMdp);
+        return array(
+            'utiLogin' => $utiLogin,
+            'utiDroit' => $utiDroit == "0" ? false : true, 
+            'utiMdp' => $utiMdp,
+        );
     }
 }

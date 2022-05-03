@@ -158,11 +158,30 @@
           </table>
           {% if entreprise.id != 0 %}
             <input class="btn btn-primary" value="Modifier" type="submit" />
-            <a href="{{ path("suppr_entreprises", {"id" : entreprise.id}) }}" role="buttom" class="btn btn-danger">Supprimer</a>
+            <a data-bs-toggle="modal" data-bs-target="#suppEntr" role="buttom" class="btn btn-danger">Supprimer</a>
           {% else %}
             <input class="btn btn-primary" value="Ajouter" type="submit" />
           {% endif %}
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de suppression -->
+<div class="modal fade" id="suppEntr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Suppression d'une entreprise</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Êtes-vous sûr de vouloir supprimer l'entreprise {{ entreprise.entRs }} ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <a href="{{ path("suppr_entreprises", {"id" : entreprise.id}) }}" type="button" class="btn btn-danger">Confirmer</a>
       </div>
     </div>
   </div>
@@ -177,7 +196,7 @@
     var myModal = new bootstrap.Modal(document.getElementById("myModal"));
     myModal.toggle();
 
-    $('#myModal').on('hidden.bs.modal', function (e) {
+    $('#suppEntr').on('hidden.bs.modal', function (e) {
       window.location.search = "";
     });
   </script>

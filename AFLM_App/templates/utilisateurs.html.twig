@@ -39,7 +39,7 @@
                 <td>
                   <div class="col-12">
                     
-                    <a href="{{ path("suppr_utilisateurs", {"id" : util.id}) }}">
+                    <a href="{{ path("app_utilisateurs", {"id" : util.id}) }}">
                     <img src="professionnel/Supp.png" class="rounded" width="10%" alt="...">
                     </a> 
                   </div>
@@ -51,5 +51,36 @@
     </table>
 </div>
 
+<!-- Modal -->
+                            <div class="modal fade" id="suppUti" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Suppression d'un utilisateur</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    Êtes-vous sûr de vouloir supprimer l'utilisateur ayant pour login {{ utilisateur.utiLogin }} ?
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                    <a href="{{ path("suppr_utilisateurs", {"id" : utilisateur.id}) }}" class="btn btn-danger">Confirmer</a>
+                                  </div>
+                                </div>
+                              </div>
 {% endblock %}
 
+{% block scripts %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+{% if utilisateur.id != 0 %}
+  <script type="text/javascript">
+    var SuppUti = new bootstrap.Modal(document.getElementById("suppUti"));
+    SuppUti.toggle();
+
+    $('#suppUti').on('hidden.bs.modal', function (e) {
+      window.location.search = "";
+    });
+  </script>
+{% endif %}
+{% endblock %}
