@@ -17,6 +17,7 @@ class UtilisateursController extends AbstractController
     {
         $login = $request->getSession()->get('login');
         $mdp = $request->getSession()->get('mdp');
+        $droit = $request->getSession()->get('admin');
         $client = HttpClient::create();
         
         if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
@@ -29,7 +30,11 @@ class UtilisateursController extends AbstractController
             ['headers' => ['Accept' => 'application/json']]
         );
         $utilisateurs = $response->toArray(); 
-        return $this->render('utilisateurs.html.twig', ['login' => $request->getSession()->get('login'), 'utilisateurs' => $utilisateurs]);
+        return $this->render('utilisateurs.html.twig', [
+            'login' => $request->getSession()->get('login'), 
+            'droit' => $request->getSession()->get('droit'),
+            'utilisateurs' => $utilisateurs
+        ]);
     }
 
     /**
