@@ -34,13 +34,14 @@ class Profil
     private $Pro_Label;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Personne::class, inversedBy="Per_Profils")
+     * @ORM\OneToMany(targetEntity=PersonneProfil::class, mappedBy="PersonneProfils")
      */
-    private $Pro_Personne;
+    private $personneProfils;
 
     public function __construct()
     {
         $this->Pro_Personne = new ArrayCollection();
+        $this->personneProfils = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -61,25 +62,31 @@ class Profil
     }
 
     /**
-     * @return Collection<int, Personne>
+     * @return Collection<int, PersonneProfil>
      */
-    public function getProPersonne(): Collection
+    public function getPersonneProfils(): Collection
     {
-        return $this->Pro_Personne;
+        return $this->personneProfils;
     }
 
-    public function addProPersonne(Personne $proPersonne): self
+    public function addPersonneProfil(PersonneProfil $personneProfil): self
     {
-        if (!$this->Pro_Personne->contains($proPersonne)) {
-            $this->Pro_Personne[] = $proPersonne;
+        if (!$this->personneProfils->contains($personneProfil)) {
+            $this->personneProfils[] = $personneProfil;
+            $personneProfil->setPersonneProfils($this);
         }
 
         return $this;
     }
 
-    public function removeProPersonne(Personne $proPersonne): self
+    public function removePersonneProfil(PersonneProfil $personneProfil): self
     {
-        $this->Pro_Personne->removeElement($proPersonne);
+        if ($this->personneProfils->removeElement($personneProfil)) {
+            // set the owning side to null (unless already changed)
+            if ($personneProfil->getPersonneProfils() === $this) {
+                $personneProfil->setPersonneProfils(null);
+            }
+        }
 
         return $this;
     }

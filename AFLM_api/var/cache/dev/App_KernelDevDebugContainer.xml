@@ -355,6 +355,10 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Repository\PersonneProfilRepository" class="App\Repository\PersonneProfilRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\PersonneRepository" class="App\Repository\PersonneRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -3511,7 +3515,7 @@
       <factory class="Doctrine\ORM\EntityManager" method="create"/>
     </service>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.Q0sMKKB"/>
+      <argument type="service" id=".service_locator..SyZH.6"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -4982,6 +4986,8 @@
     <service id=".abstract.instanceof.App\Repository\FonctionRepository" class="App\Repository\FonctionRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PaysRepository" class="App\Repository\PaysRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\PaysRepository" class="App\Repository\PaysRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PersonneProfilRepository" class="App\Repository\PersonneProfilRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\PersonneProfilRepository" class="App\Repository\PersonneProfilRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PersonneRepository" class="App\Repository\PersonneRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\PersonneRepository" class="App\Repository\PersonneRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ProfilRepository" class="App\Repository\ProfilRepository" autowire="true" abstract="true"/>
@@ -5422,12 +5428,13 @@
       <argument type="service" id="cache.doctrine.orm.default.result"/>
       <factory class="Doctrine\Common\Cache\Psr6\DoctrineProvider" method="wrap"/>
     </service>
-    <service id=".service_locator.Q0sMKKB" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..SyZH.6" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\EntrepriseRepository" type="service_closure" id="App\Repository\EntrepriseRepository"/>
         <argument key="App\Repository\FonctionRepository" type="service_closure" id="App\Repository\FonctionRepository"/>
         <argument key="App\Repository\PaysRepository" type="service_closure" id="App\Repository\PaysRepository"/>
+        <argument key="App\Repository\PersonneProfilRepository" type="service_closure" id="App\Repository\PersonneProfilRepository"/>
         <argument key="App\Repository\PersonneRepository" type="service_closure" id="App\Repository\PersonneRepository"/>
         <argument key="App\Repository\ProfilRepository" type="service_closure" id="App\Repository\ProfilRepository"/>
         <argument key="App\Repository\SpecialiteRepository" type="service_closure" id="App\Repository\SpecialiteRepository"/>
