@@ -37,7 +37,7 @@
         </option>
       {% endfor %}
     </select>
-    <span class="input-group-text">spécialités</span>
+    <span class="input-group-text">Spécialité</span>
     <select name="filtreSpes" class="form-select" aria-label="Selection de plusieurs spécialités">
       <option value="0">Non renseigné</option>
       {% for spe in specialites %}
@@ -50,7 +50,9 @@
   </div>
 </form>
 
-<buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
+{% if droit %}
+  <buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
+{% endif %}
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
 
@@ -156,11 +158,14 @@
               </tr>
             </tbody>
           </table>
-          {% if entreprise.id != 0 %}
-            <input class="btn btn-primary" value="Modifier" type="submit" />
-            <a data-bs-toggle="modal" data-bs-target="#suppEntr" role="buttom" class="btn btn-danger">Supprimer</a>
-          {% else %}
-            <input class="btn btn-primary" value="Ajouter" type="submit" />
+
+          {% if droit %}
+            {% if entreprise.id != 0 %}
+              <input class="btn btn-primary" value="Modifier" type="submit" />
+               <a data-bs-toggle="modal" data-bs-target="#suppEntr" role="buttom" class="btn btn-danger">Supprimer</a>
+            {% else %}
+              <input class="btn btn-primary" value="Ajouter" type="submit" />
+            {% endif %}
           {% endif %}
         </form>
       </div>

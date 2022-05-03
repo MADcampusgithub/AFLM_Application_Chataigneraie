@@ -17,6 +17,7 @@ class EntreprisesController extends AbstractController
     public function Entreprises(Request $request) : Response {
         $login = $request->getSession()->get('login');
         $mdp = $request->getSession()->get('mdp');
+        $droit = $request->getSession()->get('admin');
         $id = $request->query->get('id');
         $client = HttpClient::create();
 
@@ -81,20 +82,37 @@ class EntreprisesController extends AbstractController
                 $entreprise['entSpecialite'][$j] = $this->GetData($specialites, "speLabel", $entreprise['entSpecialite'][$j]);
             }
 
-            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'allEntreprises' => $allEntreprises, 'entreprise' => $entreprise, 'specialites' => $specialites, 'pays' => $pays, 'villes' => $villes]);
+            return $this->render('entreprises.html.twig', [
+                'login' => $login, 
+                'droit' => $droit, 
+                'entreprises' => $entreprises, 
+                'allEntreprises' => $allEntreprises, 
+                'entreprise' => $entreprise, 
+                'specialites' => $specialites, 
+                'pays' => $pays, 
+                'villes' => $villes]);
         } 
         else {
-            return $this->render('entreprises.html.twig', ['login' => $login, 'entreprises' => $entreprises, 'allEntreprises' => $allEntreprises, 'specialites' => $specialites, 'pays' => $pays, 'villes' => $villes, 'entreprise' => [
-                'id' => 0,
-                'entRs' => '',
-                'entAdresse1' => '',
-                'entAdresse2' => '',
-                'entAdresse3' => '',
-                'entCP' => '',
-                'entSpecialite' => [0,],
-                'entVille' => 0,
-                'entPays' => 0,
-            ]]);
+            return $this->render('entreprises.html.twig', [
+                'login' => $login, 
+                'droit' => $droit, 
+                'entreprises' => $entreprises, 
+                'allEntreprises' => $allEntreprises, 
+                'specialites' => $specialites, 
+                'pays' => $pays, 
+                'villes' => $villes, 
+                'entreprise' => [
+                    'id' => 0,
+                    'entRs' => '',
+                    'entAdresse1' => '',
+                    'entAdresse2' => '',
+                    'entAdresse3' => '',
+                    'entCP' => '',
+                    'entSpecialite' => [0,],
+                    'entVille' => 0,
+                    'entPays' => 0,
+                ]
+            ]);
         }
     }
 

@@ -19,6 +19,7 @@ class ProfessionnelsController extends AbstractController
         $login = $request->getSession()->get('login');
         $mdp = $request->getSession()->get('mdp');
         $id = $request->query->get('id');
+        $droit = $request->getSession()->get('admin');
         $client = HttpClient::create();
         
         if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
@@ -27,11 +28,15 @@ class ProfessionnelsController extends AbstractController
 
         $response = $client->request('GET', $request->getSession()->get('api') . "/api/personnes", ['headers' => 
         ['Accept' => 'application/json']]);
-        $personnes = $response->toArray(); 
+        $personnes = $response->toArray();
+        array_multisort(array_column($personnes, 'perPrenom'), SORT_ASC, $personnes);
+
 
         $response = $client->request('GET', $request->getSession()->get('api') . "/api/fonctions", ['headers' => 
         ['Accept' => 'application/json']]);
         $fonctions = $response->toArray();
+        array_multisort(array_column($fonctions, 'fonLabel'), SORT_ASC, $fonctions);
+
 
         $response = $client->request('GET', $request->getSession()->get('api') . "/api/entreprises", ['headers' => 
         ['Accept' => 'application/json']]);
@@ -60,10 +65,10 @@ class ProfessionnelsController extends AbstractController
             );
             $personne = $response->toArray();
 
-            return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'allPersonnes' => $allPersonnes , 'fonctions' => $fonctions, 'entreprises' => $entreprises, 'personne' => $personne]);
+            return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'allPersonnes' => $allPersonnes , 'fonctions' => $fonctions, 'entreprises' => $entreprises, 'personne' => $personne, 'droit' => $droit ]);
         }
         else{
-            return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'allPersonnes' => $allPersonnes , 'fonctions' => $fonctions, 'entreprises' => $entreprises, 'personne' => [
+            return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'allPersonnes' => $allPersonnes , 'fonctions' => $fonctions, 'entreprises' => $entreprises, 'droit' => $droit,  'personne' => [
                 'id' => 0,
                 'perNom' => '',
                 'perPrenom' => '',

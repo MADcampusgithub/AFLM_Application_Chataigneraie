@@ -18,6 +18,7 @@ class UtilisateursController extends AbstractController
         $login = $request->getSession()->get('login');
         $mdp = $request->getSession()->get('mdp');
         $id = $request->query->get('id');
+        $droit = $request->getSession()->get('admin');
         $client = HttpClient::create();
         
         if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
@@ -37,23 +38,15 @@ class UtilisateursController extends AbstractController
                 $request->getSession()->get('api') . "/api/utilisateurs/".$id, ['headers' => ['Accept' => 'application/json']]
             );
             $utilisateur = $response->toArray();
-
-            return $this->render('utilisateurs.html.twig', ['login' => $request->getSession()->get('login'), 'utilisateurs' => $utilisateurs, 'utilisateur' => $utilisateur]);
+            array_multisort(array_column($utilisateurs, 'utiLogin'), SORT_ASC, $utilisateurs);
+            return $this->render('utilisateurs.html.twig', ['login' => $request->getSession()->get('login'), 'utilisateurs' => $utilisateurs, 'utilisateur' => $utilisateur, 'droit' => $droit]);
         }
         else{
-            return $this->render('utilisateurs.html.twig', ['login' => $request->getSession()->get('login'), 'utilisateurs' => $utilisateurs, 'utilisateur' => [
+            return $this->render('utilisateurs.html.twig', ['login' => $request->getSession()->get('login'), 'utilisateurs' => $utilisateurs,'droit' => $droit,  'utilisateur' => [
                 'id' => 0,
                 'utiLogin' => '',
             ]]);
         }
-    }
-
-    /**
-     * @Route("/utilisateurspost", name="post_utilisateurs", methods={"POST"})
-     */
-    public function UtilisateursPost(Request $request): Response
-    {
-        return new Response("data send");
     }
 
     /**
@@ -69,11 +62,8 @@ class UtilisateursController extends AbstractController
         }
 
         // Création et envoie de la requete de suppression d'un utilisateur
-        $client->request(
-            'DELETE', 
-            $request->getSession()->get('api') . "/api/utilisateurs/" . $id, [
-                'headers' => ['Accept' => 'application/json'],
-            ]);
+        $client->request('DELETE', $request->getSession()->get('api') . "/api/utilisateurs/" . $id, [
+                'headers' => ['Accept' => 'application/json'],]);
 
         return $this->redirect("/utilisateurs");
     }

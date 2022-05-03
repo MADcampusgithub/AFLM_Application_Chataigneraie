@@ -2,26 +2,34 @@
 
 {% block title %}La chataigneraie - Utilisateurs{% endblock %}
 
-{% block utilisateur %}maxime.adler{% endblock %}
+{% block utilisateur %}{{ login }}{% endblock %}
 
 {% block content %}
-<form action="{{path("post_utilisateurs")}}" method="POST" class="row g-3">
-  <div class="col-auto">
-    <label class="form-control-plaintext">Enregistrer un nouvel utilisateur : </label>
-    <input type="text" readonly class="form-control-plaintext" id="Name" >
-  </div>
-  <div class="col-auto">
-    <label  class="visually-hidden"></label>
-    <input type="login" class="form-control" id="NewLogin" placeholder="Login">
-  </div>
-  <div class="col-auto">
-    <label  class="visually-hidden"></label>
-    <input type="label" class="form-control" id="NewName2" placeholder="Droit">
-  </div>    
-  <div class="col-auto">
-    <button type="submit" class="btn btn-primary mb-3">Valider</button>
-  </div>
-</form>
+{% if droit %}
+  <form id="utilisateur_ajt_form" action="{{ path("add_utilisateurs") }}" method="POST" class="row g-3">
+    <div class="col-auto">
+      <label class="form-control-plaintext">Enregistrer un nouvel utilisateur : </label>
+    </div>
+    <div class="col-auto">
+      <input type="text" class="form-control" name="utiLogin" placeholder="Login">
+    </div>
+    <div class="col-auto">
+      <input type="text" class="form-control" name="utiMdp" placeholder="Mot de passe">
+    </div> 
+    <div class="col-auto">  
+    <select name="utiDroit" class="form-select">
+                      <option value="0">Professeur</option>
+                      <option value="1">Administrateur</option>
+    </select>
+    </div> 
+    <!--<div class="col-auto">
+      <input type="text" class="form-control" name="utiDroit" placeholder="Droit">
+    </div>    !-->
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary mb-3">Valider</button>
+    </div>
+  </form>
+{% endif %}
 <div class="container">
     <table class="table table-hover table-striped text-center align-middle">
         <thead>
@@ -32,6 +40,7 @@
             </tr>
         </thead>
         <tbody>
+
               {% for util in utilisateurs %}
               <tr>
                 <td> {{util.utiLogin}}</td>
@@ -40,13 +49,13 @@
                   <div class="col-12">
                     
                     <a href="{{ path("app_utilisateurs", {"id" : util.id}) }}">
+
                     <img src="professionnel/Supp.png" class="rounded" width="10%" alt="...">
-                    </a> 
-                  </div>
-                </td>
-              </tr>
-              {% endfor %}
+                  </a> 
+                </div>
+              </td>
             </tr>
+          {% endfor %}
         </tbody>
     </table>
 </div>
