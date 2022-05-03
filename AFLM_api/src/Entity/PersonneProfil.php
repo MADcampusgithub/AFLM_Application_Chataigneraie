@@ -28,22 +28,17 @@ class PersonneProfil
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity=Personne::class, inversedBy="personnesProfils")
+     * @ORM\ManyToOne(targetEntity=Personne::class, inversedBy="PersonnesProfils")
      * @ORM\JoinColumn(nullable=false)
      */
     private $Personne;
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity=Profil::class, inversedBy="personnesProfils")
+     * @ORM\ManyToOne(targetEntity=Profil::class, inversedBy="PersonnesProfils")
      * @ORM\JoinColumn(nullable=false)
      */
     private $Profil;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getAnnee(): ?string
     {

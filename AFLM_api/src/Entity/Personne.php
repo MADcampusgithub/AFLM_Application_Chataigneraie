@@ -61,7 +61,7 @@ class Personne
     private $Per_Fonction;
 
     /**
-     * @ORM\OneToMany(targetEntity=PersonneProfil::class, mappedBy="PersonnesProfils")
+     * @ORM\OneToMany(targetEntity=PersonneProfil::class, mappedBy="Personne")
      */
     private $PersonnesProfils;
 
