@@ -23,21 +23,12 @@ class UtilisateursController extends AbstractController
             return $this->redirect("/connexion");
         }
 
-        $response = $client->request(
-            'GET', 
-            $request->getSession()->get('api') . "/api/utilisateurs", 
-            ['headers' => ['Accept' => 'application/json']]
-        );
-        $utilisateurs = $response->toArray(); 
-        return $this->render('utilisateurs.html.twig', ['login' => $request->getSession()->get('login'), 'utilisateurs' => $utilisateurs]);
-    }
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/utilisateurs", 
+            ['headers' => ['Accept' => 'application/json']]);
+        $utilisateurs = $response->toArray();
+        array_multisort(array_column($utilisateurs, 'utiLogin'), SORT_ASC, $utilisateurs);
 
-    /**
-     * @Route("/utilisateurspost", name="post_utilisateurs", methods={"POST"})
-     */
-    public function UtilisateursPost(Request $request): Response
-    {
-        return new Response("data send");
+        return $this->render('utilisateurs.html.twig', ['login' => $request->getSession()->get('login'), 'utilisateurs' => $utilisateurs]);
     }
 
     /**
@@ -53,11 +44,8 @@ class UtilisateursController extends AbstractController
         }
 
         // Création et envoie de la requete de suppression d'un utilisateur
-        $client->request(
-            'DELETE', 
-            $request->getSession()->get('api') . "/api/utilisateurs/" . $id, [
-                'headers' => ['Accept' => 'application/json'],
-            ]);
+        $client->request('DELETE', $request->getSession()->get('api') . "/api/utilisateurs/" . $id, [
+                'headers' => ['Accept' => 'application/json'],]);
 
         return $this->redirect("/utilisateurs");
     }
