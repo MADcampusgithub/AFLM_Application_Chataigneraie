@@ -36,12 +36,12 @@ class Profil
     /**
      * @ORM\OneToMany(targetEntity=PersonneProfil::class, mappedBy="PersonneProfils")
      */
-    private $personneProfils;
+    private $PersonnesProfils;
 
     public function __construct()
     {
         $this->Pro_Personne = new ArrayCollection();
-        $this->personneProfils = new ArrayCollection();
+        $this->PersonnesProfils = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -66,14 +66,14 @@ class Profil
      */
     public function getPersonneProfils(): Collection
     {
-        return $this->personneProfils;
+        return $this->PersonnesProfils;
     }
 
     public function addPersonneProfil(PersonneProfil $personneProfil): self
     {
-        if (!$this->personneProfils->contains($personneProfil)) {
-            $this->personneProfils[] = $personneProfil;
-            $personneProfil->setPersonneProfils($this);
+        if (!$this->PersonnesProfils->contains($personneProfil)) {
+            $this->PersonnesProfils[] = $personneProfil;
+            $personneProfil->setProfil($this);
         }
 
         return $this;
@@ -81,10 +81,10 @@ class Profil
 
     public function removePersonneProfil(PersonneProfil $personneProfil): self
     {
-        if ($this->personneProfils->removeElement($personneProfil)) {
+        if ($this->PersonnesProfils->removeElement($personneProfil)) {
             // set the owning side to null (unless already changed)
-            if ($personneProfil->getPersonneProfils() === $this) {
-                $personneProfil->setPersonneProfils(null);
+            if ($personneProfil->getProfil() === $this) {
+                $personneProfil->setProfil(null);
             }
         }
 

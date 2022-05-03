@@ -61,20 +61,15 @@ class Personne
     private $Per_Fonction;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $Per_Annee;
-
-    /**
      * @ORM\OneToMany(targetEntity=PersonneProfil::class, mappedBy="PersonnesProfils")
      */
-    private $personneProfils;
+    private $PersonnesProfils;
 
     public function __construct()
     {
         $this->Per_Profils = new ArrayCollection();
         $this->Ent_Fonctions = new ArrayCollection();
-        $this->personneProfils = new ArrayCollection();
+        $this->PersonnesProfils = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,31 +149,19 @@ class Personne
         return $this;
     }
 
-    public function getPerAnnee(): ?int
-    {
-        return $this->Per_Annee;
-    }
-
-    public function setPerAnnee(?int $Per_Annee): self
-    {
-        $this->Per_Annee = $Per_Annee;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, PersonneProfil>
      */
     public function getPersonneProfils(): Collection
     {
-        return $this->personneProfils;
+        return $this->PersonnesProfils;
     }
 
     public function addPersonneProfil(PersonneProfil $personneProfil): self
     {
-        if (!$this->personneProfils->contains($personneProfil)) {
-            $this->personneProfils[] = $personneProfil;
-            $personneProfil->setPersonnesProfils($this);
+        if (!$this->PersonnesProfils->contains($personneProfil)) {
+            $this->PersonnesProfils[] = $personneProfil;
+            $personneProfil->setPersonne($this);
         }
 
         return $this;
@@ -186,10 +169,10 @@ class Personne
 
     public function removePersonneProfil(PersonneProfil $personneProfil): self
     {
-        if ($this->personneProfils->removeElement($personneProfil)) {
+        if ($this->PersonnesProfils->removeElement($personneProfil)) {
             // set the owning side to null (unless already changed)
-            if ($personneProfil->getPersonnesProfils() === $this) {
-                $personneProfil->setPersonnesProfils(null);
+            if ($personneProfil->getPersonne() === $this) {
+                $personneProfil->setPersonne(null);
             }
         }
 

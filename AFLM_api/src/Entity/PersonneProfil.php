@@ -7,8 +7,17 @@ use App\Repository\PersonneProfilRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass=PersonneProfilRepository::class)
+ * @ApiResource(
+ *      collectionOperations = {
+ *          "get",
+ *          "post",
+ *      },
+ *      itemOperations = {
+ *          "get",
+ *          "delete",
+ *      }
+ * )
  */
 class PersonneProfil
 {
@@ -19,17 +28,17 @@ class PersonneProfil
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity=Personne::class, inversedBy="personneProfils")
+     * @ORM\ManyToOne(targetEntity=Personne::class, inversedBy="personnesProfils")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $PersonnesProfils;
+    private $Personne;
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity=Profil::class, inversedBy="personneProfils")
+     * @ORM\ManyToOne(targetEntity=Profil::class, inversedBy="personnesProfils")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $PersonneProfils;
+    private $Profil;
 
     public function getId(): ?int
     {
@@ -48,26 +57,26 @@ class PersonneProfil
         return $this;
     }
 
-    public function getPersonnesProfils(): ?Personne
+    public function getPersonne(): ?Personne
     {
-        return $this->PersonnesProfils;
+        return $this->Personne;
     }
 
-    public function setPersonnesProfils(?Personne $PersonnesProfils): self
+    public function setPersonne(?Personne $PersonnesProfils): self
     {
-        $this->PersonnesProfils = $PersonnesProfils;
+        $this->Personne = $PersonnesProfils;
 
         return $this;
     }
 
-    public function getPersonneProfils(): ?Profil
+    public function getProfil(): ?Profil
     {
-        return $this->PersonneProfils;
+        return $this->Profil;
     }
 
-    public function setPersonneProfils(?Profil $PersonneProfils): self
+    public function setProfil(?Profil $PersonneProfils): self
     {
-        $this->PersonneProfils = $PersonneProfils;
+        $this->Profil = $PersonneProfils;
 
         return $this;
     }

@@ -15,7 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
  *      },
  *      itemOperations = {
  *          "get",
- *          "put",
  *          "delete",
  *      }
  * )
