@@ -135,34 +135,33 @@
                         <tr> 
                           <th class = "col-md-3"> Profil </th>
                           <th class = "col-md-3"> Année </th>
-                          <th class = "col-md-1"></th>
                         </tr>
-                        <tr>
-                          <td> bibibibibibiib</td>
-                          <td> 20--</td>
-                          <td><img src="professionnel/Supp.png" class="rounded float-start" width="40%" alt="..."> </td>
-                        </tr>
-                        <tr>
-                          <td> sisisisisiisisi</td>
-                          <td> 20--</td>
-                          <td><img src="professionnel/Supp.png" class="rounded float-start" width="40%" alt="..."> </td>
-                        </tr>
-                        <tr>
-                          <td> bahahahhahahaha</td>
-                          <td> 20--</td>
-                          <td><img src="professionnel/Supp.png" class="rounded float-start" width="40%" alt="..."> </td>
-                        </tr>
+                        {% for pp in personnes_profils %}
+                          {% if pers.id == pp.Personne %}
+                            <tr>
+                              <td>{{pp.Profil}}</td>
+                              <td>{{pp.Annee}}</td>
+                              <td><a href="{{ path('delete_profilpersonne', {"id" : pers.id}) }}?id={{ pp.Profil }}">
+                                <img src="professionnel/Supp.png" class="rounded float-start" width="20px" alt="..."> 
+                              </a></td>
+                            </tr>
+                          {% endif %}
+                        {% endfor %}
                       </table>
                       
-                      <form action="" class="row g-3">
+                      {% if droit %}
+                      <form action="{{ path("add_profilpersonne", {"id" : pers.id}) }}" class="row g-3">
                         <div class="col-auto">
-                          <label  class="visually-hidden"></label>
-                          <input type="label" class="form-control" id="NewProfil" placeholder="Profil">
+                          <select name="profil" class="form-select">
+                              <option value="0" selected>Non renseigné</option>
+                              {% for profil in profils %}
+                                <option value="{{profil.id}}">{{ profil.proLabel }}</option>
+                              {% endfor %}
+                            </select>
                         </div>
 
                         <div class="col-auto">
-                          <label  class="visually-hidden"></label>
-                          <input type="label" class="form-control" id="NewProfil2" placeholder="Année">
+                          <input type="label" class="form-control" name="proAnnee" placeholder="Année">
                         </div>  
 
                         <div class="col-auto">

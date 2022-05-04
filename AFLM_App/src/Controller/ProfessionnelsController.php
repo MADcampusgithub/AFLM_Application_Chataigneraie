@@ -37,6 +37,14 @@ class ProfessionnelsController extends AbstractController
         $fonctions = $response->toArray();
         array_multisort(array_column($fonctions, 'fonLabel'), SORT_ASC, $fonctions);
 
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/profils", ['headers' => 
+        ['Accept' => 'application/json']]);
+        $profils = $response->toArray();
+        array_multisort(array_column($profils, 'proLabel'), SORT_ASC, $profils);
+
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/personne_profils", ['headers' => 
+        ['Accept' => 'application/json']]);
+        $personnes_profils = $response->toArray();
 
         $response = $client->request('GET', $request->getSession()->get('api') . "/api/entreprises", ['headers' => 
         ['Accept' => 'application/json']]);
@@ -49,6 +57,16 @@ class ProfessionnelsController extends AbstractController
         for ($j = 0; $j < count($personnes); $j++) {
             $personnes[$j]["perEntreprise"] = $this->GetData($entreprises, "entRs", $personnes[$j]["perEntreprise"]);
         }
+
+        for ($j = 0; $j < count($personnes_profils); $j++) {
+            $personnes_profils[$j]["Profil"] = $this->GetData($profils, "proLabel", $personnes_profils[$j]["Profil"]);
+        }
+
+        for ($j = 0; $j < count($personnes_profils); $j++) {
+            $personnes_profils[$j]["Personne"] = $this->GetData($personnes, "id", $personnes_profils[$j]["Personne"]);
+        }
+
+        array_multisort(array_column($personnes_profils, 'Annee'), SORT_DESC, $personnes_profils);
 
         $allPersonnes = $personnes;
         $personnes = $this->FiltrePersonnes(
@@ -65,15 +83,44 @@ class ProfessionnelsController extends AbstractController
             );
             $personne = $response->toArray();
 
-            return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'allPersonnes' => $allPersonnes , 'fonctions' => $fonctions, 'entreprises' => $entreprises, 'personne' => $personne, 'droit' => $droit ]);
+            return $this->render('professionnels.html.twig', [
+                'login' => $login, 
+                'droit' => $droit,
+                'personnes_profils' => $personnes_profils,
+                'profils' => $profils,
+                'personnes' => $personnes, 
+                'allPersonnes' => $allPersonnes, 
+                'fonctions' => $fonctions, 
+                'entreprises' => $entreprises
+            ]);
         }
         else{
-            return $this->render('professionnels.html.twig', ['login' => $request->getSession()->get('login'), 'personnes' => $personnes, 'allPersonnes' => $allPersonnes , 'fonctions' => $fonctions, 'entreprises' => $entreprises, 'droit' => $droit,  'personne' => [
-                'id' => 0,
-                'perNom' => '',
-                'perPrenom' => '',
-            ]]);
+            return $this->render('professionnels.html.twig', [
+                'login' => $login, 
+                'droit' => $droit,
+                'personnes_profils' => $personnes_profils,
+                'profils' => $profils,
+                'personnes' => $personnes, 
+                'allPersonnes' => $allPersonnes, 
+                'fonctions' => $fonctions, 
+                'entreprises' => $entreprises ,
+                'personne' => [
+                    'id' => 0,
+                    'perNom' => '',
+                    'perPrenom' => '',
+                ]
+            ]);
         }
+        return $this->render('professionnels.html.twig', [
+            'login' => $login, 
+            'droit' => $droit,
+            'personnes_profils' => $personnes_profils,
+            'profils' => $profils,
+            'personnes' => $personnes, 
+            'allPersonnes' => $allPersonnes, 
+            'fonctions' => $fonctions, 
+            'entreprises' => $entreprises
+        ]);
     }
 
     /**
@@ -164,6 +211,60 @@ class ProfessionnelsController extends AbstractController
         return $this->redirect("/professionnels");
     }
 
+    /**
+     * @Route("/personnes/profilappend/{id}", requirements = {"parametre"="\d+"}, name="add_profilpersonne")
+     */
+    public function AddProfilPersonne(Request $request, $id) : Response {
+        $login = $request->getSession()->get('login');
+        $mdp = $request->getSession()->get('mdp');
+        $client = HttpClient::create();
+
+        if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
+            return $this->redirect("/connexion");
+        }
+
+        if ($request->get("profil") != 0) {
+            $client->request('POST', $request->getSession()->get('api') . "/api/personne_profils", [
+                'headers' => ['Accept' => 'application/json'],
+                'json' => $this->CreateProfilPersonne(
+                    $id,
+                    $request->get("profil"),
+                    $request->get("proAnnee"))
+            ]);
+        }
+        
+        return $this->redirect("/professionnels");
+    }
+
+    /**
+     * @Route("/personnes/profildelete/{id}", requirements = {"parametre"="\d+"}, name="delete_profilpersonne")
+     */
+    public function DeleteProfilPersonne(Request $request, $id) : Response {
+        $login = $request->getSession()->get('login');
+        $mdp = $request->getSession()->get('mdp');
+        $nomPro = $request->query->get("id");
+        $client = HttpClient::create();
+
+        if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
+            return $this->redirect("/connexion");
+        }
+
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/profils", ['headers' => 
+        ['Accept' => 'application/json']]);
+        $profils = $response->toArray();
+
+        $idPro = Linq::First($profils, function($x) use (&$nomPro) { return $nomPro == $x["proLabel"]; })["id"];
+
+        if (isset($idPro))
+        {
+            $client->request('DELETE', $request->getSession()->get('api') . "/api/personne_profils/Personne=" . $id . ";Profil=" . $idPro, [
+                'headers' => ['Accept' => 'application/json']
+            ]);
+        }
+        
+        return $this->redirect("/professionnels");
+    }
+
     // Retourne un ensemble d'entreprises filtré
     private function FiltrePersonnes(array $personnes, string $nom, string $prenom, string $entreprise) {
         $pers = Linq::Where($personnes, function($x) use (&$nom) {
@@ -206,6 +307,14 @@ class ProfessionnelsController extends AbstractController
             'perNum' => $num,
             'perFonction' => $fonction != 0 ? '/api/fonctions/' . $fonction : null,
             'perEntreprise' => isset($entreprise["id"]) ? '/api/entreprises/' . $entreprise["id"] : null,
+        );
+    }
+
+    private function CreateProfilPersonne($personne, $profil, $annee) {
+        return array(
+            'Annee' => $annee,
+            'Personne' => $personne != 0 ? '/api/personnes/' . $personne : null,
+            'Profil' => $profil != 0 ? '/api/profils/' . $profil : null,
         );
     }
 }
