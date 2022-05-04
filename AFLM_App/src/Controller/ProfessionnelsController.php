@@ -89,6 +89,7 @@ class ProfessionnelsController extends AbstractController
                 'personnes_profils' => $personnes_profils,
                 'profils' => $profils,
                 'personnes' => $personnes, 
+                'personne' => $personne,
                 'allPersonnes' => $allPersonnes, 
                 'fonctions' => $fonctions, 
                 'entreprises' => $entreprises
