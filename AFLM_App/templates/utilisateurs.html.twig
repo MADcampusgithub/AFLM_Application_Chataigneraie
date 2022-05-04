@@ -16,7 +16,7 @@
       <input type="text" class="form-control" name="utiLogin" placeholder="Login">
     </div>
     <div class="col-auto">
-      <input type="text" class="form-control" name="utiMdp" placeholder="Mot de passe">
+      <input type="password" class="form-control" name="utiMdp" placeholder="Mot de passe">
     </div> 
     <div class="col-auto">  
     <select name="utiDroit" class="form-select">
@@ -62,22 +62,23 @@
 </div>
 
 <!-- Modal -->
-                            <div class="modal fade" id="suppUti" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Suppression d'un utilisateur</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    Êtes-vous sûr de vouloir supprimer l'utilisateur ayant pour login {{ utilisateur.utiLogin }} ?
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                    <a href="{{ path("suppr_utilisateurs", {"id" : utilisateur.id}) }}" class="btn btn-danger">Confirmer</a>
-                                  </div>
-                                </div>
-                              </div>
+<div class="modal fade" id="suppUti" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Suppression d'un utilisateur</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Êtes-vous sûr de vouloir supprimer l'utilisateur ayant pour login {{ utilisateur.utiLogin }} ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <a href="{{ path("suppr_utilisateurs", {"id" : utilisateur.id}) }}" class="btn btn-danger">Confirmer</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <!-- Sinon l'utilisateur n'est pas un administrateur !-->
