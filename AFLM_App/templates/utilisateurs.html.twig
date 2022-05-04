@@ -5,6 +5,8 @@
 {% block utilisateur %}{{ login }}{% endblock %}
 
 {% block content %}
+
+<!-- Si l'utilisateur est un administrateur !-->
 {% if droit %}
   <form id="utilisateur_ajt_form" action="{{ path("add_utilisateurs") }}" method="POST" class="row g-3">
     <div class="col-auto">
@@ -29,7 +31,6 @@
       <button type="submit" class="btn btn-primary mb-3">Valider</button>
     </div>
   </form>
-{% endif %}
 <div class="container">
     <table class="table table-hover table-striped text-center align-middle">
         <thead>
@@ -77,6 +78,13 @@
                                   </div>
                                 </div>
                               </div>
+
+
+<!-- Sinon l'utilisateur n'est pas un administrateur !-->
+{% else %}
+  <p> Vous n'êtes pas autorisé à accéder à cette page. </p>
+{% endif %}
+
 {% endblock %}
 
 {% block scripts %}

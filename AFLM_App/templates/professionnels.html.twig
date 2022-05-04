@@ -5,6 +5,11 @@
 {% block utilisateur %}{{ login }}{% endblock %}
 
 {% block content %}
+
+<!-- Si l'utilisateur est un administrateur !-->
+{% if droit %}
+
+
 <form action="" method="POST">
   <div class="input-group mb-3">
     <span class="input-group-text">Nom</span>
@@ -38,9 +43,7 @@
   </div>
 </form>
 
-{% if droit %}
-  <buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
-{% endif %}
+<buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
 
 <div class="accordion" id="accordionTable">
   <table class="table table-striped">
@@ -151,7 +154,6 @@
                         </tr>
                       </table>
                       
-                      {% if droit %}
                       <form action="" class="row g-3">
                         <div class="col-auto">
                           <label  class="visually-hidden"></label>
@@ -166,8 +168,7 @@
                         <div class="col-auto">
                           <button type="submit" class="btn btn-success mb-3">Ajouter</button>
                         </div>
-                      </form>
-                      {% endif %}     
+                      </form>   
                     </div>
                   </div>
                 </div>
@@ -234,9 +235,7 @@
               </tr>
             </tbody>
           </table>
-          {% if droit %}
-            <input class="btn btn-primary" value="Ajouter" type="submit" />
-          {% endif %}
+          <input class="btn btn-primary" value="Ajouter" type="submit" />
         </form>
       </div>
     </div>
@@ -260,7 +259,16 @@
                                   </div>
                                 </div>
                               </div>
+
+
+<!-- Sinon l'utilisateur n'est pas un administrateur !-->
+{% else %}
+  <p> Vous n'êtes pas autorisé à accéder à cette page. </p>
+{% endif %}
+
+
 {% endblock %}
+
 
 {% block scripts %}
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

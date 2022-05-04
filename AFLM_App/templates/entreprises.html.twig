@@ -83,8 +83,8 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Detail d'une entreprise</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="exampleModalLabel">{% if entreprise.id == 0 %}Ajout d'une entreprise {% else %}Détails d'une entreprise {% endif %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="RetourPage()"></button>
       </div>
       <div class="modal-body">
         <form id="entreprise_form" action="{% if entreprise.id == 0 %}{{ path("add_entreprises") }}{% else %}{{ path("edit_entreprises", {"id" : entreprise.id}) }}{% endif %}" method="POST">
@@ -92,28 +92,28 @@
             <tbody>
               <tr>
                 <th>Raison Sociale</th>
-                <td><input type="text" name="entRS" class="form-control" placeholder="" value="{{ entreprise.entRs }}" required></td>
+                <td><input type="text" {% if droit != true %} readonly="readonly" {% endif %} name="entRS" class="form-control" placeholder="" value="{{ entreprise.entRs }}" required></td>
               </tr>
               <tr>
                 <th>Adresse 1</th>
-                <td><input type="text" name="entAdr1" class="form-control" placeholder="" value="{{ entreprise.entAdresse1 }}"></td>
+                <td><input type="text" {% if droit != true %} readonly="readonly" {% endif %} name="entAdr1" class="form-control" placeholder="" value="{{ entreprise.entAdresse1 }}"></td>
               </tr>
               <tr>
                 <th>Adresse 2</th>
-                <td><input type="text" name="entAdr2" class="form-control" placeholder="" value="{{ entreprise.entAdresse2 }}"></td>
+                <td><input type="text" {% if droit != true %} readonly="readonly" {% endif %} name="entAdr2" class="form-control" placeholder="" value="{{ entreprise.entAdresse2 }}"></td>
               </tr>
               <tr>
                 <th>Adresse 3</th>
-                <td><input type="text" name="entAdr3" class="form-control" placeholder="" value="{{ entreprise.entAdresse3 }}"></td>
+                <td><input type="text" {% if droit != true %} readonly="readonly" {% endif %} name="entAdr3" class="form-control" placeholder="" value="{{ entreprise.entAdresse3 }}"></td>
               </tr>
               <tr>
                 <th>Code Postal</th>
-                <td><input type="text" name="entCP" class="form-control" placeholder="" value="{{ entreprise.entCP }}"></td>
+                <td><input type="text" {% if droit != true %} readonly="readonly" {% endif %} name="entCP" class="form-control" placeholder="" value="{{ entreprise.entCP }}"></td>
               </tr>
               <tr>
                 <th>Ville</th>
                 <td>
-                  <select name="entVille" class="form-select" aria-label="Selection d'une ville">
+                  <select name="entVille" class="form-select" aria-label="Selection d'une ville" {% if droit != true %} disabled {% endif %}>
                     <option value="0">Non renseigné</option>
                     {% for ville in villes %}
                       <option value="{{ville.id}}" {% if entreprise.entVille == ville.vilNom %}selected{% endif %}>
@@ -126,7 +126,7 @@
               <tr>
                 <th>Pays</th>
                 <td>
-                  <select name="entPays" class="form-select" aria-label="Selection d'un pays">
+                  <select name="entPays" class="form-select" aria-label="Selection d'un pays" {% if droit != true %} disabled {% endif %}>
                     <option value="0">Non renseigné</option>
                     {% for unPays in pays %}
                       <option value="{{unPays.id}}" {% if entreprise.entPays == unPays.payLibelle %}selected{% endif %}>
@@ -139,7 +139,7 @@
               <tr>
                 <th>Spécialité</th>
                 <td>
-                <select name="entSpes[]" class="form-select" multiple="multiple" aria-label="Selection de plusieurs spécialités">
+                <select name="entSpes[]" class="form-select" multiple="multiple" aria-label="Selection de plusieurs spécialités" {% if droit != true %} disabled {% endif %}>
                   <option value="0">Non renseigné</option>
                   {% for spe in specialites %}
                     <option value="{{ spe.id }}"
@@ -173,7 +173,7 @@
   </div>
 </div>
 
-<!-- Modal de suppression -->
+<!-- Modale de suppression -->
 <div class="modal fade" id="suppEntr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -213,4 +213,13 @@
     })
   </script>
 {% endif %}
+
+<script type="text/javascript">
+  function RetourPage(){
+    $('#myModal').on('hidden.bs.modal', function (e) {
+      window.location.search = "";
+    });
+  }
+</script>
+
 {% endblock %}
