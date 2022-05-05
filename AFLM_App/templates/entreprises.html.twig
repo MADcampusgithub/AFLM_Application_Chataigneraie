@@ -65,7 +65,7 @@
         <ul class="list-group list-group-flush text-left">
             <li class="list-group-item">{{ ent.entVille }}, {{ ent.entCP }} </li>
             <li class="list-group-item">{{ ent.entPays }}</li>
-            <li class="list-group-item">
+            <li class="list-group-item spes">
             {% for spe in ent.entSpecialite %}
               {{ spe }},
             {% endfor %}
@@ -202,7 +202,7 @@
     myModal.toggle();
 
     $('#suppEntr').on('hidden.bs.modal', function (e) {
-      window.location.search = "";
+      window.location.href = url.split('?')[0];
     });
   </script>
 {% else %}
@@ -215,11 +215,15 @@
 {% endif %}
 
 <script type="text/javascript">
-  function RetourPage(){
+  function RetourPage() {
     $('#myModal').on('hidden.bs.modal', function (e) {
-      window.location.search = "";
+      window.location.href = url.split('?')[0];
     });
   }
+
+  $(".spes").text(function(i, text) {
+    return text.slice(0, -26);
+  });
 </script>
 
 {% endblock %}
