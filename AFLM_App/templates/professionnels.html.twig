@@ -6,6 +6,7 @@
 
 {% block content %}
 
+<!-- Création du formulaire permettant la recherche d'un professionnel par filtrage !-->
 <form action="" method="POST">
   <div class="input-group mb-3">
     <span class="input-group-text">Nom</span>
@@ -44,7 +45,9 @@
 <buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
 {% endif %}
 
+<!-- Création de la fonctionnalité permettant d'afficher les informations d'un professionnel (accordion) !-->
 <div class="accordion" id="accordionTable">
+  <!-- Création de la table permettant l'affichage des professionnels !-->  
   <table class="table table-striped">
     <thead>
       <tr>
@@ -52,7 +55,7 @@
         <th scope="col">Prénom</th>
         <th scope="col">Mail</th>
         <th scope="col">Numéro de téléphone</th>
-        <th scope="col"></th>
+        <!-- <th scope="col"></th>!-->
       </tr>
     </thead>
     <tbody>
@@ -62,7 +65,7 @@
           <td {% if pers.perPrenom == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perPrenom}} {% endif %}</td>
           <td {% if pers.perMail == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perMail}} {% endif %} </td>
           <td {% if pers.perNum == null  %} class="text-muted"> Non renseigné {% else %}> {{pers.perNum}} {% endif %}</td>
-          <td class="col-md-1"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapse{{ pers.id }}"></button></td>
+          <!-- <td class="col-md-1"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapse pers.id"></button></td>!-->
         </tr>
         <tr>
           <td colspan="4">
@@ -71,37 +74,38 @@
                 <div class="container">
                   <div class="row align-items-center">
                     <div class="col">
+                      <!-- Création du formulaire permettant l'affichage des données relatives à un professionnel et la modification de celles-ci !-->
                       <form id="personne_form" action="{{ path("edit_personnes", {"id" : pers.id}) }}" method="POST">
                         <div class="row mb-3">
-                          <span class="col-sm-3"><strong>Nom :</strong></span>
+                          <span class="col-sm-3"><strong>Nom </strong></span>
                           <div class="col-sm-7">
-                            <input type="text" maxlength="38" {% if droit != true %} readonly="readonly" {% endif %} name="perNom" value="{{ pers.perNom }}" class="form-control" id="PersNom" {% if pers.perNom == null  %} placeholder="Non renseigné"{% endif %}>
+                            <input type="text" maxlength="38" {% if droit != true %} readonly="readonly" {% endif %} name="perNom" value="{{ pers.perNom }}" class="form-control" id="PersNom" {% if pers.perNom == null  %} placeholder="Non renseigné"{% endif %} required>
                           </div>
                         </div>
 
                         <div class="row mb-3">
-                          <span class="col-sm-3"><strong>Prénom :</strong></span>
+                          <span class="col-sm-3"><strong>Prénom </strong></span>
                           <div class="col-sm-7">
                             <input type="text" maxlength="38" {% if droit != true %} readonly="readonly" {% endif %} name="perPrenom" value="{{ pers.perPrenom }}"class="form-control" id="PersPrenom" {% if pers.perPrenom == null  %} placeholder="Non renseigné"{% endif %}>
                           </div>
                         </div>
 
                         <div class="row mb-3">
-                          <span class="col-sm-3"><strong>Adresse mail :</strong></span>
+                          <span class="col-sm-3"><strong>Adresse mail </strong></span>
                           <div class="col-sm-7">
                             <input type="email" maxlength="50" {% if droit != true %} readonly="readonly" {% endif %} name="perMail" value="{{ pers.perMail }}" class="form-control" id="PersMail" {% if pers.perMail == null  %} placeholder="Non renseigné"{% endif %}> 
                           </div>
                         </div>
 
                         <div class="row mb-3">
-                          <span class="col-sm-3"><strong>Numéro de téléphone :</strong></span>
+                          <span class="col-sm-3"><strong>Numéro de téléphone </strong></span>
                           <div class="col-sm-7">
                             <input type="text" name="perNum" maxlength="10" {% if droit != true %} readonly="readonly" {% endif %} value="{{ pers.perNum }}" class="form-control" id="PersNum" {% if pers.perNum == null  %} placeholder="Non renseigné"{% endif %}>
                           </div>
                         </div>
 
                         <div class="row mb-3">
-                          <span class="col-sm-3"><strong>Fonction :</strong></span>
+                          <span class="col-sm-3"><strong>Fonction </strong></span>
                           <div class="col-sm-7">
                             <select name="perFonction" class="form-select" {% if droit != true %} disabled {% endif %}>
                               <option value="0">Non renseigné</option>
@@ -113,7 +117,7 @@
                         </div>
 
                         <div class="row mb-3">
-                          <span class="col-sm-3"><strong>Entreprise :</strong></span>
+                          <span class="col-sm-3"><strong>Entreprise </strong></span>
                           <div class="col-sm-7">
                             <input type="text" maxlength="100" {% if droit != true %} readonly="readonly" {% endif %}  name="perEntreprise" class="form-control" list="listeEntreprise" value="{{pers.perEntreprise}}">
                           </div>
@@ -128,7 +132,7 @@
 
                       </form>
                     </div>
-
+                    <!-- Création de la table affichant les profils d'un professionnel !-->
                     <div class="col">
                       <table class="table table-borderless text-center align-middle ">
                         <tr> 
@@ -140,6 +144,7 @@
                             <tr>
                               <td>{{pp.Profil}}</td>
                               <td>{{pp.Annee}}</td>
+                              <!-- Création du bouton permettant la suppression d'un profil d'une personne !-->
                               <td><a href="{{ path('delete_profilpersonne', {"id" : pers.id}) }}?id={{ pp.Profil }}&annee={{ pp.Annee }}">
 
                               <!-- Si l'utilisateur est un administrateur !-->
@@ -155,10 +160,11 @@
 
                       <!-- Si l'utilisateur est un administrateur !-->
                       {% if droit %}
+
+                      <!-- Création du formulaire d'ajout d'un profil pour un professionnel !-->
                       <form action="{{ path("add_profilpersonne", {"id" : pers.id}) }}" class="row g-3">
                         <div class="col-auto">
                           <select name="profil" class="form-select">
-                              <option value="0" selected>Non renseigné</option>
                               {% for profil in profils %}
                                 <option value="{{profil.id}}">{{ profil.proLabel }}</option>
                               {% endfor %}
@@ -166,7 +172,7 @@
                         </div>
 
                         <div class="col-auto">
-                          <input type="label" class="form-control" name="proAnnee" placeholder="Année">
+                          <input type="label" minlength="4" maxlength="4" class="form-control" name="proAnnee" placeholder="Année" required>
                         </div>  
 
                         <div class="col-auto">
@@ -174,7 +180,6 @@
                         </div>
                       </form>
                       {% endif %}
-
                     </div>
                   </div>
                 </div>
@@ -187,6 +192,7 @@
   </table>
 </div>
 
+<!-- Création de la modale permettant l'ajout d'une personne !-->
 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -200,7 +206,7 @@
             <tbody>
               <tr>
                 <th>Nom</th>
-                <td><input type="text" maxlength="38" name="perNom" class="form-control"</td>
+                <td><input type="text" maxlength="38" name="perNom" class="form-control" required></td>
               </tr>
               <tr>
                 <th>Prenom</th>
@@ -248,7 +254,7 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Création de la modale de suppression d'une personne qui fera office de confirmation de suppression -->
 <div class="modal fade" id="suppPro" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -272,6 +278,7 @@
 {% block scripts %}
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<!-- Si une personne est sélectionné !-->
 {% if personne.id != 0 %}
   <script type="text/javascript">
     var SuppPro = new bootstrap.Modal(document.getElementById("suppPro"));
