@@ -141,7 +141,7 @@
                             <tr>
                               <td>{{pp.Profil}}</td>
                               <td>{{pp.Annee}}</td>
-                              <td><a href="{{ path('delete_profilpersonne', {"id" : pers.id}) }}?id={{ pp.Profil }}">
+                              <td><a href="{{ path('delete_profilpersonne', {"id" : pers.id}) }}?id={{ pp.Profil }}&annee={{ pp.Annee }}">
                                 <img src="professionnel/Supp.png" class="rounded float-start" width="20px" alt="..."> 
                               </a></td>
                             </tr>
@@ -279,7 +279,7 @@
     SuppPro.toggle();
 
     $('#suppPro').on('hidden.bs.modal', function (e) {
-      window.location.search = "";
+      window.location.href = url.split('?')[0];
     });
   </script>
 {% endif %}
