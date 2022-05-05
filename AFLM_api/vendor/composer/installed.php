@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '688d3436c8cd43248d26d05f941aff21aa2f34f4',
+        'reference' => '63c2d8693077d25f6674863db6dd2507c9f1e39f',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '688d3436c8cd43248d26d05f941aff21aa2f34f4',
+            'reference' => '63c2d8693077d25f6674863db6dd2507c9f1e39f',
             'dev_requirement' => false,
         ),
         'api-platform/core' => array(
@@ -339,6 +339,15 @@
             'provided' => array(
                 0 => '1.0|2.0',
             ),
+        ),
+        'swagger-api/swagger-ui' => array(
+            'pretty_version' => 'v4.10.3',
+            'version' => '4.10.3.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../swagger-api/swagger-ui',
+            'aliases' => array(),
+            'reference' => '7260f967ec53c8be13ffe0dbe3107bbc6a3766aa',
+            'dev_requirement' => false,
         ),
         'symfony/asset' => array(
             'pretty_version' => 'v5.4.3',

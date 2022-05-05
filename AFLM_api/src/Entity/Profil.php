@@ -34,7 +34,7 @@ class Profil
     private $Pro_Label;
 
     /**
-     * @ORM\OneToMany(targetEntity=PersonneProfil::class, mappedBy="Profil")
+     * @ORM\OneToMany(targetEntity=PersonneProfil::class, mappedBy="Profil", cascade={"persist", "remove"})
      */
     private $PersonnesProfils;
 

@@ -61,7 +61,7 @@ class Personne
     private $Per_Fonction;
 
     /**
-     * @ORM\OneToMany(targetEntity=PersonneProfil::class, mappedBy="Personne")
+     * @ORM\OneToMany(targetEntity=PersonneProfil::class, mappedBy="Personne", cascade={"persist", "remove"})
      */
     private $PersonnesProfils;
 
