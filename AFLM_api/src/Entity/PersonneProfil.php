@@ -22,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 class PersonneProfil
 {
     /**
+     * @ORM\Id
      * @ORM\Column(type="string", length=4, nullable=true)
      */
     private $Annee;
