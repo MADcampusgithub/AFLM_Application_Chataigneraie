@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}La chataigneraie - Entreprises{% endblock %}
+{% block title %}La Châtaigneraie - Entreprises{% endblock %}
 
 {% block utilisateur %}{{ login }}{% endblock %}
 
@@ -8,7 +8,7 @@
 <form action="" method="POST">
   <div class="input-group mb-3">
     <span class="input-group-text">Raison Sociale</span>
-    <input type="text" name="filtreRs" class="form-control" list="listeEntreprise">
+    <input type="text" name="filtreRs" maxlength="100" class="form-control" list="listeEntreprise">
     <datalist id="listeEntreprise">
       {% for entreprise in allEntreprises %}
         <option>
@@ -92,23 +92,23 @@
             <tbody>
               <tr>
                 <th>Raison Sociale</th>
-                <td><input type="text" {% if droit != true %} readonly="readonly" {% endif %} name="entRS" class="form-control" placeholder="" value="{{ entreprise.entRs }}" required></td>
+                <td><input type="text" maxlength="100" {% if droit != true %} readonly="readonly" {% endif %} name="entRS" class="form-control" placeholder="" value="{{ entreprise.entRs }}" required></td>
               </tr>
               <tr>
                 <th>Adresse 1</th>
-                <td><input type="text" {% if droit != true %} readonly="readonly" {% endif %} name="entAdr1" class="form-control" placeholder="" value="{{ entreprise.entAdresse1 }}"></td>
+                <td><input type="text" maxlength="100" {% if droit != true %} readonly="readonly" {% endif %} name="entAdr1" class="form-control" placeholder="" value="{{ entreprise.entAdresse1 }}"></td>
               </tr>
               <tr>
                 <th>Adresse 2</th>
-                <td><input type="text" {% if droit != true %} readonly="readonly" {% endif %} name="entAdr2" class="form-control" placeholder="" value="{{ entreprise.entAdresse2 }}"></td>
+                <td><input type="text" maxlength="100" {% if droit != true %} readonly="readonly" {% endif %} name="entAdr2" class="form-control" placeholder="" value="{{ entreprise.entAdresse2 }}"></td>
               </tr>
               <tr>
                 <th>Adresse 3</th>
-                <td><input type="text" {% if droit != true %} readonly="readonly" {% endif %} name="entAdr3" class="form-control" placeholder="" value="{{ entreprise.entAdresse3 }}"></td>
+                <td><input type="text" maxlength="100" {% if droit != true %} readonly="readonly" {% endif %} name="entAdr3" class="form-control" placeholder="" value="{{ entreprise.entAdresse3 }}"></td>
               </tr>
               <tr>
                 <th>Code Postal</th>
-                <td><input type="text" {% if droit != true %} readonly="readonly" {% endif %} name="entCP" class="form-control" placeholder="" value="{{ entreprise.entCP }}"></td>
+                <td><input type="text" maxlength="5" minlength="5" {% if droit != true %} readonly="readonly" {% endif %} name="entCP" class="form-control" placeholder="" value="{{ entreprise.entCP }}"></td>
               </tr>
               <tr>
                 <th>Ville</th>

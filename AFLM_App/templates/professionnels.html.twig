@@ -1,19 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}La Chataigneraie - Professionnels{% endblock %}
+{% block title %}La Châtaigneraie - Professionnels{% endblock %}
 
 {% block utilisateur %}{{ login }}{% endblock %}
 
 {% block content %}
 
-<!-- Si l'utilisateur est un administrateur !-->
-{% if droit %}
-
-
 <form action="" method="POST">
   <div class="input-group mb-3">
     <span class="input-group-text">Nom</span>
-    <input type="text" name="filtreNom" class="form-control" list="listeNom">
+    <input maxlength="38" type="text" name="filtreNom" class="form-control" list="listeNom">
     <datalist id="listeNom">
       {% for pers in personnes %}
         <option>
@@ -22,7 +18,7 @@
       {% endfor %}
     </datalist>
     <span class="input-group-text">Prenom</span>
-    <input type="text" name="filtrePrenom" class="form-control" list="listePrenom">
+    <input maxlength="38" type="text" name="filtrePrenom" class="form-control" list="listePrenom">
     <datalist id="listePrenom">
       {% for pers in personnes %}
         <option>
@@ -31,7 +27,7 @@
       {% endfor %}
     </datalist>
     <span class="input-group-text">Entreprise</span>
-    <input type="text" name="filtreEnt" class="form-control" list="listeEntreprise">
+    <input maxlength="100" type="text" name="filtreEnt" class="form-control" list="listeEntreprise">
     <datalist id="listeEntreprise">
       {% for entreprise in entreprises %}
         <option>
@@ -43,7 +39,10 @@
   </div>
 </form>
 
+<!-- Si l'utilisateur est un administrateur !-->
+{% if droit %}
 <buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
+{% endif %}
 
 <div class="accordion" id="accordionTable">
   <table class="table table-striped">
@@ -76,35 +75,35 @@
                         <div class="row mb-3">
                           <span class="col-sm-3"><strong>Nom :</strong></span>
                           <div class="col-sm-7">
-                            <input type="text" name="perNom" value="{{ pers.perNom }}" class="form-control" id="PersNom" {% if pers.perNom == null  %} placeholder="Non renseigné"{% endif %}>
+                            <input type="text" maxlength="38" {% if droit != true %} readonly="readonly" {% endif %} name="perNom" value="{{ pers.perNom }}" class="form-control" id="PersNom" {% if pers.perNom == null  %} placeholder="Non renseigné"{% endif %}>
                           </div>
                         </div>
 
                         <div class="row mb-3">
                           <span class="col-sm-3"><strong>Prénom :</strong></span>
                           <div class="col-sm-7">
-                            <input type="text" name="perPrenom" value="{{ pers.perPrenom }}"class="form-control" id="PersPrenom" {% if pers.perPrenom == null  %} placeholder="Non renseigné"{% endif %}>
+                            <input type="text" maxlength="38" {% if droit != true %} readonly="readonly" {% endif %} name="perPrenom" value="{{ pers.perPrenom }}"class="form-control" id="PersPrenom" {% if pers.perPrenom == null  %} placeholder="Non renseigné"{% endif %}>
                           </div>
                         </div>
 
                         <div class="row mb-3">
                           <span class="col-sm-3"><strong>Adresse mail :</strong></span>
                           <div class="col-sm-7">
-                            <input type="email" name="perMail" value="{{ pers.perMail }}" class="form-control" id="PersMail" {% if pers.perMail == null  %} placeholder="Non renseigné"{% endif %}> 
+                            <input type="email" maxlength="50" {% if droit != true %} readonly="readonly" {% endif %} name="perMail" value="{{ pers.perMail }}" class="form-control" id="PersMail" {% if pers.perMail == null  %} placeholder="Non renseigné"{% endif %}> 
                           </div>
                         </div>
 
                         <div class="row mb-3">
                           <span class="col-sm-3"><strong>Numéro de téléphone :</strong></span>
                           <div class="col-sm-7">
-                            <input type="text" name="perNum" value="{{ pers.perNum }}" class="form-control" id="PersNum" {% if pers.perNum == null  %} placeholder="Non renseigné"{% endif %}>
+                            <input type="text" name="perNum" maxlength="10" {% if droit != true %} readonly="readonly" {% endif %} value="{{ pers.perNum }}" class="form-control" id="PersNum" {% if pers.perNum == null  %} placeholder="Non renseigné"{% endif %}>
                           </div>
                         </div>
 
                         <div class="row mb-3">
                           <span class="col-sm-3"><strong>Fonction :</strong></span>
                           <div class="col-sm-7">
-                            <select name="perFonction" class="form-select">
+                            <select name="perFonction" class="form-select" {% if droit != true %} disabled {% endif %}>
                               <option value="0">Non renseigné</option>
                               {% for fonction in fonctions %}
                                 <option value="{{fonction.id}}" {% if (pers.perFonction == fonction.fonLabel) %}selected{% endif %}>{{ fonction.fonLabel }}</option>
@@ -116,7 +115,7 @@
                         <div class="row mb-3">
                           <span class="col-sm-3"><strong>Entreprise :</strong></span>
                           <div class="col-sm-7">
-                            <input type="text" name="perEntreprise" class="form-control" list="listeEntreprise" value="{{pers.perEntreprise}}">
+                            <input type="text" maxlength="100" {% if droit != true %} readonly="readonly" {% endif %}  name="perEntreprise" class="form-control" list="listeEntreprise" value="{{pers.perEntreprise}}">
                           </div>
                         </div>
 
@@ -142,13 +141,19 @@
                               <td>{{pp.Profil}}</td>
                               <td>{{pp.Annee}}</td>
                               <td><a href="{{ path('delete_profilpersonne', {"id" : pers.id}) }}?id={{ pp.Profil }}">
+
+                              <!-- Si l'utilisateur est un administrateur !-->
+                              {% if droit %}
                                 <img src="professionnel/Supp.png" class="rounded float-start" width="20px" alt="..."> 
+                              {% endif %}
+
                               </a></td>
                             </tr>
                           {% endif %}
                         {% endfor %}
                       </table>
-                      
+
+                      <!-- Si l'utilisateur est un administrateur !-->
                       {% if droit %}
                       <form action="{{ path("add_profilpersonne", {"id" : pers.id}) }}" class="row g-3">
                         <div class="col-auto">
@@ -169,6 +174,7 @@
                         </div>
                       </form>
                       {% endif %}
+
                     </div>
                   </div>
                 </div>
@@ -194,19 +200,19 @@
             <tbody>
               <tr>
                 <th>Nom</th>
-                <td><input type="text" name="perNom" class="form-control"</td>
+                <td><input type="text" maxlength="38" name="perNom" class="form-control"</td>
               </tr>
               <tr>
                 <th>Prenom</th>
-                <td><input type="text" name="perPrenom" class="form-control"></td>
+                <td><input type="text" maxlength="38" name="perPrenom" class="form-control"></td>
               </tr>
               <tr>
                 <th>Adresse mail</th>
-                <td><input type="text" name="perMail" class="form-control"</td>
+                <td><input type="text" maxlength="50" name="perMail" class="form-control"</td>
               </tr>
               <tr>
                 <th>Numéro de téléphone</th>
-                <td><input type="text" name="perNum" class="form-control"></td>
+                <td><input type="text" maxlength="10" minlength="10" name="perNum" class="form-control"></td>
               </tr>
               <tr>
                 <th>Fonction</th>
@@ -224,7 +230,7 @@
               <tr>
                 <th>Entreprise</th>
                 <td>
-                  <input type="text" name="perEntreprise" class="form-control" list="listeEntreprise">
+                  <input maxlength="100" type="text" name="perEntreprise" class="form-control" list="listeEntreprise">
                   <datalist id="listeEntreprise">
                     <option>Non renseigné</option>
                     {% for entreprises in entreprises %}
@@ -259,13 +265,6 @@
       </div>
     </div>
   </div>
-
-
-<!-- Sinon l'utilisateur n'est pas un administrateur !-->
-{% else %}
-  <p> Vous n'êtes pas autorisé à accéder à cette page. </p>
-{% endif %}
-
 
 {% endblock %}
 

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}La chataigneraie - Utilisateurs{% endblock %}
+{% block title %}La Châtaigneraie - Utilisateurs{% endblock %}
 
 {% block utilisateur %}{{ login }}{% endblock %}
 
@@ -13,10 +13,10 @@
       <label class="form-control-plaintext">Enregistrer un nouvel utilisateur : </label>
     </div>
     <div class="col-auto">
-      <input type="text" class="form-control" name="utiLogin" placeholder="Login">
+      <input maxlength="38" type="text" class="form-control" name="utiLogin" placeholder="Login">
     </div>
     <div class="col-auto">
-      <input type="password" class="form-control" name="utiMdp" placeholder="Mot de passe">
+      <input maxlength="64" type="password" class="form-control" name="utiMdp" placeholder="Mot de passe">
     </div> 
     <div class="col-auto">  
     <select name="utiDroit" class="form-select">

@@ -20,10 +20,11 @@
         <li class="nav-item">
           <a {% if app.request.pathinfo == "/entreprises" %} class="nav-link active" {% else %} class="nav-link" {% endif %} aria-current="page" href="{{ path('app_entreprises') }}">Entreprises</a>
         </li>
-        {% if droit %}
+
         <li class="nav-item">
           <a {% if app.request.pathinfo == "/professionnels" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{ path('app_professionnels') }}">Professionnels</a>
         </li>
+        {% if droit %}
         <li class="nav-item">
           <a {% if app.request.pathinfo == "/utilisateurs" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{ path('app_utilisateurs') }}">Utilisateurs</a>
         </li>

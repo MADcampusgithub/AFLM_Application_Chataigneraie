@@ -112,16 +112,6 @@ class ProfessionnelsController extends AbstractController
                 ]
             ]);
         }
-        return $this->render('professionnels.html.twig', [
-            'login' => $login, 
-            'droit' => $droit,
-            'personnes_profils' => $personnes_profils,
-            'profils' => $profils,
-            'personnes' => $personnes, 
-            'allPersonnes' => $allPersonnes, 
-            'fonctions' => $fonctions, 
-            'entreprises' => $entreprises
-        ]);
     }
 
     /**
