@@ -68,28 +68,17 @@
             {% if ent.entVille == null and ent.entCP == null %} <li class="list-group-item text-muted"> Non renseigné {% endif %}
             {% if ent.entVille == null and ent.entCP != null %} <li class="list-group-item"> {{ ent.entCP }} {% endif %}
             {% if ent.entVille != null and ent.entCP == null %} <li class="list-group-item"> {{ ent.entVille }} {% endif %}
-            {% if ent.entVille != null and ent.entCP != null %} <li class="list-group-item spes"> {{ ent.entVille }}, {{ ent.entCP }} {% endif %}
+            {% if ent.entVille != null and ent.entCP != null %} <li class="list-group-item"> {{ ent.entVille }}, {{ ent.entCP }} {% endif %}
             </li>
 
-            <li {% if ent.entPays == null %} class="list-group-item text-muted"> Non renseigné {% else %} class="list-group-item"> {{ ent.entPays }} {% endif %}</li>
+            <li class="list-group-item {% if ent.entPays == null %}text-muted{% endif %}">{% if ent.entPays == null %}Non renseigné{% else %}{{ ent.entPays }}{% endif %}</li>
 
             <!-- On vérifie s'il existe au moins une spécialité pour l'entreprise !-->
-            {% set i = 0 %}
-            {% for spe in ent.entSpecialite %}
-              {% set i = i + 1 %}
-            {% endfor %}
-
-            <!-- Si ce n'est pas le cas alors on indique qu'aucune spécialité n'a été renseignée !-->
-            {% if i == 0 %}
+            {% if ent.entSpecialite|length == 0 %}
               <li class="list-group-item text-muted">Aucune spécialité n'a été renseignée</li>
+            {% else %}
+              <li class="list-group-item spes">{% for spe in ent.entSpecialite %}{{ spe }}, {% endfor %}</li>
             {% endif %}
-            {% if i == 1 %}
-              <li class="list-group-item">{% for spe in ent.entSpecialite %}{{ spe }}{% endfor %}</li>
-            {% endif %}
-            {% if i > 1 %}
-              <li class="list-group-item">{% for spe in ent.entSpecialite %} {{ spe }},{% endfor %}</li>
-            {% endif %}
-            </li>
         </ul>
       <div class="card-footer">
         <a href="{{ path('app_entreprises') }}?id={{ ent.id }}" class="btn btn-primary">Plus d'informations</a>
@@ -247,7 +236,7 @@ lors de la fermeture de la modale des détails d'une entreprise !-->
   }
 
   $(".spes").text(function(i, text) {
-    return text.slice(0, -26);
+    return text.slice(0, -2);
   });
 </script>
 

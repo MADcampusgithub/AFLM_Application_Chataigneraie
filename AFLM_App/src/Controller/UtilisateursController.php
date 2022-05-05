@@ -25,12 +25,10 @@ class UtilisateursController extends AbstractController
             return $this->redirect("/connexion");
         }
 
-        $response = $client->request(
-            'GET', 
-            $request->getSession()->get('api') . "/api/utilisateurs", 
-            ['headers' => ['Accept' => 'application/json']]
-        );
+        $response = $client->request('GET', $request->getSession()->get('api') . "/api/utilisateurs", 
+            ['headers' => ['Accept' => 'application/json']]);
         $utilisateurs = $response->toArray(); 
+        array_multisort(array_column($utilisateurs, 'utiLogin'), SORT_ASC, $utilisateurs);
 
         if (isset($id)) {
             $response = $client->request(
