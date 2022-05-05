@@ -234,6 +234,7 @@ class ProfessionnelsController extends AbstractController
         $login = $request->getSession()->get('login');
         $mdp = $request->getSession()->get('mdp');
         $nomPro = $request->query->get("id");
+        $anneePro = $request->query->get("annee");
         $client = HttpClient::create();
 
         if ($login == "" || $mdp == "" || $request->getSession()->get('api') == "") {
@@ -248,7 +249,7 @@ class ProfessionnelsController extends AbstractController
 
         if (isset($idPro))
         {
-            $client->request('DELETE', $request->getSession()->get('api') . "/api/personne_profils/Personne=" . $id . ";Profil=" . $idPro, [
+            $client->request('DELETE', $request->getSession()->get('api') . "/api/personne_profils/Annee=" . $anneePro . ";Personne=" . $id . ";Profil=" . $idPro, [
                 'headers' => ['Accept' => 'application/json']
             ]);
         }
