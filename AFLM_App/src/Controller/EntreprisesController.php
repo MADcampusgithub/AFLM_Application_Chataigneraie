@@ -243,6 +243,8 @@ class EntreprisesController extends AbstractController
         
         if ($spe != "") {
             $ents = Linq::Where($ents, function($x) use (&$spe) {
+                if (count($x['entSpecialite']) == 0) { return true; }
+
                 return Linq::Contains($x['entSpecialite'], function(&$y) use (&$spe) {
                     return str_contains($y, isset($spe['speLabel']) ? $spe['speLabel'] : "");
                 });
