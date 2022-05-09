@@ -59,13 +59,11 @@ class EntreprisesController extends AbstractController
 
         // Filtrage des entreprises
         $allEntreprises = $entreprises;
-        $entreprises = $this->FiltreEntreprises(
-            $entreprises, 
-            $request->get("filtreRs") != null ? $request->get("filtreRs") : "", 
-            Linq::First($villes, function($x) use (&$request) { return $x['id'] == $request->get("filtreVille"); }), 
-            Linq::First($pays, function($x) use (&$request) { return $x['id'] == $request->get("filtrePays"); }), 
-            Linq::First($specialites, function($x) use (&$request) { return $x['id'] == $request->get("filtreSpes"); }),
-        );
+        $frs = $request->get("filtreRs") != null ? $request->get("filtreRs") : "";
+        $fville = Linq::First($villes, function($x) use (&$request) { return $x['id'] == $request->get("filtreVille"); });
+        $fpays = Linq::First($pays, function($x) use (&$request) { return $x['id'] == $request->get("filtrePays"); });
+        $fspe = Linq::First($specialites, function($x) use (&$request) { return $x['id'] == $request->get("filtreSpes"); });
+        $entreprises = $this->FiltreEntreprises($entreprises, $frs, $fville, $fpays, $fspe);
 
         // Rendu des informations
         if (isset($id)) {
@@ -90,7 +88,12 @@ class EntreprisesController extends AbstractController
                 'entreprise' => $entreprise, 
                 'specialites' => $specialites, 
                 'pays' => $pays, 
-                'villes' => $villes]);
+                'villes' => $villes,
+                'filtreRs' => $frs,
+                'filtreVille' => $fville,
+                'filtrePays' => $fpays,
+                'filtreSpe' => $fspe,    
+            ]);
         } 
         else {
             return $this->render('entreprises.html.twig', [
@@ -100,7 +103,11 @@ class EntreprisesController extends AbstractController
                 'allEntreprises' => $allEntreprises, 
                 'specialites' => $specialites, 
                 'pays' => $pays, 
-                'villes' => $villes, 
+                'villes' => $villes,
+                'filtreRs' => $frs,
+                'filtreVille' => $fville,
+                'filtrePays' => $fpays,
+                'filtreSpe' => $fspe,    
                 'entreprise' => [
                     'id' => 0,
                     'entRs' => '',

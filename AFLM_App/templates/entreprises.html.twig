@@ -51,6 +51,13 @@
   </div>
 </form>
 
+<div class="d-flex mb-3">
+  {% if filtreRs != null %}<span class="badge rounded-pill bg-success me-1">RS : {{ filtreRs }}</span>{% endif %}
+  {% if filtreVille.vilNom is defined %}<span class="badge rounded-pill bg-success me-1">Ville : {{ filtreVille.vilNom }}</span>{% endif %}
+  {% if filtrePays.payLibelle is defined %}<span class="badge rounded-pill bg-success me-1">Pays : {{ filtrePays.payLibelle }}</span>{% endif %}
+  {% if filtrePays.payLibelle is defined %}<span class="badge rounded-pill bg-success me-1">Specialité : {{ filtreSpe.speLabel }}</span>{% endif %}
+</div>
+
 <!-- Si l'utilisateur est administrateur !-->
 {% if droit %}
   <buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>

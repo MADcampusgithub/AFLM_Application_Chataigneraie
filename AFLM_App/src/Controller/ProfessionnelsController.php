@@ -69,12 +69,10 @@ class ProfessionnelsController extends AbstractController
         array_multisort(array_column($personnes_profils, 'Annee'), SORT_DESC, $personnes_profils);
 
         $allPersonnes = $personnes;
-        $personnes = $this->FiltrePersonnes(
-            $personnes,
-            $request->get("filtreNom") !== null ? $request->get("filtreNom") : "",
-            $request->get("filtrePrenom") !== null ? $request->get("filtrePrenom") : "",    
-            $request->get("filtreEnt") !== null ? $request->get("filtreEnt") : "",
-        );
+        $fnom = $request->get("filtreNom") !== null ? $request->get("filtreNom") : "";
+        $fprenom = $request->get("filtrePrenom") !== null ? $request->get("filtrePrenom") : "";
+        $fent = $request->get("filtreEnt") !== null ? $request->get("filtreEnt") : "";
+        $personnes = $this->FiltrePersonnes($personnes, $fnom, $fprenom, $fent);
 
         if (isset($id)) {
             $response = $client->request(
@@ -92,7 +90,10 @@ class ProfessionnelsController extends AbstractController
                 'personne' => $personne,
                 'allPersonnes' => $allPersonnes, 
                 'fonctions' => $fonctions, 
-                'entreprises' => $entreprises
+                'entreprises' => $entreprises,
+                'filtreNom' => $fnom,
+                'filtrePrenom' => $fprenom,
+                'filtreEnt' => $fent
             ]);
         }
         else{
@@ -104,7 +105,10 @@ class ProfessionnelsController extends AbstractController
                 'personnes' => $personnes, 
                 'allPersonnes' => $allPersonnes, 
                 'fonctions' => $fonctions, 
-                'entreprises' => $entreprises ,
+                'entreprises' => $entreprises,
+                'filtreNom' => $fnom,
+                'filtrePrenom' => $fprenom,
+                'filtreEnt' => $fent,
                 'personne' => [
                     'id' => 0,
                     'perNom' => '',

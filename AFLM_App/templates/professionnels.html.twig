@@ -40,6 +40,12 @@
   </div>
 </form>
 
+<div class="d-flex mb-3">
+  {% if filtreNom != null %}<span class="badge rounded-pill bg-success me-1">Nom : {{ filtreNom }}</span>{% endif %}
+  {% if filtrePrenom != null %}<span class="badge rounded-pill bg-success me-1">Prénom : {{ filtrePrenom }}</span>{% endif %}
+  {% if filtreEnt != null %}<span class="badge rounded-pill bg-success me-1">Entreprise : {{ filtreEnt }}</span>{% endif %}
+</div>
+
 <!-- Si l'utilisateur est un administrateur !-->
 {% if droit %}
 <buttom id="ajoutBtn" role="buttom" class="btn btn-primary mb-3">Ajouter</buttom>
