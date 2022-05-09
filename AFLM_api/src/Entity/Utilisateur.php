@@ -34,7 +34,7 @@ class Utilisateur
     private $Uti_Droit;
 
     /**
-     * @ORM\Column(type="string", length=38)
+     * @ORM\Column(type="string", length=38, unique=true)
      */
     private $Uti_Login;
 
