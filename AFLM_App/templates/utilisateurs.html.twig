@@ -98,7 +98,7 @@
     SuppUti.toggle();
 
     $('#suppUti').on('hidden.bs.modal', function (e) {
-      window.location.search = "";
+      window.location.href = window.location.href.split('?')[0];
     });
   </script>
 {% endif %}

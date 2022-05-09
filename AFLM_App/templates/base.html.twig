@@ -26,6 +26,7 @@
         <li class="nav-item">
           <a {% if app.request.pathinfo == "/professionnels" %} class="nav-link active" {% else %} class="nav-link" {% endif %} href="{{ path('app_professionnels') }}">Professionnels</a>
         </li>
+
         <!-- Si l'utilisateur est un administrateur alors il peut avoir accès à l'onglet utilisateur !-->
         {% if droit %}
         <li class="nav-item">
