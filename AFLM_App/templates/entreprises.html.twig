@@ -55,7 +55,7 @@
   {% if filtreRs != null %}<span class="badge rounded-pill bg-success me-1">RS : {{ filtreRs }}</span>{% endif %}
   {% if filtreVille.vilNom is defined %}<span class="badge rounded-pill bg-success me-1">Ville : {{ filtreVille.vilNom }}</span>{% endif %}
   {% if filtrePays.payLibelle is defined %}<span class="badge rounded-pill bg-success me-1">Pays : {{ filtrePays.payLibelle }}</span>{% endif %}
-  {% if filtrePays.payLibelle is defined %}<span class="badge rounded-pill bg-success me-1">Specialité : {{ filtreSpe.speLabel }}</span>{% endif %}
+  {% if filtreSpe.speLabel is defined %}<span class="badge rounded-pill bg-success me-1">Specialité : {{ filtreSpe.speLabel }}</span>{% endif %}
 </div>
 
 <!-- Si l'utilisateur est administrateur !-->
