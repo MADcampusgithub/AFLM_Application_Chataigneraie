@@ -285,7 +285,7 @@
     SuppPro.toggle();
 
     $('#suppPro').on('hidden.bs.modal', function (e) {
-      window.location.href = url.split('?')[0];
+      window.location.href = window.location.href.split('?')[0];
     });
   </script>
 {% endif %}

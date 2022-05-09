@@ -213,7 +213,7 @@
     myModal.toggle();
 
     $('#suppEntr').on('hidden.bs.modal', function (e) {
-      window.location.href = url.split('?')[0];
+      window.location.href = window.location.href.split('?')[0];
     });
   </script>
 {% else %}
@@ -231,7 +231,7 @@ lors de la fermeture de la modale des détails d'une entreprise !-->
 <script type="text/javascript">
   function RetourPage() {
     $('#myModal').on('hidden.bs.modal', function (e) {
-      window.location.href = url.split('?')[0];
+      window.location.href = window.location.href.split('?')[0];
     });
   }
 
