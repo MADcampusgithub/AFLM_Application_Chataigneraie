@@ -264,15 +264,15 @@ class ProfessionnelsController extends AbstractController
     // Retourne un ensemble d'entreprises filtré
     private function FiltrePersonnes(array $personnes, string $nom, string $prenom, string $entreprise) {
         $pers = Linq::Where($personnes, function($x) use (&$nom) {
-            return str_contains($x['perNom'], $nom);
+            return str_contains(strtoupper($x['perNom']), strtoupper($nom));
         });
 
         $pers = Linq::Where($pers, function($x) use (&$prenom) {
-            return str_contains($x['perPrenom'], $prenom);
+            return str_contains(strtoupper($x['perPrenom']), strtoupper($prenom));
         });
 
         $pers = Linq::Where($pers, function($x) use (&$entreprise) {
-            return str_contains($x['perEntreprise'], $entreprise);
+            return str_contains(strtoupper($x['perEntreprise']), strtoupper($entreprise));
         });
 
         return $pers;

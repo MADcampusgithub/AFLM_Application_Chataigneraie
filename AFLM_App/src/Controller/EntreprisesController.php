@@ -232,7 +232,7 @@ class EntreprisesController extends AbstractController
         $ents = $entreprises;
         if ($rs != "") {
             $ents = Linq::Where($ents, function($x) use (&$rs) {
-                return str_contains($x['entRs'], $rs);
+                return str_contains(strtoupper($x['entRs']), strtoupper($rs));
             });
         }
 
